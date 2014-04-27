@@ -1,0 +1,138 @@
+\section{Rozproszone systemy pomiarowe w~energetyce}
+
+\subsection{Wprowadzenie do~systemów pomiarowych}
+
+%Poprawna praca systemu elektroenergetycznego uzależniona jest
+%od~sprawnego sterowania poszczególnymi elementami składającymi~się
+%na~ten system, począwszy od~źródeł energii, a~skończywszy na~odbiorach
+%użytkowników końcowych. Przeważająca część związanych z~tym zadań
+%powierzana jest elementom automatyki systemowej, umożliwiającym kontrolę
+%i~utrzymanie systemu w~czasie rzeczywistym.
+%
+%Dane wejściowe dla~działań urządzeń automatyki, a~często również
+%dla~decyzji obsługi urządzeń elektroenergetycznych, stanowią dane
+%pomiarowe. Poprawność podejmowanych decyzji jest więc silnie uzależniona
+%od~jakości wykonywanych pomiarów, a~co za~tym idzie niezawodność pracy
+%układów pomiarowych jest warunkiem niezbędnym dla~poprawnej pracy
+%systemu.
+
+% http://www.eti.pg.gda.pl/katedry/kmoe/dydaktyka/Metrologia/
+% skrypt, systemy pomiarowe
+
+System pomiarowy zdefiniować można jako zbiór środków technicznych
+i~organizacyjnych przeznaczonych do~realizacji określonego celu
+metrologicznego. System pomiarowy stanowi nazwę nadrzędną w~stosunku
+do~pojęcia układu pomiarowego. Przyjąć można, że~zasadniczą różnicę
+pomiędzy tymi terminami stanowi występowanie w~systemie pomiarowym
+nadrzędnej jednostki funkcjonalnej (kontrolera), realizującej zadanie
+sterowania systemem.
+
+W~zależności od~przeznaczenia, wyróżnia~się trzy klasy systemów
+pomiarowych:
+
+\begin{itemize}
+	\item systemy pomiarowe badawcze,
+	\item systemy pomiarowo-kontrolne,
+	\item systemy pomiarowo-diagnostyczne.
+\end{itemize}
+
+Systemy pomiarowe badawcze stosowane są w~badaniach naukowych
+do~empirycznej weryfikacji hipotez naukowych. Systemy tego typu
+znajdują~się poza obszarem zainteresowania pracy.
+
+Systemy pomiarowo-kontrolne wykorzystywane są do~automatyzacji procesów
+technologicznych. Sygnały z~systemów tego typu wykorzystywane są
+do~sterowania pracą urządzeń.
+
+Systemy pomiarowo-diagnostyczne służą do~wykrywania i~lokalizacji
+uszkodzeń.
+
+Innym kryterium podziału systemów pomiarowych jest postać użyteczna
+sygnałów pomiarowych. Wyróżnić można systemy analogowe i~cyfrowe.
+W~obrębie pracy rozpatrywane będą wyłącznie systemy cyfrowe.
+
+
+\subsection{Rozproszone systemy pomiarowe}
+
+Sterowanie procesami czy~badanie stanu systemów rozległych obszarowo
+wymaga pozyskiwania danych pomiarowych z~wielu oddalonych od~siebie
+punktów pomiarowych, często w~czasie rzeczywistym. W~takich przypadkach
+celowe lub~nawet konieczne jest zastosowanie rozproszonych systemów
+pomiarowych.
+
+Brak jest ścisłego kryterium, wyróżniającego systemy rozproszone spośród
+ogółu systemów pomiarowych. Często za~kryterium podziału przyjmuje~się
+odległość pomiędzy poszczególnymi urządzeniami w~systemie. Przykładowo,
+prof.~Nawrocki umownie za~systemy rozproszone uważa ,,systemy, które
+mają urządzenia rozmieszczone w~większej liczbie pomieszczeń niż jedno,
+lub w~których odległość między przyrządami w~systemie jest większa
+niż~długość kabla interfejsowego''. % cyt. Nawrocki
+
+Warunki pracy systemów rozproszonych, a~w~szczególności rozległość
+obszarowa instalacji, wymuszają szereg wymagań w~stosunku do~realizacji
+tych systemów. Pożądane są między innymi następujące cechy:
+
+\begin{itemize}
+	\item otwartość,
+	\item skalowalność,
+	\item tolerowanie awarii (niezawodność),
+	\item współbieżność,
+	\item przezroczystość.
+\end{itemize}
+
+Zagadnienie otwartości dotyczy możliwości zmiany struktury systemu,
+zarówno pod~względem fizycznym, jak~i~programowym. System otwarty
+umożliwia dołączanie kolejnych elementów bądź~zmianę istniejących
+bez~konieczności wprowadzania znacznych zmian w~pozostałej części
+systemu, w~skrajnym przypadku --- wymiany elementów systemu.
+
+Otwartość najczęściej realizuje~się stosując otwartą topologię systemu,
+a~także otwarte standardy komunikacji. Zastosowanie otwartej topologii
+umożliwia dołączanie kolejnych urządzeń i~usuwanie istniejących
+przy~minimalnej zmianie struktury pozostałej części systemu.
+Zastosowanie otwartych standardów komunikacji umożliwia dołączanie
+elementów z~innej rodziny produktów czy~nawet innego producenta.
+
+Otwartość pożądana jest w~każdym systemie, jednak w~przypadku systemów
+rozproszonych staje~się szczególnie istotna. Znaczna liczba elementów
+systemu oraz~ich rozległość terytorialna sprawiałaby, że~niepotrzebne
+wymiany elementów byłyby kosztowne, czasochłonne i~powodowały długie
+okresy przerw w~pracy systemu.
+
+Skalowalność traktować można jako rozszerzenie otwartości. Jest to cecha
+pozwalająca na~zachowanie podobnej wydajności systemu przy~zwiększaniu
+liczby jego elementów czy~realizowanych zadań. Rozszerzanie systemu
+nie~powinno mieć znacznego wpływu na~pracę pozostałych jego elementów,
+a~koszt ewentualnych zmian (jak poszerzanie magistral komunikacyjnych)
+powinien być jak najmniejszy.
+
+Zdolność tolerowania awarii jest bardzo istotna z~punktu widzenia
+niezawodności pracy systemu. System rozproszony musi zachować zdolność
+do~pracy, chociażby w~części powierzonych zadań, przy~uszkodzeniu
+dowolnego jego fragmentu.
+
+Poprawę niezawodności realizować można wieloma drogami. Wyróżnić można
+chociażby stosowanie elementów nadmiarowych (pracujących równolegle
+bądź~rezerwowych), elementów wielofunkcyjnych (mogących przejąć funkcje
+elementów uszkodzonych o~większej wadze) czy~algorytmów dostosowanych
+do~pracy z~ograniczoną ilością dostępnych danych.
+
+%% XXX: współbieżność
+
+Przez~przezroczystość rozumie~się zdolność systemu do~prezentowania
+spójnej struktury logicznej niezależnie od~rzeczywistego sposobu
+połączenia urządzeń pomiarowych. Z~punktu widzenia użytkownika,
+w~dowolnym punkcie rozproszonego systemu pomiarowego winny być dostępne
+dane pomiarowe z~dowolnego innego punktu systemu, opisane w~sposób
+jednolity i~jednoznaczny.
+
+Istotne jest, by~zmiana struktury fizycznej części systemu pomiarowego,
+np.~wskutek rozbudowy systemu czy~awarii, nie~wymuszała modyfikacji
+algorytmów pozostałych urządzeń w~systemie. Zastosowanie innego
+urządzenia pomiarowego czy~zmiana kanału przesyłu danych nie~powinna
+powodować zmiany sposobu udostępnienia pomiaru.
+
+Z~punktu widzenia przezroczystości często konieczna jest również
+synchronizacja pomiarów. Pożądane jest, by~możliwe było jednoznaczne
+przypisanie danych pomiarów do~określonej chwili czasowej, niezależnie
+od~punktu pobrania informacji oraz~drogi jej przesyłu.
