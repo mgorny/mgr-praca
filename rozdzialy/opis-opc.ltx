@@ -1,0 +1,169 @@
+\section{Opis protokołu OPC}
+
+\subsection{Rys historyczny}
+
+% http://www.opcconnect.com/history.php
+
+Początków zainteresowania wymianą danych pomiędzy urządzeniami
+automatyki przemysłowej i~systemami operacyjnymi ogólnego zastosowania
+dopatrywać~się można w~roku 1990. Wprowadzony został wówczas na~rynek
+system operacyjny Windows~3.0, posiadający podwaliny wielozadaniowości
+--- możliwości pracy z~wieloma programami uruchomionymi jednocześnie,
+oraz mechanizm DDE (\textit{Dynamic Data Exchange}), standaryzujący
+wymianę danych pomiędzy uruchomionymi aplikacjami.
+
+Już wówczas dostrzegano korzyści przekazywania danych procesowych
+do~aplikacji ogólnego zastosowania, jak np.~arkusz kalkulacyjny.
+Mechanizm DDE posiadał jednak znaczne ograniczenia. Nie~umożliwiał
+chociażby przesyłu informacji pomiędzy różnymi komputerami w~obrębie
+sieci komputerowej, a~jego przepustowość była silnie ograniczona.
+
+Kilka firm podejmowało niezależne próby rozwiązania tych problemów,
+oferując własne rozwiązania takie jak NetDDE i~FastDDE firmy
+Wonderware czy~AdvanceDDE firmy Rockwell Software. Rozwiązania te miały
+charakter własnościowy, przez co nie~miały szansy stać~się standardem
+przemysłowym.
+
+W~roku 1992 wprowadzono standard OLE 2.0 (\textit{Object Layer
+Extensions 2.0}), który charakteryzował~się większą elastycznością
+i~wydajnością. W~tym czasie uformowała~się również grupa WinSEM
+(\textit{Windows in~Science, Engineering and~Manufacturing}),
+zrzeszająca przedstawicieli firm zajmujących~się automatyką przemysłową
+i~akwizycją danych pomiarowych zainteresowanych wykorzystaniem systemu
+Windows.
+
+Jednym z~obiektów zainteresowań grupy było wykorzystanie techniki OLE
+dla~przekazywania danych procesowych pomiędzy programami w~czasie
+rzeczywistym. Dostawcy oprogramowania SCADA dostrzegali w~tym możliwość
+ustandaryzowania sposobu komunikacji pomiędzy rdzeniem aplikacji SCADA,
+a~sterownikami obsługującymi urządzenia pomiarowe --- a~co za~tym idzie,
+możliwości wykorzystania jednolitych sterowników urządzeń pomiarowych
+dla~wszystkich programów w~systemie Windows.
+
+W~roku 1995 uformowała~się grupa OPC Task Force (\textit{OLE for Process
+Control Task Force}), której zadaniem było przygotowanie nowego
+standardu wymiany informacji w~krótkim czasie. Pierwszy szkic standardu
+OPC pojawił~się w~grudniu tego samego roku, natomiast 29 kwietnia
+1996~r. ostatecznie wydano standard OPC w~wersji 1.0. Dalszym rozwojem
+standardu zajmować miała~się niezależna organizacja typu non-profit,
+OPC Foundation.
+
+W~kolejnych latach protokół OPC był rozwijany i~rozszerzany. Zasadnicza
+część standardu została przemianowana na~\textit{OPC Data Access},
+i~została poszerzona o~kolejne specyfikacje, uzupełniające
+funkcjonalność OPC. Najnowsze wersje poszczególnych specyfikacji
+wymienione zostały w~tabeli~\ref{t-opc-classic}.
+
+\begin{table}[h]
+	\begin{tabular}{l l l p{9cm}}
+		\toprule
+			Nazwa & Wersja & Rok wyd. & Obszar \\
+		\midrule
+			Data Access & 3.00 & 2003 & ogólne koncepcje, odczyt i~zapis
+				danych, subskrypcje powiadomień o zmianach \\
+			Historical Data Access & 1.20 & 2003 & dostęp do~danych
+				historycznych \\
+			Alarms and Events & 1.1 & 2002 & monitorowanie i~zgłaszania
+				sytuacji alarmowych \\
+			XML-Data Access & 1.01 & 2004 & dostęp do~danych w~oparciu
+				o~standard XML \\
+			Data eXchange & 1.00 & 2003 & wymiana informacji pomiędzy
+				serwerami OPC \\
+			Complex Data & 1.00 & 2003 & wykorzystanie złożonych
+				struktur danych \\
+			Security & 1.00 & 2000 & metody kontroli dostępu
+				do~aplikacji i~danych \\
+			Batch & 2.00 & 2001 & przesył algorytmów do~urządzeń \\
+		\bottomrule
+	\end{tabular}
+
+	\caption{Lista specyfikacji OLE for Process Control}
+	\label{t-opc-classic}
+\end{table}
+
+% http://documentation.unified-automation.com/uasdkcpp/1.0.0/L2OpcUaMotivation.html
+
+Standard OPC zdobył dużą popularność jako otwarty, ujednolicony sposób
+komunikacji pomiędzy urządzeniami automatyki i~systemami komputerowymi.
+Jednakże jego podstawę stanowił zamknięty, własnościowy standard DCOM
+(\textit{Distributed Common Object Model}) firmy Microsoft, co
+praktycznie ograniczało możliwość zastosowania OPC do~platform opartych
+o~system Windows.
+
+Dlatego też OPC Foundation podjęło prace nad~nowym standardem OPC UA
+(\textit{Open Platform Communications Unified Architecture}), które
+zaowocowały wypuszczeniem pierwszej wersji jego specyfikacji w~2006~r.
+Nowy standard charakteryzuje~się strukturą warstwową, która oddziela
+cechy protokołu OPC od~wykorzystywanej platformy komunikacyjnej.
+W~wersji 1.00 uwzględniono możliwość kodowania informacji w~otwartym
+formacie XML lub~dedykowanym formacie binarnym, natomiast funkcje
+komunikacyjne zrealizowano w~oparciu o~protokół TCP lub~usługi SOAP
+wykorzystujące protokół HTTP.
+
+W~latach 2010--2011 kolejne części standardu OPC UA zostały przyjęte
+jako norma IEC 62541.
+
+
+\subsection{Warunki licencyjne OPC UA}
+
+Na~potrzeby podmiotów zainteresowanych implementacją OPC UA, OPC
+Foundation udostępnia dwa rodzaje zasobów:
+
+\begin{enumerate}
+	\item pełną specyfikację protokołu, z~uwzględnieniem wewnętrznych
+		aspektów implementacji,
+
+	\item interfejs programistyczny (API), ułatwiający implementację OPC
+		UA w~językach C, C++, Java oraz w~oparciu o~platformę .NET.
+\end{enumerate}
+
+Zasoby te udostępniane są bezpłatnie członkom OPC Foundation, jednakże
+członkostwo wiąże~się ze~zobowiązaniami finansowymi. Materiały objęte są
+w~pełni zastrzeżonymi prawami autorskimi, co uniemożliwia swobodną ich
+dystrybucję.
+
+% http://pl.wikipedia.org/wiki/Otwarty_standard#cite_note-1
+% http://ec.europa.eu/idabc/servlets/Docd552.pdf?id=19529
+% http://ec.europa.eu/idabc/en/document/2319/5644.html
+
+Zgodnie z~definicją przedstawioną przez~Komisję Europejską w~opisie
+\textit{European Interoperability Framework for pan-European
+eGovernment Services version 1.0}, jednym z~warunków koniecznych
+do~spełnienia przez~otwarty standard jest dostępność specyfikacji
+standardu wszystkim zainteresowanym nieodpłatnie lub po~kosztach druku,
+oraz prawo nieodpłatnego (lub po~kosztach druku) kopiowania,
+rozpowszechniania i~użytku. W~myśl tej definicji, standard OPC UA
+nie~jest otwartym standardem.
+
+
+\subsection{Podstawowe założenia}
+
+Protokół OPC UA opiera~się na~modelu klient-serwer, przy~czym pojedyncza
+aplikacja może pełnić równocześnie rolę zarówno serwera i~klienta
+w~stosunku do~innego serwera.
+
+Do~zadań serwera OPC należą:
+
+\begin{itemize}
+	\item zarządzanie przestrzenią adresową OPC ---
+		składającą~się z~węzłów udostępnianych klientom OPC,
+
+	\item obsługa współpracy z~obiektami rzeczywistymi --- fizycznymi
+		urządzeniami bądź~oprogramowaniem zarządzanym przez~serwer OPC,
+
+	\item monitorowanie węzłów i~zarządzanie subskrypcjami zdarzeń
+		na~żądanie klientów,
+
+	\item obsługa żądań klientów OPC,
+
+	\item wymiana informacji pomiędzy serwerami OPC --- wówczas serwer
+		pełni rolę klienta w~stosunku do~serwera partnerskiego.
+\end{itemize}
+
+Klient OPC jest aplikacją, która łączy~się z~jednym lub~większą liczbą
+serwerów OPC. Klient OPC może wysyłać w~stosunku do~serwera OPC żądania,
+otrzymywać powiadomienia i~publikować informacje. % XXX?
+
+W~modelu rozproszonego systemu pomiarowego, serwery OPC stanowić będą
+węzły, do~których podłączone są lokalne elementy systemu pomiarowego,
+a~w~strukturze hierarchicznej również węzły pośredniczące.

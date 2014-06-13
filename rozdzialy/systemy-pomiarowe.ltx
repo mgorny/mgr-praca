@@ -75,8 +75,8 @@ tych systemów. Pożądane są między innymi następujące cechy:
 \begin{itemize}
 	\item otwartość,
 	\item skalowalność,
+%	\item współbieżność,
 	\item tolerowanie awarii (niezawodność),
-	\item współbieżność,
 	\item przezroczystość.
 \end{itemize}
 
@@ -113,11 +113,8 @@ dowolnego jego fragmentu.
 
 Poprawę niezawodności realizować można wieloma drogami. Wyróżnić można
 chociażby stosowanie elementów nadmiarowych (pracujących równolegle
-bądź~rezerwowych), elementów wielofunkcyjnych (mogących przejąć funkcje
-elementów uszkodzonych o~większej wadze) czy~algorytmów dostosowanych
-do~pracy z~ograniczoną ilością dostępnych danych.
-
-%% XXX: współbieżność
+bądź~rezerwowych) czy~algorytmów dostosowanych do~pracy z~ograniczoną
+ilością dostępnych danych.
 
 Przez~przezroczystość rozumie~się zdolność systemu do~prezentowania
 spójnej struktury logicznej niezależnie od~rzeczywistego sposobu
@@ -136,3 +133,8 @@ Z~punktu widzenia przezroczystości często konieczna jest również
 synchronizacja pomiarów. Pożądane jest, by~możliwe było jednoznaczne
 przypisanie danych pomiarów do~określonej chwili czasowej, niezależnie
 od~punktu pobrania informacji oraz~drogi jej przesyłu.
+
+
+\subsection{Topologia rozproszonych systemów pomiarowych}
+
+
