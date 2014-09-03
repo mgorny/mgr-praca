@@ -55,9 +55,9 @@ funkcjonalność OPC. Najnowsze wersje poszczególnych specyfikacji
 wymienione zostały w~tabeli~\ref{t-opc-classic}.
 
 \begin{table}[h]
-	\begin{tabular}{l l l p{9cm}}
+	\begin{tabular}{l l l p{8cm}}
 		\toprule
-			Nazwa & Wersja & Rok wyd. & Obszar \\
+			Nazwa & Wersja & Wyd. & Obszar \\
 		\midrule
 			Data Access & 3.00 & 2003 & ogólne koncepcje, odczyt i~zapis
 				danych, subskrypcje powiadomień o zmianach \\
@@ -136,34 +136,232 @@ rozpowszechniania i~użytku. W~myśl tej definicji, standard OPC UA
 nie~jest otwartym standardem.
 
 
-\subsection{Podstawowe założenia}
+\subsection{Struktura specyfikacji OPC UA}
 
-Protokół OPC UA opiera~się na~modelu klient-serwer, przy~czym pojedyncza
-aplikacja może pełnić równocześnie rolę zarówno serwera i~klienta
-w~stosunku do~innego serwera.
+\begin{table}[h]
+	\begin{tabular}{l l l p{6.5cm}}
+		\toprule
+			Cz. & Tytuł & Wersja & Obszar \\
+		\midrule
+			1 & Overview and Concepts & 1.02
+				& przegląd specyfikacji, celów standardu, topologii systemu \\
+			2 & Security Model & 1.02
+				& przegląd problematyki bezpieczeństwa, kontroli dostępu,
+				audytu działań, niezawodności \\
+			3 & Address Space Model & 1.02
+				& koncepcja i~logiczna organizacja przestrzeni adresowej
+				--- definicja węzłów, referencji; typy danych i~zdarzeń \\
+			4 & Services & 1.02
+				& usługi oferowane przez serwer OPC \\
+			5 & Information Model & 1.02
+				& szczegółowy opis węzłów, obiektów, zasady modelowania typów \\
+			6 & Mappings & 1.02
+				& zasady kodowania danych, mapowanie na~protokoły sieciowe \\
+			7 & Profiles & 1.02
+				& podział serwerów i~klientów na~kategorie, w~zależności
+				od~obsługiwanej funkcjonalności, zabezpieczeń \\
+			8 & Data Access & 1.02
+				& \\
+			9 & Alarms and~Conditions & 1.02
+				& \\
+			10 & Programs & 1.02
+				& \\
+			11 & Historical Access & 1.02
+				& \\
+			12 & Discovery & 1.02.38
+				& odnajdywanie serwerów OPC w~sieci lokalnej oraz~globalnej \\
+			13 & Aggregates & 1.02
+				& \\
+		\bottomrule
+	\end{tabular}
 
-Do~zadań serwera OPC należą:
+	\caption{Lista specyfikacji OPC UA}
+	\label{t-opc-ua}
+\end{table}
+
+Specyfikacja OPC UA składa~się aktualnie z~13 części, które wymienione
+zostały w~tabeli~\ref{t-opc-ua}. Części 1--6 oraz~8 zostały przyjęte
+w~latach 2010--2011 jako norma IEC 62541.
+
+Części 1.--5. opisują podstawową część protokołu OPC UA w~sposób
+abstrakcyjny. Definiują strukturę sieci, organizację danych i~dostępne
+usługi, nie~narzucając konkretnej reprezentacji binarnej czy~sposobu
+realizacji komunikacji. Części te mogą posłużyć zaprojektowaniu
+i~wykonaniu implementacji stosu OPC UA wraz z~jego wewnętrznym API,
+nie~zapewnią jednak współpracy pomiędzy stosami różnych producentów.
+
+Część 6. specyfikacji definiuje standardowe sposoby kodowania danych
+oraz~protokoły sieciowe dla~OPC. Na~jej podstawie do~zdefiniowanych
+w~poprzednich częściach, abstrakcyjnych typów danych przypisywane
+zostają algorytmy serializacji, a~następnie definiowane są protokoły
+sieciowe, które umożliwiają przesyłanie do~serwera OPC żądań
+i~otrzymywanie odpowiedzi.
+
+Zdefiniowane zostały dwa standardowe sposoby kodowania danych ---
+kodowanie binarne oraz~za~pomocą języka XML, oraz~dwa standardowe
+protokoły sieciowe --- binarny protokół OPC UA TCP oraz~sposób
+wykorzystania transportu HTTP/SOAP. Serwer OPC UA może udostępniać swoje
+zasoby przy wykorzystaniu wielu dostępnych protokołów.
+
+Część 7. specyfikacji grupuje serwery OPC w~tzw.~profile. Poszczególne
+profile określają wymagania w~stosunku do~zaimplementowanej części
+specyfikacji.
+
+Część 8. i~kolejne części specyfikacji określają dodatkowe struktury
+danych i~usługi, zbudowane w~oparciu o~bazowe typy zdefiniowane
+w~częściach 1.--5. Abstrakcja typów pozwala na~implementację tych części
+specyfikacji bez~konieczności definiowania dedykowanego sposobu
+kodowania danych --- ich realizacja wykonana może być w~oparciu o~reguły
+dla~typów podstawowych określone w~6.~części specyfikacji.
+
+
+\subsection{Struktura sieci OPC UA}
+
+Protokół OPC UA oparty jest na~architekturze klient-serwer. Serwery
+stanowią węzły sieci pomiarowej, współpracując z~fizycznymi urządzeniami
+pomiarowymi oraz~sterującymi. Każdy serwer definiuje przestrzeń
+adresową, w~obrębie której zamodelowane są poszczególne obiekty.
+
+Z~każdym serwerem połączonych może być wielu klientów. Klienci ---
+w~zależności od~przypisanych uprawnień --- mogą wykonywać określone
+operacje na~węzłach przestrzeni adresowej serwera. Do~typowych operacji
+należą:
 
 \begin{itemize}
-	\item zarządzanie przestrzenią adresową OPC ---
-		składającą~się z~węzłów udostępnianych klientom OPC,
+	\item odczyt bieżących i~historycznych danych pomiarowych,
 
-	\item obsługa współpracy z~obiektami rzeczywistymi --- fizycznymi
-		urządzeniami bądź~oprogramowaniem zarządzanym przez~serwer OPC,
+	\item odczyt i~modyfikacja danych sterujących procesami,
 
-	\item monitorowanie węzłów i~zarządzanie subskrypcjami zdarzeń
-		na~żądanie klientów,
-
-	\item obsługa żądań klientów OPC,
-
-	\item wymiana informacji pomiędzy serwerami OPC --- wówczas serwer
-		pełni rolę klienta w~stosunku do~serwera partnerskiego.
+	\item monitorowanie zmian danych pomiarowych.
 \end{itemize}
 
-Klient OPC jest aplikacją, która łączy~się z~jednym lub~większą liczbą
-serwerów OPC. Klient OPC może wysyłać w~stosunku do~serwera OPC żądania,
-otrzymywać powiadomienia i~publikować informacje. % XXX?
+Serwer może również pełnić rolę klienta w~stosunku do~innych serwerów
+OPC UA. W~ten sposób we~własnej przestrzeni adresowej może odwzorować
+fragmenty przestrzeni adresowych innych serwerów, umożliwiając klientom
+pośredni dostęp do~oferowanych przez~nie danych. Pozwala to na~budowanie
+sieci pomiarowych o~praktycznie dowolnej strukturze.
 
-W~modelu rozproszonego systemu pomiarowego, serwery OPC stanowić będą
-węzły, do~których podłączone są lokalne elementy systemu pomiarowego,
-a~w~strukturze hierarchicznej również węzły pośredniczące.
+
+\subsection{Przestrzeń adresowa OPC UA}
+
+
+
+
+\subsection{Protokół OPC UA TCP}
+
+\subsubsection{Budowa protokołu}
+
+Opis protokołu OPC UA TCP składa~się z~trzech zasadniczych części:
+
+\begin{enumerate}
+	\item opisu kodowania standardowych typów OPC UA w~postaci binarnej
+		(\textit{OPC UA Binary}),
+
+	\item opisu sposobu nawiązania bezpiecznego połączenia (\textit{OPC
+		UA Secure Conversation}),
+
+	\item opisu wiadomości protokołu transportowego (\textit{OPC UA
+		TCP}).
+\end{enumerate}
+
+Połączenie w~oparciu o~ten protokół rozpatruje~się w~trzech warstwach:
+
+\begin{enumerate}
+	\item warstwie transportowej,
+
+	\item warstwie komunikacji (bezpiecznego połączenia),
+
+	\item warstwie sesji.
+\end{enumerate}
+
+Zadaniem warstwy transportowej jest nawiązanie i~utrzymanie logicznego
+kanału przesyłu pakietów pomiędzy klientem i~serwerem. Do~transmisji
+pakietów OPC UA wykorzystuje~się parę protokołów TCP/IP. Poszczególne
+pakiety poprzedzane są nagłówkiem warstwy transportowej, określającym
+rodzaj pakietu oraz~jego wielkość.
+
+Warstwa komunikacji zajmuje~się budowaniem pakietów w~oparciu
+o~zakodowane binarnie wiadomości OPC UA. Do~zadań tej warstwy należy
+podział wiadomości na~pakiety o~wielkości ograniczonej możliwościami
+serwera (klienta), a~następnie --- o~ile jest to pożądane ---
+szyfrowanie i~cyfrowy podpis pakietów.
+
+W~odróżnieniu od~dwóch poprzednio opisanych warstw, warstwa sesji
+nie~stanowi części protokołu OPC UA TCP, lecz należy do~podstawowej
+specyfikacji OPC UA. Wiąże ona wiadomości przesyłane w~oparciu o~dowolny
+protokół (bądź interfejs) OPC UA z~określoną sesją, w~obrębie której
+obsługiwane jest uwierzytelnianie klienta oraz~obsługiwane są jego
+żądania. Wyodrębnienie warstwy sesji umożliwia utrzymanie ciągłości
+przesyłanych wiadomości niezależnie od~przerw w~logicznych kanałach
+komunikacji.
+
+
+\subsubsection{Sposób nawiązania połączenia}
+
+\begin{figure}[h]
+	\centering
+
+	\begin{tikzpicture}
+		\draw[thick] (0,0) -- ++(0,6) node[above] {klient};
+		\draw[thick] (2,0) -- ++(0,6) node[above] {bezp. kanał};
+		\draw[thick] (4,0) -- ++(0,6) node[above] {TCP};
+		\draw[thick] (10,0) -- ++(0,6) node[above] {TCP};
+		\draw[thick] (12,0) -- ++(0,6) node[above] {bezp. kanał};
+		\draw[thick] (14,0) -- ++(0,6) node[above] {serwer};
+
+		\begin{scope}[shorten >=1mm, shorten <=1mm]
+			\draw[-stealth] (4,5.5) -- ++(6,0)
+				node[midway, above] {nawiązanie połączenia};
+			\draw[-stealth] (4,4.5) -- ++(6,0)
+				node[midway, above] {wiadomość \textit{Hello}};
+			\draw[stealth-] (4,3.5) -- ++(6,0)
+				node[midway, above] {wiadomość \textit{Acknowledge}};
+			\draw[-stealth] (2,2.5) -- ++(10,0)
+				node[midway, above] {żądanie \textit{Open Secure Channel}};
+			\draw[stealth-] (2,1.5) -- ++(10,0)
+				node[midway, above] {odp. na~\textit{Open Secure Channel}};
+			\draw[-stealth] (0,.5) -- ++(14,0)
+				node[midway, above] {utworzenie/aktywacja sesji};
+
+		\end{scope}
+	\end{tikzpicture}
+
+	\caption{Graficzne przedstawienie procedury nawiązania połączenia}
+\end{figure}
+
+Procedurę nawiązania połączenia rozpoczyna zawsze klient, poprzez
+nawiązanie połączenia TCP z~serwerem. Po~nawiązaniu połączenia, klient
+wysyła wiadomość \textit{Hello}, zawierającą wersję protokołu klienta,
+charakterystyczne ograniczenia wielkości pakietów i~wskazania żądanego
+punktu końcowego połączenia. Na~tę wiadomość serwer odpowiada
+wiadomością \textit{Acknowledge} zawierającą te same informacje
+o~charakterystyce serwera. Po~wymianie tych dwóch wiadomości kanał
+transportowy uznaje~się za~otwarty i~pozostaje on otwarty aż
+do~zakończenia połączenia TCP.
+
+Kolejnym krokiem jest uruchomienie kanału bezpiecznego. W~tym celu
+klient wysyła do~serwera żądanie \textit{Open Secure Channel},
+zawierające m.in.~wskazanie sposobu zabezpieczenia wiadomości oraz~dane
+niezbędne do~jego realizacji, m.in. certyfikat klienta. W~odpowiedzi
+na~to żądanie serwer potwierdza otwarcie kanału bądź określa przyczynę
+odmowy. W~przypadku otwarcia kanału, serwer przydziela numer kanału
+oraz~klucz wykorzystywany do~symetrycznego szyfrowania dalszych
+wiadomości.
+
+Bezpieczny kanał pozostaje ważny aż~do~upływu czasu ważności klucza
+bądź~do~przesłania żądania zamknięcia kanału przez~klienta. W~przypadku
+zerwania połączenia TCP, klient wznawia je i~wysyła żądanie wznowienia
+kanału. W~przypadku upływu czasu ważności klucza, klient wysyła żądanie
+wygenerowania nowego klucza.
+
+Ostatnią częścią procedury łączenia jest przypisanie sesji. W~celu
+utworzenia nowej sesji, klient wysyła żądanie \textit{Create Session},
+w~odpowiedzi na~które otrzymuje m.in.~identyfikator sesji. Następnie
+wysyła żądanie \textit{Activate Session}, które powoduje przypisanie
+sesji do~kanału oraz~uwierzytelnienie klienta. W~przypadku wznawiania
+istniejącej sesji żadanie \textit{Create Session} pomija~się, zaś
+do~żądania \textit{Activate Session} przekazuje~się dane otrzymane
+po~aktywacji sesji w~poprzednim połączeniu.
+
+Sesja pozostaje ważna do~upływu czasu ważności sesji lub~jej jawnego
+zakończenia przez~klienta.
