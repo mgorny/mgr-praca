@@ -54,7 +54,10 @@ i~została poszerzona o~kolejne specyfikacje, uzupełniające
 funkcjonalność OPC. Najnowsze wersje poszczególnych specyfikacji
 wymienione zostały w~tabeli~\ref{t-opc-classic}.
 
-\begin{table}[h]
+\begin{table}[ht]
+	\caption{Lista specyfikacji OLE for Process Control}
+	\label{t-opc-classic}
+
 	\begin{tabular}{l l l p{8cm}}
 		\toprule
 			Nazwa & Wersja & Wyd. & Obszar \\
@@ -76,9 +79,6 @@ wymienione zostały w~tabeli~\ref{t-opc-classic}.
 			Batch & 2.00 & 2001 & przesył algorytmów do~urządzeń \\
 		\bottomrule
 	\end{tabular}
-
-	\caption{Lista specyfikacji OLE for Process Control}
-	\label{t-opc-classic}
 \end{table}
 
 % http://documentation.unified-automation.com/uasdkcpp/1.0.0/L2OpcUaMotivation.html
@@ -138,8 +138,11 @@ nie~jest otwartym standardem.
 
 \subsection{Struktura specyfikacji OPC UA}
 
-\begin{table}[h]
-	\begin{tabular}{l l l p{6.5cm}}
+\begin{table}[ht]
+	\caption{Lista specyfikacji OPC UA}
+	\label{t-opc-ua}
+
+	\begin{tabular}{l l l p{8cm}}
 		\toprule
 			Cz. & Tytuł & Wersja & Obszar \\
 		\midrule
@@ -174,9 +177,6 @@ nie~jest otwartym standardem.
 				& \\
 		\bottomrule
 	\end{tabular}
-
-	\caption{Lista specyfikacji OPC UA}
-	\label{t-opc-ua}
 \end{table}
 
 Specyfikacja OPC UA składa~się aktualnie z~13 części, które wymienione
@@ -243,6 +243,95 @@ sieci pomiarowych o~praktycznie dowolnej strukturze.
 
 
 \subsection{Przestrzeń adresowa OPC UA}
+
+Przestrzeń adresowa stanowi logiczną organizację zasobów serwera
+OPC UA. Poszczególne zasoby modelowane są w~postaci węzłów. Węzły mogą
+reprezentować m.in.:
+
+\begin{enumerate}
+	\item zmienne, stanowiące wynik pomiaru bądź~zmienne sterowania,
+
+	\item obiekty, służące do~organizacji logicznej struktury
+	poszczególnych obiektów monitorowanych,
+
+	\item metody, umożliwiające zdalne uruchamianie procesów i~funkcji,
+
+	\item typy danych i~elementy struktury protokołu OPC UA.
+\end{enumerate}
+
+W~szczególności zauważyć można, że~protokół OPC UA jest silnie
+introspektywny --- przestrzeń adresowa zawiera nie~tylko zasoby serwera,
+ale~również opisy tych zasobów i~elementów protokołu. Umożliwia to
+tworzenie uniwersalnego oprogramowania, które wykorzystując te dane jest
+w~stanie prezentować i~wykorzystywać nieznane zasoby, włączając w~to
+rozwiązania niestandardowe.
+
+% TODO: przykład
+
+Protokół OPC nie~wprowadza ograniczeń co do~rodzaju zasobów ani~sposobu
+pozyskiwania wartości ich atrybutów. Co za~tym idzie, w~przestrzeni
+adresowej modelowane mogą być:
+
+\begin{enumerate}
+	\item lokalne zasoby sprzętowe i~programowe, jak np.~wielkości
+	mierzone przez~urządzenia pomiarowe połączone z~serwerem,
+
+	\item lokalne zasoby wirtualne, jak np.~wielkości obliczeniowe,
+
+	\item zdalne zasoby udostępnione przez~inne serwery OPC UA bądź
+	innych protokołów sieciowych.
+\end{enumerate}
+
+Węzły w~przestrzeni adresowej adresowane są przy~pomocy identyfikatorów,
+które są unikalne w~obrębie jednego serwera OPC UA. W~sieci
+składającej~się z~wielu współpracujących serwerów możliwe jest
+zastosowanie jednolitego modelu adresowania węzłów --- wówczas
+identyfikatory są unikalne w~obrębie sieci, a~adresowanie danego zasobu
+odbywa~się przy~pomocy tego samego identyfikatora niezależnie od~tego,
+czy jest on zasobem zdalnym czy~lokalnym.
+
+Węzły połączone są w~strukturę grafu za~pomocą referencji. Referencje
+wykorzystywane są do~powiązania węzłów reprezentujących:
+
+\begin{enumerate}
+	\item zmienne, metody i~właściwości obiektów,
+
+	\item obiekty podrzędne (nadrzędzne) w~strukturze
+	hierarchicznej,
+
+	\item węzły definicji typów,
+
+	\item typy (klasy) nadrzędne i~podrzędne.
+\end{enumerate}
+
+Węzły posiadają szereg atrybutów zdefiniowanych w~obrębie specyfikacji.
+Atrybuty są ściśle określone i~przypisane do~poszczególnych rodzajów
+węzłów. Atrybuty wykorzystywane są jedynie do~określania ogólnych
+właściwości węzłów (jak identyfikator, nazwa czy~wartość);
+do~modelowania szczegółowych cech wykorzystuje~się zmienne
+i~właściwości, związane z~węzłem za~pomocą referencji.
+
+
+\subsection{Zapewnienie zgodności pomiędzy kolejnymi wersjami protokołu}
+
+Mechanizm zapewnienia zgodności przy~wprowadzaniu zmian w~strukturze
+protokołu OPC UA oparty jest o~mechanizm wersji. Podczas inicjacji
+połączenia klient i~serwer określają wykorzystywaną przez~siebie wersję
+protokołu. W~przypadku wystąpienia niezgodności, strona obsługującą
+nowszą (wyższą) wersję protokołu zobowiązana jest zapewnić zgodność
+z~wersją starszą.
+
+Rozwiązanie to gwarantuje możliwość przyłączenia nowszych urządzeń
+(zastosowania nowszego oprogramowania) do~istniejących sieci OPC UA
+bez~konieczności wymiany bądź przeprogramowania istniejących elementów.
+Nakłada jednak na~tworców oprogramowania konieczność implementacji
+wszystkich poprzednich wersji protokołu.
+
+Numery wersji przypisywane są w~toku certyfikacji oprogramowania OPC UA.
+Oprogramowanie niecertyfikowane zobowiązane jest korzystać z~wersji
+,,0''. Oznacza to, że~oprogramowanie nieobjęte procesem certyfikacji
+nie~jest w~stanie zagwarantować prawidłowej współpracy z~oprogramowaniem
+wykonanym w~oparciu o~inną wersję specyfikacji.
 
 
 
