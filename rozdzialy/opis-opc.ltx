@@ -106,34 +106,35 @@ jako norma IEC 62541.
 
 \subsection{Warunki licencyjne OPC UA}
 
-Na~potrzeby podmiotów zainteresowanych implementacją OPC UA, OPC
-Foundation udostępnia dwa rodzaje zasobów:
+Specyfikacja OPC UA ma charakter własnościowy i~objęta jest
+restrykcyjnym prawem autorskim. OPC Foundation zachowuje wyłączne prawo
+rozpowszechniania specyfikacji. Członkowie OPC Foundation otrzymują
+dostęp~do:
 
 \begin{enumerate}
-	\item pełną specyfikację protokołu, z~uwzględnieniem wewnętrznych
-		aspektów implementacji,
+	\item pełnej specyfikacji protokołu wraz z~przeznaczonymi do~odczytu
+		maszynowego plikami XML Schema oraz~WSDL,
 
-	\item interfejs programistyczny (API), ułatwiający implementację OPC
-		UA w~językach C, C++, Java oraz w~oparciu o~platformę .NET.
+	\item referencyjną implementację stosu OPC w~postaci binarnej
+		z~interfejsem programistycznym dla~języków C, C++, Java
+		oraz~platformy .NET,
+
+	\item dodatkowe materiały umożliwiające testowanie wykonanej
+		implementacji.
 \end{enumerate}
 
-Zasoby te udostępniane są bezpłatnie członkom OPC Foundation, jednakże
-członkostwo wiąże~się ze~zobowiązaniami finansowymi. Materiały objęte są
-w~pełni zastrzeżonymi prawami autorskimi, co uniemożliwia swobodną ich
-dystrybucję.
+Ograniczony, odpłatny dostęp do~specyfikacji poddają w~wątpliwość
+podkreślaną przez~autorów otwartość specyfikacji. Chociażby zgodnie
+z~definicją zastosowaną przez~Komisję Europejską w~opisie
+\textit{European Interoperability Framework for pan-European
+eGovernment Services version 1.0}, otwarty standard musi być
+udostępniony wszystkim zainteresowanym nieodpłatnie bądź~po~kosztach
+druku, wraz z~prawem do~nieograniczego kopiowania, rozpowszechniania
+i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
 
 % http://pl.wikipedia.org/wiki/Otwarty_standard#cite_note-1
 % http://ec.europa.eu/idabc/servlets/Docd552.pdf?id=19529
 % http://ec.europa.eu/idabc/en/document/2319/5644.html
-
-Zgodnie z~definicją przedstawioną przez~Komisję Europejską w~opisie
-\textit{European Interoperability Framework for pan-European
-eGovernment Services version 1.0}, jednym z~warunków koniecznych
-do~spełnienia przez~otwarty standard jest dostępność specyfikacji
-standardu wszystkim zainteresowanym nieodpłatnie lub po~kosztach druku,
-oraz prawo nieodpłatnego (lub po~kosztach druku) kopiowania,
-rozpowszechniania i~użytku. W~myśl tej definicji, standard OPC UA
-nie~jest otwartym standardem.
 
 
 \subsection{Struktura specyfikacji OPC UA}
@@ -147,34 +148,33 @@ nie~jest otwartym standardem.
 			Cz. & Tytuł & Wersja & Obszar \\
 		\midrule
 			1 & Overview and Concepts & 1.02
-				& przegląd specyfikacji, celów standardu, topologii systemu \\
+				& przegląd specyfikacji, koncepcje OPC UA \\
 			2 & Security Model & 1.02
-				& przegląd problematyki bezpieczeństwa, kontroli dostępu,
-				audytu działań, niezawodności \\
+				& przegląd problematyki bezpieczeństwa komunikacji
+				pomiędzy klientem i~serwerem \\
 			3 & Address Space Model & 1.02
-				& koncepcja i~logiczna organizacja przestrzeni adresowej
-				--- definicja węzłów, referencji; typy danych i~zdarzeń \\
+				& zawartość i~struktura przestrzeni adresowej \\
 			4 & Services & 1.02
 				& usługi oferowane przez serwer OPC \\
 			5 & Information Model & 1.02
-				& szczegółowy opis węzłów, obiektów, zasady modelowania typów \\
+				& typy i~zależności pomiędzy nimi \\
 			6 & Mappings & 1.02
 				& zasady kodowania danych, mapowanie na~protokoły sieciowe \\
 			7 & Profiles & 1.02
-				& podział serwerów i~klientów na~kategorie, w~zależności
-				od~obsługiwanej funkcjonalności, zabezpieczeń \\
+				& kryteria i~sposób oceny zgodności implementacji ze~specyfikacją \\
 			8 & Data Access & 1.02
-				& \\
+				& dostęp do~danych pomiarowych \\
 			9 & Alarms and~Conditions & 1.02
-				& \\
+				& obsługa stanów alarmowych \\
 			10 & Programs & 1.02
-				& \\
+				& reprezentacja programów \\
 			11 & Historical Access & 1.02
-				& \\
+				& dostęp do~danych historycznych oraz historii zdarzeń \\
 			12 & Discovery & 1.02.38
 				& odnajdywanie serwerów OPC w~sieci lokalnej oraz~globalnej \\
 			13 & Aggregates & 1.02
-				& \\
+				& dostęp do~wielkości statystycznych, takich jak minimum,
+				maksium czy~średnia \\
 		\bottomrule
 	\end{tabular}
 \end{table}
@@ -235,14 +235,206 @@ należą:
 	\item monitorowanie zmian danych pomiarowych.
 \end{itemize}
 
+\begin{figure}[ht]
+	\centering
+
+	\begin{tikzpicture}
+		% stacja 1
+		\begin{scope}[dashed]
+			\draw (0,0) rectangle ++(5,4);
+			\node[above] at (2.5,0) {stacja 1.};
+		\end{scope}
+
+		\begin{scope}[every node/.style={rectangle, draw}]
+			\node (UP1) at (1,1) {UP};
+			\node (UP2) at (2,1) {UP};
+			\node (UP3) at (3,1) {US};
+
+			\node[minimum width=4cm, minimum height=1.2cm] (OPC1) at
+			(2.5,3) {serwer OPC UA};
+		\end{scope}
+		\node at (4,1) {...};
+
+		\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+			\draw (UP1.north) -- (UP1.north |- OPC1.south);
+			\draw (UP2.north) -- (UP2.north |- OPC1.south);
+			\draw (UP3.north) -- (UP3.north |- OPC1.south);
+		\end{scope}
+
+		% stacja 2
+		\begin{scope}[dashed]
+			\draw (6,0) rectangle ++(5,4);
+			\node[above] at (8.5,0) {stacja 2.};
+		\end{scope}
+
+		\begin{scope}[every node/.style={rectangle, draw}]
+			\node (UP1b) at (7,1) {UP};
+			\node (UP2b) at (8,1) {US};
+			\node (UP3b) at (9,1) {US};
+
+			\node[minimum width=4cm, minimum height=1.2cm] (OPC2) at
+			(8.5,3) {serwer OPC UA};
+		\end{scope}
+		\node at (10,1) {...};
+
+		\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+			\draw (UP1b.north) -- (UP1b.north |- OPC2.south);
+			\draw (UP2b.north) -- (UP2b.north |- OPC2.south);
+			\draw (UP3b.north) -- (UP3b.north |- OPC2.south);
+		\end{scope}
+
+		\begin{scope}[every node/.style={draw, rectangle}]
+			% serwer nadrzędny
+			\node[minimum width=5cm, minimum height=1.2cm] (OPC3)
+				at (5.5,5.25) {serwer nadrzędny};
+
+			% klienci
+			\node[minimum width=3cm, minimum height=0.8cm] (OPC4)
+				at (2,7) {klient};
+			\node[minimum width=3cm, minimum height=0.8cm] (OPC5)
+				at (5.5,7) {klient};
+			\node[minimum width=3cm, minimum height=0.8cm] (OPC6)
+				at (9,7) {klient};
+		\end{scope}
+
+		\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+			\draw (OPC1.north) ++(1.25,0) -- ++(0,1);
+			\draw (OPC2.north) ++(-1.25,0) -- ++(0,1);
+
+			\draw (OPC4.south) |- ++(2,-.35) -- ++(0,-.35);
+			\draw (OPC5.south) |- ++(0,-.35) -- ++(0,-.35);
+			\draw (OPC6.south) |- ++(-2,-.35) -- ++(0,-.35);
+		\end{scope}
+	\end{tikzpicture}
+
+	\caption{Przykład hierarchicznej struktura sieci OPC UA}
+	\label{rys-siec-opc-ua-hierarch}
+\end{figure}
+
 Serwer może również pełnić rolę klienta w~stosunku do~innych serwerów
 OPC UA. W~ten sposób we~własnej przestrzeni adresowej może odwzorować
 fragmenty przestrzeni adresowych innych serwerów, umożliwiając klientom
 pośredni dostęp do~oferowanych przez~nie danych. Pozwala to na~budowanie
 sieci pomiarowych o~praktycznie dowolnej strukturze.
 
+Na~rys.~\ref{rys-siec-opc-ua-hierarch} przedstawiono przykład
+hierarchicznej struktury sieci OPC UA. W~każdej z~dwóch przedstawionych
+stacji pomiarowych znajduje~się serwer OPC UA, do~którego przyłączone są
+lokalne urządzenia pomiarowe (UP) i~sterowania (US). Nadrzędny serwer
+OPC UA utrzymuje połączenia w~roli klienta do~obu serwerów, i~udostępnia
+swoim klientom ich zasoby.
+
+
+\subsection{Bezpieczeństwo sieci OPC UA}
+
+\subsubsection{Założenia}
+
+Specyfikacja OPC UA dużą wagę przykłada do~szeroko rozumianych zagadnień
+bezpieczeństwa. Rozpatrywane są takie aspekty jak:
+
+\begin{enumerate}
+	\item uwierzytelnianie klienta i~serwera,
+
+	\item zapewnienie poufności przesyłanych informacji,
+
+	\item zapewnienie integralności przesyłanych informacji,
+
+	\item zdatność systemu do~audytu,
+
+	\item ciągłość dostępu do~usług.
+\end{enumerate}
+
+W~drugiej części specyfikacji OPC UA rozważane są potencjalne zagrożenia
+i~prezentowane są sposoby przeciwdziałania im. Rozwiązania zastosowane
+w~OPC UA wzorowane są na~powszechnie stosowanym protokole TLS, jednakże
+nie~wykorzystują go bezpośrednio.
+
+
+\subsubsection{Uwierzytelnienie klienta i~serwera}
+
+Uwierzytelnienie klienta i~serwera odbywa~się przy~pomocy certyfikatów
+X.509. Każda ze~stron połączenia wysyła kopię swojego certyfikatu
+oraz~poświadcza jego autentyczność, wykonując podpis cyfrowy
+na~pseudolosowych danych przesłanych przez~drugą stronę. Podpis
+wykonywany jest przy~pomocy klucza prywatnego, a~weryfikowany jest
+zawartym w~certyfikacie kluczem publicznym.
+
+Model uwierzytelniania opiera~się więc na~potwierdzeniu posiadania
+klucza prywatnego odpowiadającego przesyłanemu certyfikatowi. Wymóg
+złożenia podpisu na~unikalnych danych dostarczonych przez~drugą stronę
+umożliwia zapobiegnięcie atakom typu \textit{replay}, w~których
+wykorzystuje~się przechwycony wcześniej podpis.
+
+Na~podstawie poświadczonego certyfikatu określić można jednoznacznie
+tożsamość drugiej strony. Następnie wykorzystać można jeden z~dwóch
+mechanizmów autoryzacji:
+
+\begin{enumerate}
+	\item porównanie ,,odcisku palca'' certyfikatu z~lokalną bazą
+		dopuszczonych urządzeń,
+
+	\item bądź zweryfikowanie podpisu cyfrowego certyfikatu, złożonego
+		przez~znanego wystawcę.
+\end{enumerate}
+
+Pierwsza z~wymienionych metod jest prostsza w~realizacji, jednakże
+wymaga utrzymania w~pamięci urządzenia listy dopuszczonych klientów
+(serwerów). W~przypadku zmiany certyfikatu jednego z~urządzeń, konieczne
+jest zaktualizowanie ustawień pozostałych.
+
+Druga metoda jest bardziej elastyczna, wymaga bowiem wprowadzenia
+jedynie certyfikatu centrum autoryzacji. Certyfikaty wystawione przez~to
+centrum podpisane są za~pomocą powiązanego z~nim klucza prywatnego,
+a~weryfikacja owego podpisu pozwala jednoznacznie stwierdzić
+autentyczność certyfikatu.
+
+
+\subsubsection{Zabezpieczenie przesyłanych wiadomości}
+
+Wiadomości przesyłane za~pośrednictwem protokołu OPC UA zabezpieczone
+mogą~być przy~pomocy metod kryptografii symetrycznej. Niezbędne klucze
+generowane są przy~pomocy funkcji opisanej w~części szóstej
+specyfikacji (\textit{6.4.5 Deriving Keys}).
+
+Protokół obsługuje szyfrowanie wiadomości. Zastosowanie szyfrowania
+pozwala na~zapewnienie poufności przesyłanych informacji, w~tym danych
+uwierzytelniających użytkowników.
+
+Wiadomości mogą zawierać również sygnatury. Zastosowanie podpisu
+cyfrowego pozwala na~weryfikację integralności i~autentyczności
+przesyłanych informacji, a~co za~tym idzie zabezpiecza przed~możliwością
+ingerencji w~treść pakietów.
+
+Protokół zabezpiecza również przed atakami typu \textit{replay}, opartymi
+o~powtórne przesyłanie przechwyconych wcześniej wiadomości. Każda
+wiadomość opatrzona jest identyfikatorem sesji, znacznikami czasu
+i~unikalnym numerem sekwencyjnym, które sprawiają, że~przechwycone
+wcześniej wiadomości nie~zostaną powtórnie zaakceptowane przez~serwer.
+
+\subsubsection{Zapewnienie ciągłości dostępu do~usług}
+
+Podstawowym ryzykiem dla~ciągłości pracy serwera OPC jest jego
+przeciążenia poprzez~wysyłanie dużych ilości wiadomości przez~osoby
+nieupoważnione. W~celu zminimalizowania tego zagrożenia, protokół OPC UA
+znacznie ogranicza zakres wiadomości dostępnych nieuwierzytelnionemu
+klientowi.
+
+Wiadomości dostępne przed~uwierzytelnienem w~większości mogą
+przetworzone być przy~niewielkim wykorzystaniu zasobów. Wyjątek stanowi
+żądanie uwierzytelnienia, które wymaga kosztownych operacji
+kryptograficznych. Dlatego też specyfikacja zaleca wprowadzenia
+opóźnienia przetwarzania owych żądań po~nieudanej próbie oraz
+ograniczenia liczby obsługiwanych jednocześnie kanałów komunikacji.
+
+Przeciwdziałanie atakom na~system wspiera również mechanizm audytu,
+wspierający analizowanie zagrożeń dla~systemu. Zalecane jest również
+stosowanie zewnętrznych systemów bezpieczeństwa sieciowego — np.~poprzez
+stosowanie wirtualnych sieci prywatnych.
+
 
 \subsection{Przestrzeń adresowa OPC UA}
+
+\subsubsection{Zawartość przestrzeni adresowej}
 
 Przestrzeń adresowa stanowi logiczną organizację zasobów serwera
 OPC UA. Poszczególne zasoby modelowane są w~postaci węzłów. Węzły mogą
@@ -266,8 +458,6 @@ tworzenie uniwersalnego oprogramowania, które wykorzystując te dane jest
 w~stanie prezentować i~wykorzystywać nieznane zasoby, włączając w~to
 rozwiązania niestandardowe.
 
-% TODO: przykład
-
 Protokół OPC nie~wprowadza ograniczeń co do~rodzaju zasobów ani~sposobu
 pozyskiwania wartości ich atrybutów. Co za~tym idzie, w~przestrzeni
 adresowej modelowane mogą być:
@@ -282,13 +472,92 @@ adresowej modelowane mogą być:
 	innych protokołów sieciowych.
 \end{enumerate}
 
-Węzły w~przestrzeni adresowej adresowane są przy~pomocy identyfikatorów,
-które są unikalne w~obrębie jednego serwera OPC UA. W~sieci
-składającej~się z~wielu współpracujących serwerów możliwe jest
-zastosowanie jednolitego modelu adresowania węzłów --- wówczas
-identyfikatory są unikalne w~obrębie sieci, a~adresowanie danego zasobu
-odbywa~się przy~pomocy tego samego identyfikatora niezależnie od~tego,
-czy jest on zasobem zdalnym czy~lokalnym.
+\subsubsection{Identyfikatory węzłów}
+
+Węzły w~przestrzeni adresowej adresowane są przy~pomocy identyfikatorów.
+Identyfikator każdego węzła musi być unikalny w~obrębie serwera.
+W~przypadku sieci współpracujących serwerów, korzystne jest stosowanie
+identyfikatorów unikalnych w~obrębie całej sieci i~wspólnych
+dla~wszystkich współpracujących serwerów.
+
+Identyfikator węzła może mieć postać:
+
+\begin{itemize}
+	\item numeryczną z~zakresu od~$1$ do~$2^{32}-1$ włącznie,
+
+	\item tekstową,
+
+	\item identyfikator sieciowego URI (\textit{Uniform Resource
+		Identifier}),
+
+	\item bądź identyfikatora GUID (\textit{Globally Unique Identifier}).
+\end{itemize}
+
+Każdy węzeł może mieć identyfikator wyłącznie jednego typu,
+a~poszczególne typy są względem siebie rozłączne. Identyfikatory
+numeryczne i~tekstowe dodatkowo grupowane są w~przestrzenie nazw.
+
+Standardowe elementy zdefiniowane w~specyfikacji OPC UA opisane są
+identyfikatorami numerycznymi w~przestrzeni nazw
+\verb http://opcfoundation.org/ua/ .
+
+Identyfikatory węzłów stosowane są również do~identyfikacji sesji.
+
+
+\subsubsection{Struktura przestrzeni adresowej}
+
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\begin{scope}[every node/.style={
+				minimum width=3cm,
+				minimum height=1.5cm,
+				draw, rectangle,
+			}]
+
+			\node (o1) at (0,0) {Obszar 1};
+
+			\node (p1) at (-3,-3) {Przyłącze 1};
+			\node (p2) at (3,-3) {Przyłącze 2};
+
+			\node (l1) at (-3,-5) {Licznik};
+			\node (l2) at (3,-5) {Licznik};
+
+			\node (v1) at (-5.5,-8) {En. czynna};
+			\node (v2) at (-2,-8) {En. bierna};
+			\node (v3) at (2,-8) {En. czynna};
+			\node (v4) at (5.5,-8) {En. bierna};
+		\end{scope}
+
+		\begin{scope}[every node/.style={above, font=\scriptsize}]
+			\node at (o1.south) {obiekt};
+			\node at (p1.south) {obiekt};
+			\node at (p2.south) {obiekt};
+			\node at (l1.south) {obiekt};
+			\node at (l2.south) {obiekt};
+			\node at (v1.south) {zmienna};
+			\node at (v2.south) {zmienna};
+			\node at (v3.south) {zmienna};
+			\node at (v4.south) {zmienna};
+		\end{scope}
+
+		\begin{scope}[-stealth, shorten >=1mm, shorten <=1mm]
+			\draw (o1) to (p1);
+			\draw (o1) to (p2);
+
+			\draw (p1) to (l1);
+			\draw (p2) to (l2);
+
+			\draw (l1) to (v1);
+			\draw (l1) to (v2);
+			\draw (l2) to (v3);
+			\draw (l2) to (v4);
+		\end{scope}
+	\end{tikzpicture}
+
+	\caption{Przykład struktury reprezentującej dane pomiarowe
+		z~liczników inteligentnych}
+\end{figure}
 
 Węzły połączone są w~strukturę grafu za~pomocą referencji. Referencje
 wykorzystywane są do~powiązania węzłów reprezentujących:
@@ -452,5 +721,5 @@ istniejącej sesji żadanie \textit{Create Session} pomija~się, zaś
 do~żądania \textit{Activate Session} przekazuje~się dane otrzymane
 po~aktywacji sesji w~poprzednim połączeniu.
 
-Sesja pozostaje ważna do~upływu czasu ważności sesji lub~jej jawnego
+Sesja pozostaje ważna do~upływu czasu ważności sesji lub~jej
 zakończenia przez~klienta.

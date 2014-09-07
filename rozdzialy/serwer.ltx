@@ -1,0 +1,61 @@
+\section{Realizacja serwera OPC dla~systemu Linux}
+
+\subsection{Założenia wstępne}
+
+\begin{figure}[ht]
+	\centering
+
+	\begin{tikzpicture}
+		\begin{scope}[every node/.style={
+				minimum width=4cm,
+				minimum height=1.5cm,
+				draw, rectangle
+			}]
+
+			\node (s) at (0,0) {serwer OPC UA};
+			\node (k) at (-2.5,-4) {klient OPC UA};
+			\node[dashed] (k2) at (2.5,-4) {klient OPC UA};
+			\node[dashed] (k3) at (7.5,-4) {klient OPC UA};
+			\node (m) at (8,0) {MT-101};
+		\end{scope}
+
+		\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+			\draw (s.east) -- (m.west)
+				node[above, midway] {łacze RS232};
+
+			\draw (s) to (k);
+			\draw[dashed] (s) to (k2);
+			\draw[dashed] (s) to (k3);
+		\end{scope}
+
+		\node[right] at (5,-2) {sieć LAN bądź WAN};
+	\end{tikzpicture}
+
+	\caption{Struktura logiczna komponentów wykonanego projektu}
+\end{figure}
+
+
+W~ramach projektu wykonane zostały następujące komponenty:
+
+\begin{enumerate}
+	\item serwer OPC UA, pracujący pod~kontrolą systemu GNU/Linux,
+
+	\item moduł serwera, umożliwiający komunikację z~modułem
+		telemetrycznym MT-101 przy~pomocy łącza RS232,
+
+	\item klient OPC UA, przeznaczony do~testowania serwera.
+\end{enumerate}
+
+Serwer połączony jest z~modułem telemetrycznym za~pomocą łącza
+szeregowego RS232. Do~wymiany danych wykorzystywany jest protokół
+Modbus. Zasoby sprzętowe modułu udostępniane są w~przestrzeni adresowej
+serwera.
+
+Z~serwerem łączyć~się może dowolna liczba klientów. Połączenie
+odbywa~się przy~pomocy protokołu OPC UA TCP. Klient może uruchomiony być
+na~tym samym urządzeniu bądź~wykorzystywać sprzętowe łącze typu
+lokalnego LAN (\textit{Local Area Network}) bądź globalnego WAN
+(\textit{Wide Area Network}).
+
+
+\subsection{Wybór platformy}
