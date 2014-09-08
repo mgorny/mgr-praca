@@ -59,3 +59,115 @@ lokalnego LAN (\textit{Local Area Network}) bądź globalnego WAN
 
 
 \subsection{Wybór platformy}
+
+Wybór optymalnej platformy dla~projektu wymaga w~pierwszej kolejności
+określenia typowych zadań, jakie realizować będzie wykonany program.
+Następnie dla~zadań tych należy określić możliwą realizację w~oparciu
+o~zasoby danej platformy.
+
+Dla~implementacji serwera OPC UA podstawowe zadania to:
+
+\begin{enumerate}
+	\item serializacja wiadomości (żądań i~odpowiedzi) oraz
+	standardowych typów danych, do~przynajmniej jednego z~dwóch
+	opisanych w~specyfikacji formatów. Dodatkową korzyścią jest
+	abstrakcja warstwy serializacji --- włączając w~to możliwość
+	uzupełnienia programu o~dodatkowe metody serializacji za~pomocą
+	zewnętrznego modułu, bez~konieczności modyfikowania głównej
+	biblioteki.
+
+	\item Obsługa komunikacji sieciowej w~oparciu przynajmniej o~jeden
+	z~dwóch opisanych w~specyfikacji protokołów. Podobnie jak
+	poprzednio, dodatkową korzyścią jest zastosowanie abstrakcji,
+	umożliwiającej swobodne rozszerzanie serwera o~moduły obsługujące
+	dodatkowe protokoły sieciowe.
+
+	\item Przechowywanie i~obsługa przestrzeni adresowej. Program
+	powinien zdolny być do~pracy z~bardzo dużą liczbą węzłów
+	bez~nadmiernego wykorzystania pamięci bądź utraty wydajności.
+
+	\item Pobieranie danych pomiarowych w~sposób nie~obciążający
+	nadmiernie sieci, a~jednocześnie udostępniający
+	niezbędną funkcjonalność. W~zależności od~stosowanej aparatury
+	pomiarowej, pożądane może~być regularne pobieranie danych
+	pomiarowych i~przechowywanie wartości historycznych w~pamięci
+	serwera.
+\end{enumerate}
+
+Dostępne platformy dodatkowo ograniczone są koniecznością pracy serwera
+pod~kontrolą systemu GNU/Linux. Dodatkowymi korzyściami dla~wybranej
+platformy są:
+
+\begin{enumerate}
+	\item stabilność interfejsu programistycznego (API ---
+	\textit{Application Programming Interface}). Zastosowanie platformy
+	o~stabilnym API zmniejsza liczbę koniecznych przyszłych zmian
+	w~programie w~celu przystosowania go do~nowej wersji platformy.
+
+	\item Powszechność elementów platformy. Zastosowanie popularnych
+	bibliotek czy~języka programowania zmniejsza ryzyko,
+	że~na~urządzeniu docelowym konieczna będzie instalacja dodatkowego
+	oprogramowania.
+
+	\item Minimalna wielkość niezbędnego oprogramowania i~wykorzystanie
+	zasobów --- umożliwiająca jego zastosowanie na~urządzeniach typu
+	\textit{embedded}, a~co za~tym idzie ograniczenie kosztów.
+
+	\item Dostępność wszystkich elementów platformy na~wolnych
+	licencjach. Zastosowanie wolnego oprogramowania pozwala na~swobodne
+	rozpowszechnianie serwera i~umożliwia jego dostosowanie do~własnych
+	potrzeb przy~minimalnych kosztach.
+
+	\item Dodatkową zaletą jest przenośność na~systemy inne
+	niż~GNU/Linux.
+\end{enumerate}
+
+Po~uwzględnieniu wszystkich powyższych kryteriów wybór padł na~język
+C++. Do~jego zalet należą:
+
+\begin{enumerate}
+	\item powszechna dostępność kompilatora C++ z~pakietu GCC
+	(\textit{GNU Compiler Collection}). Kompilator ten jest elementem
+	standardowej instalacji, bądź standardowego pakietu aplikacji
+	dla~programistów, wielu dystrybucji systemu GNU/Linux,
+	systemów BSD, systemu MacOS X oraz~platform Cygwin i~MinGW,
+	umożliwiających portowanie aplikacji do~systemu Windows. Co więcej,
+	kompilator języka C++ wymieniony jako element standardowych narzędzi
+	programistycznych w~specyfikacji POSIX.
+
+	\item Zdolność wytworzenia silnie zoptymalizowanego kodu maszynowego
+	przy~minimalnej liczbie zależności. Pozwala to na~uzyskanie
+	niewielkiej wielkości programu, dużej wydajności oraz~minimalnego
+	wykorzystania pamięci.
+
+	\item Duża liczba dostępnych bibliotek oraz~wsteczna zgodność
+	z~językiem C, umożliwiająca stosowanie bibliotek pisanych dla~tego
+	jężyka.
+
+	\item Duża stabilność języka programowania, oraz~jego standaryzacja.
+	Język C++ opisany jest w~normie % TODO: nr normy
+
+	\item Typowanie oraz~rozbudowane mechanizmy kontroli poprawności
+	kodu podczas kompilacji. Pozwala to na~wczesne odnajdywanie błędów
+	oraz ułatwia ich naprawę, a~co za~tym idzie minimalizuje ryzyko
+	wystąpienia problemów w~trakcie eksploatacji.
+
+	\item Mechanizmy obiektowości oraz~częściowe wsparcie
+	introspekcji. Zastosowanie klas abstrakcyjnych pozwala na~zbudowanie
+	modularnego serwera, który może~być łatwo rozszerzany za~pomocą
+	zewnętrznych modułów. 
+\end{enumerate}
+
+Za~minimalną wersję języka C++ przyjęto wersję C++11 % rok, norma
+Wersja ta wprowadza wiele usprawnień do~języka, i~jest w~stopniu
+dostatecznym obsługiwana przez~aktualne wersje kompilatorów C++.
+Przykładowo, standard C++11 jest wspierany przez kompilator GCC
+od~wersji 4.7, oraz~kompilator clang od~wersji 3.3. % daty
+
+Standard C++ nie~przewiduje znormalizowanych funkcji sieciowych.
+Dla~systemu GNU/Linux oraz~systemów BSD funkcje sieciowe
+zaimplementowane są w~oparciu o~tzw.~stos sieciowy BSD, opisany również
+w~normie POSIX % wersja, data, sprawdzić
+Ze~względu na~ograniczoną przenośność tych funkcji na~systemy Windows
+oraz~brak wygodnych funkcji nieblokujących, funkcje sieciowe
+zrealizowane w~oparciu o~bibliotekę libevent.
