@@ -723,3 +723,45 @@ po~aktywacji sesji w~poprzednim połączeniu.
 
 Sesja pozostaje ważna do~upływu czasu ważności sesji lub~jej
 zakończenia przez~klienta.
+
+
+\subsection{Krytyka OPC UA}
+
+% http://blog.matrikonopc.com/index.php/open-standards-and-paying-to-play/
+
+Standard OPC UA spotkał~się z~szeregiem krytycznych opinii. Najczęściej
+krytykowanym aspektem jest płatny dostęp do~specyfikacji. Dla~wielu
+programistów zainteresowanych implementacją OPC UA stanowi to znaczną
+przeszkodę.
+
+Jako kontrargument przytaczane są problemy ze~wczesną adaptacją
+wcześniejszego standardu OPC. Ze~względu na~pełną otwartość, na~rynku
+pojawiły~się implementacje wykonane przez~podmioty niebędące członkami
+OPC Foundation, które często zawierały wiele błędów i~sprawiały problemy
+ze~współpracą pomiędzy poszczególnymi produktami. Zastosowany model
+licencyjny ma na~celu ograniczyć dostęp do~specyfikacji, udostępniając
+ją jedynie tym podmiotom, które zainteresowane są członkostwem OPC
+Foundation i~zainwestować w~rozwój standardu.
+
+Można jednak zauważyć, że~podobny problem chociażby w~przypadku
+protokołu Bluetooth rozwiązano bez~konieczności ograniczania dostępu
+do~informacji. W~tym przypadku, specyfikacja jest otwarta i~dostępna
+nieodpłatnie, jednakże ograniczone jest prawo tworzenia komercyjnych
+produktów oraz~stosowania znaku marki.
+
+% http://www.xpca.org/rest-pca/
+
+Z~krytyką spotkało~się również zastosowanie technologii SOAP.
+Do~podstawowych wad tej technologii zaliczane są nadmierne
+skomplikowanie standardów oraz~znaczna wielkość pakietów sieciowych,
+która negatywnie wpływa na~wydajność. W~przeszłości występowały również
+liczne problemy ze~zgodnością pomiędzy poszczególnymi implementacji
+SOAP.
+
+Uwzględniona w~specyfikacji alternatywa w~postaci binarnego protokołu
+OPC UA rozwiązuje te problemy, jednakże odbywa~się to kosztem
+zastosowania niestandardowego protokołu i~utraty czytelności
+przesyłanych informacji. Czyni to chociażby diagnozowanie błędów
+w~implementacji trudniejszym.
+
+

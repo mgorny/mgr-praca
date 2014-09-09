@@ -1,2 +1,99 @@
 \section{Opis modułu MT-101}
 
+\subsection{Charakterystyka modułu}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.5]{zdj/mt101.jpeg}
+
+	\caption{Fotografia modułu (źródło: strona internetowa producenta)}
+	\label{mt101-zdj}
+\end{figure}
+
+% http://www.telemetria.pl/filez/mt101.htm
+
+Moduł telemetryczny MT-101 jest dedykowanym urządzeniem przeznaczonym
+do~monitoringu i~sterowania przy~pomocy zintegrowanych wejść i~wyjść,
+wyposażonym w~zintegrowany modem GSM.
+
+Zasoby sprzętowe modułu MT-101 stanowi:
+
+\begin{itemize}
+	\item 8 optoizolowanych wejść \SI{24}{\volt} DC (I1 - I8), logika dodatnia
+		i~ujemna;
+
+	\item 8 konfigurowalnych wyjść \SI{24}{\volt} DC (Q1 - Q8), logika dodatnia;
+
+	\item 2 optoizolowane wejścia analogowe
+		\SIrange{4}{20}{\milli\ampere} (8 bit dokł./10 bit rozdz.);
+
+	\item port szeregowy RS232, przeznaczone do~konfiguracji urządzenia;
+
+	\item optoizolowany port szeregowy RS232/422/485,
+
+	\item zegar czasu astronomicznego,
+
+	\item modem GSM.
+\end{itemize}
+
+Wejścia binarne I1 - I8 mogą również pracować jako wejścia licznikowe
+oraz~współpracować z~przetwornikami U/f oraz~I/f. Wyjścia binarne Q1 -
+Q8 mogą zostać skonfigurowane również jako wejścia binarne, licznikowe
+bądź do~współpracy z~przetwornikami U/f i~I/f.
+
+Urządzenie posiada dwa porty szeregowe. Port pierwszy wyprowadzony jest
+na~płycie czołowej za~pomocą złącza DB9. Posiada stałe parametry
+transmisji i~wykorzystywany jest przede~wszystkim do~konfiguracji
+(programowania) urządzenia. Port drugi wyprowadzony jest na~listwie
+zaciskowej i~może być skonfigurowany jako port RS232/422/485.
+
+Modem GSM może~być wykorzystywany do~zdalnej komunikacji z~urządzeniem.
+Obsługiwana jest transmisja danych przy~wykorzystaniu GPRS,
+wysyłanie i~odbiór krótkich wiadomości tekstowych SMS
+oraz~komunikowanie zdarzeń poprzez próbę wykonania połączenia
+na~wskazany numer telefonu.
+
+
+\subsection{Sposób komunikacji z~modułem}
+
+Komunikacja z~modułem MT-101 może odbywać~się dwojako: lokalnie
+przy~pomocy portu szeregowego RS232/422/485 oraz~zdalnie
+za~pośrednictwem sieci GSM. Urządzenia udostępnia kilka trybów pracy,
+umożliwiających efektywne wykorzystanie zasobów komunikacyjnych.
+
+Wśród trybów pracy portu szeregowego wyróżnić można:
+
+\begin{enumerate}
+	\item tryb Przezroczysty --- w~którym MT-101 odbiera dane z~portu
+		szeregowego, tworzy z~nich pakiety sieciowe i~przesyła
+		zdefiniowanym odbiorcom.
+
+	\item Tryb Modbus RTU Master --- w~którym do~portu szeregowego
+		przyłączone jest urządzenie pełniące rolę Mastera protokołu
+		Modbus RTU. Wówczas protokół Modbus RTU może zostać
+		wykorzystywany do~odpytywania zasobów wewnętrznych modułu
+		bądź~zdalnych urządzeń typu Slave Modbus RTU przy~wykorzystaniu
+		łącza GPRS.
+
+	\item Tryb Modbus RTU Slave --- w~którym do~portu szeregowego
+		przyłączone jest urządzenie pełniące rolę Slave'a protokołu
+		Modbus RTU. Wówczas moduł obsługuje zapytania poprzez GPRS,
+		udostępniając za~pomocą protokołu Modbus własne zasoby
+		wewnętrzne bądź zasoby przyłączonego do~portu szeregowego
+		urządzenia.
+
+	\item Tryb Modem --- wówczas moduł pełni jedynie funkcję modemu GSM,
+		a~przyłączone do~portu szeregowego urządzenie może korzystać
+		z~połączenia GPRS modułu.
+
+	\item Tryb Modbus RTU Mirror --- będący rozszerzeniem trybu Slave
+		o~automatyczne pobieranie i~mapowanie w~wewnętrznej pamięci
+		modułu danych z~przyłączonych do~portu szeregowego urządzeń
+		zewnętrznych. Pozwala to na~optymalizację odczytu i~przesyłu
+		danych, a~także generowanie alarmów w~oparciu o~zasoby
+		zewnętrzne.
+
+	\item Tryb Przezroczysty PLUS --- będący rozszerzeniem trybu
+		Przezroczystego o~możliwość odbierania poprzez GPRS ramek Modbus
+		RTU odpytujących zasoby wewnętrzne moduły.
+\end{enumerate}

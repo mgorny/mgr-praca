@@ -137,4 +137,195 @@ od~punktu pobrania informacji oraz~drogi jej przesyłu.
 
 \subsection{Topologia rozproszonych systemów pomiarowych}
 
+\begin{figure}[ht]
+	\centering
 
+	\subfloat[topologia gwiazdy]{
+		\begin{tikzpicture}[scale=0.75]
+			\begin{scope}[every node/.style={draw, circle, minimum size=5mm}]
+				\node[fill=gray] (a) at (0,0) {};
+				\node (b) at (3,2) {};
+				\node (c) at (-2,2.5) {};
+				\node (d) at (-3,-2.5) {};
+				\node (e) at (3,-1.5) {};
+			\end{scope}
+
+			\draw (a) -- (b);
+			\draw (a) -- (c);
+			\draw (a) -- (d);
+			\draw (a) -- (e);
+		\end{tikzpicture}
+
+		\label{top-gwiazdy}
+	} %
+~~ %
+	\subfloat[topologia drzewa]{
+		\begin{tikzpicture}[scale=0.75]
+			\begin{scope}[every node/.style={draw, circle, minimum size=5mm}]
+				\node[fill=gray] (a) at (0,0) {};
+
+				\node[fill=lightgray] (b) at (1,1.5) {};
+				\node[fill=lightgray] (c) at (-1.5,2) {};
+				\node[fill=lightgray] (d) at (-0.5,-1.5) {};
+				\node[fill=lightgray] (e) at (2,-1.5) {};
+
+				\node (b1) at (2.5,2) {};
+				\node (b2) at (1,3) {};
+				\node (b3) at (3,0.5) {};
+
+				\node (c1) at (-3,3) {};
+				\node (c2) at (-2.7,1.5) {};
+				\node (c3) at (-2,.3) {};
+
+				\node (d1) at (-1.5,-3) {};
+				\node (d2) at (0.5,-3) {};
+			\end{scope}
+
+			\draw (a) -- (b);
+			\draw (a) -- (c);
+			\draw (a) -- (d);
+			\draw (a) -- (e);
+
+			\draw (b) -- (b1);
+			\draw (b) -- (b2);
+			\draw (b) -- (b3);
+
+			\draw (c) -- (c1);
+			\draw (c) -- (c2);
+			\draw (c) -- (c3);
+
+			\draw (d) -- (d1);
+			\draw (d) -- (d2);
+		\end{tikzpicture}
+		\label{top-drzewa}
+	} %
+~~ %
+	\subfloat[topologia kraty]{
+		\begin{tikzpicture}[scale=-0.75]
+			\begin{scope}[every node/.style={draw, circle, minimum size=5mm}]
+				\node (a) at (0,0) {};
+				\node (b) at (3,2) {};
+				\node (c) at (-2,2.5) {};
+				\node (d) at (-3,-2.5) {};
+				\node (e) at (3,-1.5) {};
+			\end{scope}
+
+			\draw (a) -- (b);
+			\draw (a) -- (c);
+			\draw (a) -- (d);
+			\draw (a) -- (e);
+			\draw (b) -- (c);
+			\draw (b) -- (e);
+			\draw (c) -- (d);
+			\draw (d) -- (e);
+		\end{tikzpicture}
+		\label{top-kraty}
+	}
+
+	\subfloat[topologia mieszana]{
+		\begin{tikzpicture}[scale=0.75]
+			\begin{scope}[every node/.style={draw, circle, minimum size=5mm}]
+				\node[fill=gray] (b) at (1,1.5) {};
+				\node[fill=gray] (c) at (-1.5,2) {};
+				\node[fill=gray] (d) at (-0.5,-1.5) {};
+				\node[fill=gray] (e) at (2,-1.5) {};
+
+				\node (b1) at (2.5,2) {};
+				\node (b2) at (1,3) {};
+				\node (b3) at (3,0.5) {};
+
+				\node (c1) at (-3,3) {};
+				\node (c2) at (-2.7,1.5) {};
+				\node (c3) at (-2,.3) {};
+
+				\node (d1) at (-1.5,-3) {};
+				\node (d2) at (0.5,-3) {};
+			\end{scope}
+
+			\draw (b) -- (c);
+			\draw (d) -- (c);
+			\draw (d) -- (e);
+			\draw (b) -- (e);
+			\draw (b) -- (d);
+
+			\draw (b) -- (b1);
+			\draw (b) -- (b2);
+			\draw (b) -- (b3);
+
+			\draw (c) -- (c1);
+			\draw (c) -- (c2);
+			\draw (c) -- (c3);
+
+			\draw (d) -- (d1);
+			\draw (d) -- (d2);
+		\end{tikzpicture}
+		\label{top-mieszana}
+	} %
+	\caption{Typowe topologie rozproszonych systemów pomiarowych}
+\end{figure}
+
+Wyróżnia~się trzy typowe topologie stosowane w~rozproszonych systemach
+pomiarowych: topologię gwiazdy, topologię drzewa i~topologię kraty.
+
+Topologia gwiazdy (rys.~\ref{top-gwiazdy}) stanowi podstawową topologię
+hierarchiczną.  Wyróżnia~się wówczas jeden węzeł nadrzędny (centralny),
+który komunikuje~się z~pozostałymi węzłami sieci. Topologia gwiazdy
+charakteryzuje~się niskim kosztem i~prostą realizacją. Jej wadą jest
+brak możliwości bezpośredniej komunikacji pomiędzy węzłami --- przesył
+informacji pomiędzy dwoma węzłami zawsze odbywa~się za~pośrednictwem
+węzła nadrzędnego. Ogranicza to przepustowość sieci i~czyni ją wrażliwą
+na~awarię węzła centralnego.
+
+Rozszerzeniem topologii gwiazdy jest topologia drzewa
+(rys.~\ref{top-drzewa}), nazywana również topologią rozproszonej
+gwiazdy. W~topologii tej wyróznia~się hierarchię wielowarstwową,
+przy~czym bezpośrednia komunikacja odbywa~się wyłącznie pomiędzy węzłem
+podrzędnym i~nadrzędnym. Topologia drzewa sprawdza~się w~przypadku sieci
+bardziej rozległych, w~których komunikacja pomiędzy jednym węzłem
+centralnym, a~wszystkimi pozostałymi węzłami sieci byłaby nieefektywna.
+
+W~sieci o~topologii drzewa komunikacja pomiędzy węzłami podrzędnymi
+odbywa~się za~pośrednictwem ścieżki obejmującej odpowiednie węzły
+nadrzędne. Co za~tym idzie, komunikacja pomiędzy węzłami lokalnymi może
+odbywać~się za~pośrednictwem jednego węzła nadrzędnego, z~kolei pomiędzy
+węzłami odległymi może odbywać~się za~pośrednictwem kilku węzłów
+nadrzędnych, włączając w~to również węzeł centralny.
+
+Pozwala to zredukować wpływ ograniczeń topologii gwiazdy przy~rozległych
+sieciach, jednocześnie zachowując jej zalety. Topologia taka
+sprawdza~się w~sieciach, gdzie najczęściej komunikacja odbywa~się
+na~drodze pionowej (przesył informacji w~kierunku węzłów nadrzędnych)
+i~w~obrębie węzłów lokalnych. W~sieci tego typu przesył danych pomiędzy
+dwoma odległymi węzłami podrzędnymi jest nieefektywny. Sieć jest
+wrażliwa na~awarie węzłów nadrzędnych, które powodują wyłączenie całego
+segmentu z~pracy systemu.
+
+Alternatywą dla~przedstawionych topologii hierarchicznych jest topologia
+kraty (rys.~\ref{top-kraty}). W~tej topologii nie~wyróżnia~się węzłów
+nadrzędnych, a~poszczególne węzły sieci łączy~się bezpośrednio z~kilkoma
+(przynajmniej dwoma) innymi. W~zależności od~układu połączeń, wymiana
+informacji pomiędzy dwoma węzłami może odbywać~się bezpośrednio
+lub~za~pośrednictwem innych węzłów, przy~czym w~każdym przypadku możliwe
+jest zastosowanie więcej niż~jednej ścieżki.
+
+Podstawową zaletą struktury kratowej jest duża elastyczność.
+Zwielokrotnienie ścieżek komunikacji pozwala na~uzyskanie dużej
+przepustowości oraz~niezawodności --- w~przypadku awarii dowolnego
+węzła, w~sieci wyznaczona może zostać nowa ścieżka przesyłu informacji.
+Wadą struktury kratowej jest złożoność mechanizmów kontroli ruchu.
+
+Oprócz wymienionych topologii często stosuje~się również topologię
+mieszaną, co~pozwala na~dostosowanie poszczególnych topologii do~potrzeb
+danej sieci. Na~przykład, połączenie topologii kraty z~topologią drzewa
+(rys.~\ref{top-mieszana}) pozwala na~skrócenie drogi komunikacji
+pomiędzy odległymi węzłami oraz~zwiększenie niezawodności pracy systemu.
+W~przypadku przedstawionym na~rysunku, uszkodzenie dowolnego z~węzłów
+nadrzędnych nie~wpływa na~możliwość komunikacji pomiędzy pozostałymi
+węzłami nadrzędnymi (jak w~topologii kraty), jednakże odcina łączność
+z~węzłami podrzędnymi (jak w~topologii drzewa).
+
+% Bezprzewodowe sieci kontrolno-pomiarowe
+%w aplikacjach przemysłowych
+%dr inż. Cezary Worek
+%mgr inż. Łukasz Krzak
+%Katedra Elektroniki, WEAIiE AGH

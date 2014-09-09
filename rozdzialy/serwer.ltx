@@ -144,8 +144,9 @@ C++. Do~jego zalet należą:
 	z~językiem C, umożliwiająca stosowanie bibliotek pisanych dla~tego
 	jężyka.
 
-	\item Duża stabilność języka programowania, oraz~jego standaryzacja.
-	Język C++ opisany jest w~normie % TODO: nr normy
+	\item Duża stabilność języka programowania, oraz~jego standaryzacja.  Język
+	C++ opisany jest w~normie ISO/IEC 14882 (\textit{International Standard
+	ISO/IEC 14882. Programming Languages – C++}),.
 
 	\item Typowanie oraz~rozbudowane mechanizmy kontroli poprawności
 	kodu podczas kompilacji. Pozwala to na~wczesne odnajdywanie błędów
@@ -158,16 +159,19 @@ C++. Do~jego zalet należą:
 	zewnętrznych modułów. 
 \end{enumerate}
 
-Za~minimalną wersję języka C++ przyjęto wersję C++11 % rok, norma
-Wersja ta wprowadza wiele usprawnień do~języka, i~jest w~stopniu
-dostatecznym obsługiwana przez~aktualne wersje kompilatorów C++.
-Przykładowo, standard C++11 jest wspierany przez kompilator GCC
-od~wersji 4.7, oraz~kompilator clang od~wersji 3.3. % daty
+Za~minimalną wersję języka C++ przyjęto wersję C++11 (ISO/IEC
+14882:2011, publikacja: wrzesień 2011).  Wersja ta wprowadza wiele
+usprawnień do~języka, i~jest w~stopniu dostatecznym obsługiwana
+przez~aktualne wersje kompilatorów C++.  Przykładowo, standard C++11
+jest w~przeważającej części wspierany przez kompilator GCC od~wersji 4.8
+(marzec 2013) oraz~kompilator clang od~wersji 3.1 (maj 2012).
 
-Standard C++ nie~przewiduje znormalizowanych funkcji sieciowych.
-Dla~systemu GNU/Linux oraz~systemów BSD funkcje sieciowe
-zaimplementowane są w~oparciu o~tzw.~stos sieciowy BSD, opisany również
-w~normie POSIX % wersja, data, sprawdzić
-Ze~względu na~ograniczoną przenośność tych funkcji na~systemy Windows
-oraz~brak wygodnych funkcji nieblokujących, funkcje sieciowe
-zrealizowane w~oparciu o~bibliotekę libevent.
+Standard C++ nie~przewiduje znormalizowanych funkcji obsługi połączeń
+sieciowych.  Dla~systemu GNU/Linux oraz~systemów BSD funkcje sieciowe
+zaimplementowane są w~oparciu o~interfejs \textit{Berkeley sockets},
+uwzględniony z~niewielkimi modyfikacjami w~normie POSIX
+(\textit{Portable Operating System Interface}, IEEE Std 1003.1-2001).
+Ze~względu na~ograniczoną przenośność tych funkcji na~systemy z~rodziny
+Windows oraz~niepełną standaryzację wydajnych nieblokujących funkcji
+sieciowych, operacje sieciowe zrealizowano w~oparciu o~bibliotekę
+libevent.
