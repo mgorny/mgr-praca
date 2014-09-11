@@ -10,7 +10,7 @@ dopatrywać~się można w~roku 1990. Wprowadzony został wówczas na~rynek
 system operacyjny Windows~3.0, posiadający podwaliny wielozadaniowości
 --- możliwości pracy z~wieloma programami uruchomionymi jednocześnie,
 oraz mechanizm DDE (\textit{Dynamic Data Exchange}), standaryzujący
-wymianę danych pomiędzy uruchomionymi aplikacjami.
+wymianę danych pomiędzy uruchomionymi aplikacjami.\cite{opc-history}
 
 Już wówczas dostrzegano korzyści przekazywania danych procesowych
 do~aplikacji ogólnego zastosowania, jak np.~arkusz kalkulacyjny.
@@ -55,7 +55,7 @@ funkcjonalność OPC. Najnowsze wersje poszczególnych specyfikacji
 wymienione zostały w~tabeli~\ref{t-opc-classic}.
 
 \begin{table}[ht]
-	\caption{Lista specyfikacji OLE for Process Control}
+	\caption{Lista specyfikacji OLE for Process Control\cite{opc-classic-list}}
 	\label{t-opc-classic}
 
 	\begin{tabular}{l l l p{8cm}}
@@ -88,7 +88,7 @@ komunikacji pomiędzy urządzeniami automatyki i~systemami komputerowymi.
 Jednakże jego podstawę stanowił zamknięty, własnościowy standard DCOM
 (\textit{Distributed Common Object Model}) firmy Microsoft, co
 praktycznie ograniczało możliwość zastosowania OPC do~platform opartych
-o~system Windows.
+o~system Windows.\cite{opc-motivation}
 
 Dlatego też OPC Foundation podjęło prace nad~nowym standardem OPC UA
 (\textit{Open Platform Communications Unified Architecture}), które
@@ -127,7 +127,7 @@ Ograniczony, odpłatny dostęp do~specyfikacji poddają w~wątpliwość
 podkreślaną przez~autorów otwartość specyfikacji. Chociażby zgodnie
 z~definicją zastosowaną przez~Komisję Europejską w~opisie
 \textit{European Interoperability Framework for pan-European
-eGovernment Services version 1.0}, otwarty standard musi być
+eGovernment Services version 1.0}\cite{eurogov}, otwarty standard musi być
 udostępniony wszystkim zainteresowanym nieodpłatnie bądź~po~kosztach
 druku, wraz z~prawem do~nieograniczego kopiowania, rozpowszechniania
 i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
@@ -140,7 +140,7 @@ i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
 \subsection{Struktura specyfikacji OPC UA}
 
 \begin{table}[ht]
-	\caption{Lista specyfikacji OPC UA}
+	\caption{Lista specyfikacji OPC UA\cite{opc-ua-pt1}}
 	\label{t-opc-ua}
 
 	\begin{tabular}{l l l p{8cm}}
@@ -654,6 +654,133 @@ przesyłanych wiadomości niezależnie od~przerw w~logicznych kanałach
 komunikacji.
 
 
+\subsubsection{Budowa wiadomości OPC UA TCP}
+
+\begin{figure}[h]
+	\centering
+
+	\begin{tikzpicture}
+		\begin{scope}[every node/.style={
+					rectangle, draw,
+					minimum width=6cm,
+					minimum height=1cm
+				}]
+
+			\node (t) at (0,0) {nagłówek w. transportowej};
+			\node at (0,-1) {nagłówek bezpieczeństwa};
+			\node (seq) at (0,-2) {nagłówek sekwencyjny};
+			\node[minimum height=2cm] at (0,-3.5) {treść wiadomości};
+			\node (p) at (0,-5) {wypełnienie};
+			\node (si) at (0,-6) {sygnatura};
+
+		\end{scope}
+
+		\draw[decorate, decoration={brace, amplitude=3mm}]
+			(p.south west) -- (t.north west)
+			node[above, sloped, midway, yshift=2mm] {dane objęte sygnaturą};
+		\draw[decorate, decoration={brace, amplitude=3mm}]
+			(seq.north east) -- (si.south east)
+			node[above, sloped, midway, yshift=2mm] {dane szyfrowane};
+	\end{tikzpicture}
+
+	\caption{Budowa wiadomości OPC UA TCP}
+	\label{tcp-budowa}
+\end{figure}
+
+Poszczególne wiadomości protokołu OPC UA TCP posiadają budowę
+przedstawioną na~rys.~\ref{tcp-budowa} bądź stanowiącą jej podzbiór.
+
+Pierwszy segment pakietu stanowi nagłówek warstwy transportowej, wspólny
+dla~wszystkich typów wiadomości. Nagłówek ten zawiera identyfikator typu
+wiadomości, flagę rodzaju segmentu oraz~wielkość pakietu. W~przypadku
+pakietów typu \verb+OPN+, \verb+MSG+ i~\verb+CLO+ zawiera również numer
+bezpiecznego kanału.
+
+Wyróznia~się następujące typy wiadomości:
+
+\begin{itemize}
+	\item \verb+HEL+ --- wiadomośc wysyłana przez~klienta w~celu
+		zainicjowania połączenia TCP,
+
+	\item \verb+ACK+ --- odpowiedź serwera na~wiadomość \verb+HEL+,
+
+	\item \verb+ERR+ --- błąd protokołu,
+
+	\item \verb+OPN+ --- żądania otwarcia bezpiecznego kanału,
+
+	\item \verb+MSG+ --- wiadomość przesyłana w~obrębie bezpiecznego
+		kanału,
+
+	\item \verb+CLO+ --- żądania zamknięcia bezpiecznego kanału.
+\end{itemize}
+
+Flaga rodzaju segmentu określa rodzaj segmentu wiadomości przesyłanego
+w~pakiecie:
+
+\begin{itemize}
+	\item pakiet finalny --- ostatni (lub jedyny) segment wiadomości.
+		Po~odebraniu tego pakietu poprzednio zbuforowane segmenty
+		wiadomości łączone są z~otrzymanym i~wiadomość jest
+		przetwarzana.
+
+	\item Pakiet fragmentu --- segment wiadomości niebędący ostatnim.
+		Treść wiadomości zostaje dodana do~bufora, jednakże wiadomośc
+		nie~zostaje przetworzona do~otrzymania ostatniego segmentu.
+
+	\item Pakiet anulowania --- żądanie anulowania poprzednio odebranych
+		segmentów wiadomości z~powodu błędu. W~tym przypadku bufor
+		zawierający poprzednią część wiadomości zostaje wyczyszczony.
+\end{itemize}
+
+Określenie rozmiaru pakietu w~nagłówku jest niezbędne do~poprawnego
+przesyłu zaszyfrowanych, segmentowanych wiadomości. Znajomość wielkości
+pakietu pozwala na~jego wyodrębnienie ze~strumienia TCP bez~konieczności
+dekodowania jego treści. Sprzyja to modularności biblioteki obsługi
+protokołu.
+
+Nagłówek bezpieczeństwa zawarty jest w~pakietach typu \verb+OPN+,
+\verb+MSG+ i~\verb+CLO+. W~przypadku pierwszego z~wymienionych typów
+stosuje się nagłówek algorytmu asymetrycznego, zawierający politykę
+bezpieczeństwa, certyfikat nadawcy oraz~,,odcisk palca'' wykorzystanego
+certyfikatu odbiorcy. W~przypadku pozostałych typów jest to nagłówek
+algorytmu symetrycznego, zawierający identyfikator przypisany
+do~bezpiecznego kanału.
+
+Nagłówek sekwencyjny stosuje~się w~pakietach typu \verb+OPN+, \verb+MSG+
+i~\verb+CLO+. Zawiera on sekwencyjny numer pakietu i~numer żądania.
+Numer pakietu ma na~celu zapobieganie atakom typu \textit{replay}
+wykorzystujących po~raz~kolejny ten sam pakiet --- kolejne pakiety
+o~pokrywającym~się numerze sekwencyjnym muszą zostać odrzucone. Numer
+żądania pozwala na~powiązania kolejnych segmentów tego samego pakietu.
+
+Treść wiadomości zawiera określony segment wiadomości. Dla~pakietów typu
+\verb+HEL+, \verb+ACK+ i~\verb+ERR+ jest to bezpośrednio serializowana
+struktura określona w~protokole. Dla~pakietów typu \verb+OPN+,
+\verb+MSG+ i \verb+CLO+ jest to serializowana struktura wiadomości
+poprzedzona identyfikatorem węzła typu wiadomości.
+
+Wypełnienie jest elementem opcjonalnym, występującym w~wiadomościach
+typu \verb+OPN+, \verb+MSG+ i~\verb+CLO+. Nie~zawiera żadnych
+użytecznych informacji, służy jedynie dopełnieniu wielkości całego
+pakietu tak, by~pokrył~się z~wielkością słowa algorytmu szyfrowania ---
+o~ile szyfrowanie jest stosowane.
+
+Sygnatura jest również opcjonalna, może występować w~wiadomościach tpyu
+\verb+OPN+, \verb+MSG+ i~\verb+CLO+. Zawiera kryptograficzny podpis
+wiadomości, pozwalający na~zweryfikowanie jej integralności
+i~autentyczności. Przy~tworzeniu podpisu uwzględnia~się wszystkie
+pozostałe części wiadomości, przed~szyfrowaniem.
+
+Jeżeli szyfrowanie jest wykorzystywane, wiadomości typu \verb+OPN+,
+\verb+MSG+ i~\verb+CLO+ są szyfrowane od~początku nagłówka sekwencyjnego
+do~końca pakietu. Nagłówek warstwy transportowej i~nagłówek bezpieczeństwa
+pozostaję niezaszyfrowane, aby umożliwić poprawne wyodrębnienie,
+zidentyfikowanie i~odszyfrowanie wiadomości. Wiadomość typu \verb+OPN+
+szyfrowana jest algorytmem asymetrycznym, przy~wykorzystaniu klucza
+publicznego odbiorcy. Pozostałe wiadomości szyfrowane są symetrycznie
+przy~pomocy klucza przypisanego do~danego kanału.
+
+
 \subsubsection{Sposób nawiązania połączenia}
 
 \begin{figure}[h]
@@ -741,7 +868,7 @@ OPC Foundation, które często zawierały wiele błędów i~sprawiały problemy
 ze~współpracą pomiędzy poszczególnymi produktami. Zastosowany model
 licencyjny ma na~celu ograniczyć dostęp do~specyfikacji, udostępniając
 ją jedynie tym podmiotom, które zainteresowane są członkostwem OPC
-Foundation i~zainwestować w~rozwój standardu.
+Foundation i~zainwestować w~rozwój standardu.\cite{opc-pay-to-play}
 
 Można jednak zauważyć, że~podobny problem chociażby w~przypadku
 protokołu Bluetooth rozwiązano bez~konieczności ograniczania dostępu
@@ -761,7 +888,5 @@ SOAP.
 Uwzględniona w~specyfikacji alternatywa w~postaci binarnego protokołu
 OPC UA rozwiązuje te problemy, jednakże odbywa~się to kosztem
 zastosowania niestandardowego protokołu i~utraty czytelności
-przesyłanych informacji. Czyni to chociażby diagnozowanie błędów
-w~implementacji trudniejszym.
-
-
+przesyłanych informacji. Utrudnia to chociażby diagnozowanie błędów
+w~implementacji\cite{rest-pca}.

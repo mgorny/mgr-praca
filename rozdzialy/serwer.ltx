@@ -145,8 +145,7 @@ C++. Do~jego zalet należą:
 	jężyka.
 
 	\item Duża stabilność języka programowania, oraz~jego standaryzacja.  Język
-	C++ opisany jest w~normie ISO/IEC 14882 (\textit{International Standard
-	ISO/IEC 14882. Programming Languages – C++}),.
+	C++ opisany jest w~normie ISO/IEC 14882\cite{c++}.
 
 	\item Typowanie oraz~rozbudowane mechanizmy kontroli poprawności
 	kodu podczas kompilacji. Pozwala to na~wczesne odnajdywanie błędów
@@ -169,9 +168,79 @@ jest w~przeważającej części wspierany przez kompilator GCC od~wersji 4.8
 Standard C++ nie~przewiduje znormalizowanych funkcji obsługi połączeń
 sieciowych.  Dla~systemu GNU/Linux oraz~systemów BSD funkcje sieciowe
 zaimplementowane są w~oparciu o~interfejs \textit{Berkeley sockets},
-uwzględniony z~niewielkimi modyfikacjami w~normie POSIX
-(\textit{Portable Operating System Interface}, IEEE Std 1003.1-2001).
+uwzględniony z~niewielkimi modyfikacjami w~normie POSIX\cite{posix}.
 Ze~względu na~ograniczoną przenośność tych funkcji na~systemy z~rodziny
 Windows oraz~niepełną standaryzację wydajnych nieblokujących funkcji
 sieciowych, operacje sieciowe zrealizowano w~oparciu o~bibliotekę
-libevent.
+libevent\cite{libevent}.
+
+Podobnie, standard C++ nie~uwzględnia metod komunikacji za~pomocą portu
+szeregowego. W~systemach opartych o~normę POSIX dostęp do~portu
+szeregowego, podobnie jak do~przeważającej części urządzeń sprzętowych
+oraz~wirtualnych, realizowany jest w~oparciu o~plik-urządzenie.
+W~przypadku systemów zbudowanych na~jądrze Linux, pliki dla~kolejnych
+portów szeregowych noszą nazwy \verb /dev/ttyS0 , \verb /dev/ttyS1 ,
+itd. Dla~uzyskania przenośności aplikacji na~systemy z~rodziny Windows
+oraz~uniknięcia konieczności powtórnej implementacji protokołu Modbus
+RTU, komunikację z~modułem MT-101 zrealizowano w~oparciu o~bibliotekę
+libmodbus\cite{libmodbus}.
+
+
+\subsection{Sposób realizacji zadań}
+
+\subsubsection{Serializacja wiadomości i~standardowych typów danych}
+
+W~celu zrealizowania serializacji zadeklarowano interfejs
+\textit{Serializer}, deklarujący metody serializacji poszczególnych
+standardowych typów danych. Dla~poszczególnych sposobów kodowania danych
+OPC UA, zdefiniowano klasy implementujące interfejs \textit{Serializer}
+i~zapewniające implementację serializacji poszczególnych typów.
+
+Oprócz tego, dla~poszczególnych typów złożonych zadeklarowano
+interfejsy, udostępniające niezbędne metody pomocnicze dla~serializacji.
+Przykładowo, poszczególne struktury implementują interfejs
+\textit{Struct}. Podczas serializacji struktury, przedefiniowane
+dla~określonej struktury metody pomocnicze tego interfejsu umożliwiają
+serializację poszczególnych pól struktury bez~konieczności ich
+wyliczania w~każdej klasie implementującej interfejs
+\textit{Serializer}.
+
+
+\subsubsection{Implementacja przestrzeni adresowej}
+
+W~celu uzyskania maksymalnej możliwej optymalizacji i~elastyczności
+poszczególne typy węzłów zostały zaimplementowane przy~pomocy klas
+abstrakcyjnych. Dostęp do~poszczególnych atrybutów i~referencji możliwy
+jest zarówno za~pomocą dedykowanych metod, charakterystycznych dla~danej
+klasy, jak i~metod uogólnionych, wykorzystujących identyfikatory
+atrybutów i~referencji.
+
+Przykładowo, klasa abstrakcyjna \textit{BaseNode} definiuje pustą metodę
+wirtualną \textit{node\_id()}. Klasy implementujące poszczególne węzły
+dziedziczą po~\textit{BaseNode} i~implementują tę metodę. Metody
+pracujące bezpośrednio z~węzłami mogą --- dla~uzyskania lepszej
+wydajności --- bezpośrednio wywoływać metodę wirtualną.
+
+Oprócz tego, klasa \textit{BaseNode} deklaruje metodę wirtualną
+\textit{get\_attribute()}, która umożliwia odczyt atrybutu w~oparciu
+o~jego numeryczny identyfikator. Wartość atrybutu pozyskiwana jest
+poprzez wywołanie odpowiadającej mu metody wirtualnej, tak~więc klasy
+dziedziczące po~\textit{BaseNode} nie~muszą przedeklarowywać metody
+\textit{get\_attribute()}.
+
+Poszczególne typy węzłów mogą obsługiwać dodatkowe atrybuty. W~tym
+celu deklarują dodatkowe metody abstrakcyjne oraz~przedefiniowują metodę
+\textit{get\_attribute()}, uzupełniając ją o~mapowanie identyfikatorów
+atrybutów charakterystycznych dla~danego podtypu. Umożliwia to
+pobieranie atrybutów węzła bez~konieczności konwersji typu
+z~podstawowego na~typ implementujący dany atrybut. Ułatwia to chociażby
+implementację usługi \textit{Read}, wykorzystywanej do~odczytu
+atrybutów.
+
+Wskaźniki do~poszczególnych węzłów przechowywane są w~kontenerze typu
+\textit{std::unordered\_map}. Poszczególne węzły skojarzone są z~ich
+identyfikatorami, co pozwala na~szybkie poszukiwanie węzła o~żądanym
+identyfikatorze. Odniesienia do~węzłów zaimplementowano za~pomocą
+dzielonych wskaźników \textit{std::shared\_ptr}, co~pozwala na~łatwe
+tworzenie nowych węzłów i~dodawanie ich do~przestrzeni adresowej
+bez~konieczności implementacji własnego zarządzania pamięcią.
