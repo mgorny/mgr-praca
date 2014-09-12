@@ -347,46 +347,47 @@ bezpieczeństwa. Rozpatrywane są takie aspekty jak:
 W~drugiej części specyfikacji OPC UA rozważane są potencjalne zagrożenia
 i~prezentowane są sposoby przeciwdziałania im. Rozwiązania zastosowane
 w~OPC UA wzorowane są na~powszechnie stosowanym protokole TLS, jednakże
-nie~wykorzystują go bezpośrednio.
+nie~wykorzystują go bezpośrednio.\cite{opc-ua-pt2}
 
 
 \subsubsection{Uwierzytelnienie klienta i~serwera}
 
 Uwierzytelnienie klienta i~serwera odbywa~się przy~pomocy certyfikatów
-X.509. Każda ze~stron połączenia wysyła kopię swojego certyfikatu
-oraz~poświadcza jego autentyczność, wykonując podpis cyfrowy
-na~pseudolosowych danych przesłanych przez~drugą stronę. Podpis
-wykonywany jest przy~pomocy klucza prywatnego, a~weryfikowany jest
-zawartym w~certyfikacie kluczem publicznym.
+X.509. Każda ze~stron połączenia dysponuje dwoma stałymi zasobami:
+certyfikatem X.509 i~powiązanym z~nim kluczem prywatnym. Certyfikat
+zawiera informacje o~właścicielu, jego klucz publiczny oraz~podpis
+złożony przez~wystawcę (centrum autoryzacji). Każda ze~stron powinna
+również posiadać kopię certyfikatu centrum autoryzacji wykorzystywanego
+w~danej sieci.
 
-Model uwierzytelniania opiera~się więc na~potwierdzeniu posiadania
-klucza prywatnego odpowiadającego przesyłanemu certyfikatowi. Wymóg
-złożenia podpisu na~unikalnych danych dostarczonych przez~drugą stronę
-umożliwia zapobiegnięcie atakom typu \textit{replay}, w~których
-wykorzystuje~się przechwycony wcześniej podpis.
-
-Na~podstawie poświadczonego certyfikatu określić można jednoznacznie
-tożsamość drugiej strony. Następnie wykorzystać można jeden z~dwóch
-mechanizmów autoryzacji:
+Uwierzytelnienie odbywa~się dwuetapowo:
 
 \begin{enumerate}
-	\item porównanie ,,odcisku palca'' certyfikatu z~lokalną bazą
-		dopuszczonych urządzeń,
+	\item poprzez weryfikację prawa klienta (serwera)
+		do~posługiwania~się certyfikatem,
 
-	\item bądź zweryfikowanie podpisu cyfrowego certyfikatu, złożonego
-		przez~znanego wystawcę.
+	\item oraz poprzez potwierdzenie autentyczności certyfikatu.
 \end{enumerate}
 
-Pierwsza z~wymienionych metod jest prostsza w~realizacji, jednakże
-wymaga utrzymania w~pamięci urządzenia listy dopuszczonych klientów
-(serwerów). W~przypadku zmiany certyfikatu jednego z~urządzeń, konieczne
-jest zaktualizowanie ustawień pozostałych.
+Zakłada~się, że~host ma prawo posługiwać~się certyfikatem, jeżeli
+posiada klucz prywatny powiązany z~tym certyfikatem. Klucz prywatny
+generowany jest na~początku procedury pozyskiwania certyfikatu
+i~nigdy nie~jest udostępniany innym urządzeniom.
 
-Druga metoda jest bardziej elastyczna, wymaga bowiem wprowadzenia
-jedynie certyfikatu centrum autoryzacji. Certyfikaty wystawione przez~to
-centrum podpisane są za~pomocą powiązanego z~nim klucza prywatnego,
-a~weryfikacja owego podpisu pozwala jednoznacznie stwierdzić
-autentyczność certyfikatu.
+W~celu potwierdzenia faktu posiadania klucza, host składa przy~jego
+pomocy podpis na~przesłanym przez~drugą stronę bloku danych
+pseudolosowych. Zastosowanie danych pseudolosowych pozwala
+na~zapobieganie atakom typu \textit{rollback}, wykorzystującym
+przechwycony wcześniejszy podpis, złożony przez~właściciela certyfikatu.
+Złożony podpis weryfikowany jest przy~pomocy klucza publicznego
+zawartego w~certyfikacie.
+
+Wyznacznikiem autentyczności certyfikatu jest sygnatura złożona
+przez~wystawcę. Weryfikacja sygnatury następuje przy~wykorzystaniu
+klucza publicznego zawartego w~certyfikacie centrum autoryzacji.
+Potwierdzenie poprawności podpisu pozwala stwierdzić autentyczność
+informacji zawartych w~certyfikacie hosta, jak~również fakt jego
+wystawienia przez~uznawane centrum autoryzacji.
 
 
 \subsubsection{Zabezpieczenie przesyłanych wiadomości}
@@ -437,8 +438,8 @@ stosowanie wirtualnych sieci prywatnych.
 \subsubsection{Zawartość przestrzeni adresowej}
 
 Przestrzeń adresowa stanowi logiczną organizację zasobów serwera
-OPC UA. Poszczególne zasoby modelowane są w~postaci węzłów. Węzły mogą
-reprezentować m.in.:
+OPC UA\cite{opc-ua-pt3}. Poszczególne zasoby modelowane są w~postaci
+węzłów. Węzły mogą reprezentować m.in.:
 
 \begin{enumerate}
 	\item zmienne, stanowiące wynik pomiaru bądź~zmienne sterowania,
@@ -581,6 +582,58 @@ do~modelowania szczegółowych cech wykorzystuje~się zmienne
 i~właściwości, związane z~węzłem za~pomocą referencji.
 
 
+\subsection{Usługi w~OPC UA}
+
+Usługi stanowią podstawową formę interakcji w~protokole OPC UA. Serwer
+udostępnia klientowi szereg usług. Do~każdej usługi przypisane jest
+określony format żądania i~odpowiedzi. Żądanie określa operacje, jakie
+mają zostać wykonane. Odpowiedź z~kolei zawiera stan wykonania operacji
+oraz~ewentualne dane wyjściowe.
+
+Po~nawiązaniu połączenia klient może zacząć wykorzystywać usługi
+serwera. W~tym celu formułuje wiadomość z~żądaniem i~wysyła ją
+do~serwera. Serwer przetwarza otrzymaną wiadomość i~próbuje wykonać
+zlecone w~niej operacje. Dla~każdej operacji generuje oddzielny status
+(powodzenie bądź niepowodzenie). Po~zakończeniu wykonywania operacji,
+serwer formułuje i~przesyła odpowiedź zawierającą status operacji i~dane
+wyjściowe.
+
+Standard OPC UA wyróżnia następujące zestawy usług:
+
+\begin{enumerate}
+	\item usługi odnajdywania --- umożliwiające pozyskanie listy adresów
+		serwera i~odczytanie ich ustawień bezpieczeństwa,
+
+	\item usługi bezpiecznego kanału --- umożliwiające uzyskanie
+		bezpiecznego kanału na~potrzeby komunikacji,
+
+	\item usługi sesji --- przeznaczone do~zarządzania sesją
+		i~uwierzytelniania użytkownika,
+
+	\item usługi zarządzania węzłami --- umożlwiające dodawanie,
+		modyfikację i~usuwanie węzłów z~przestrzeni adresowej,
+
+	\item usługi widoków --- umożliwiające przeglądanie przestrzeni
+		adresowej bądź jej podobszarów zwanych widokami,
+
+	\item usługi atrybutów --- umożliwiające odczyt i~zapis atrybutów,
+		wraz z~ich historycznymi wartościami,
+
+	\item usługi metod --- umożliwiające wywoływanie metod obiektów,
+
+	\item usługi monitorowania --- umożliwiające tworzenie, modyfikację
+		i~usuwanie obiektów monitorujących atrybuty i~zdarzenia,
+		i~generujących powiadomienia odpowiednio o~ich zmianach
+		bądź~wystąpieniu,
+
+	\item usługi subskrypcji --- umożliwiające tworzenie, modyfikację
+		i~usuwanie subskrypcji powiadomień generowanych
+		przez~obiekty monitorujące. Usługi subskrypcji umożliwiają
+		również ponowne przesłanie nieotrzymanych wiadomości w~przypadku
+		zerwania połączenia.
+\end{enumerate}
+
+
 \subsection{Zapewnienie zgodności pomiędzy kolejnymi wersjami protokołu}
 
 Mechanizm zapewnienia zgodności przy~wprowadzaniu zmian w~strukturze
@@ -609,7 +662,8 @@ wykonanym w~oparciu o~inną wersję specyfikacji.
 
 \subsubsection{Budowa protokołu}
 
-Opis protokołu OPC UA TCP składa~się z~trzech zasadniczych części:
+Opis protokołu OPC UA TCP składa~się z~trzech zasadniczych
+części\cite{opc-ua-pt6}:
 
 \begin{enumerate}
 	\item opisu kodowania standardowych typów OPC UA w~postaci binarnej
@@ -634,13 +688,13 @@ Połączenie w~oparciu o~ten protokół rozpatruje~się w~trzech warstwach:
 
 Zadaniem warstwy transportowej jest nawiązanie i~utrzymanie logicznego
 kanału przesyłu pakietów pomiędzy klientem i~serwerem. Do~transmisji
-pakietów OPC UA wykorzystuje~się parę protokołów TCP/IP. Poszczególne
-pakiety poprzedzane są nagłówkiem warstwy transportowej, określającym
-rodzaj pakietu oraz~jego wielkość.
+pakietów OPC UA wykorzystuje~się parę protokołów TCP/IP. Warstwa
+transmisji wyodrębnia pakiety OPC UA przesyłane w~obrębie strumienia
+TCP.
 
 Warstwa komunikacji zajmuje~się budowaniem pakietów w~oparciu
 o~zakodowane binarnie wiadomości OPC UA. Do~zadań tej warstwy należy
-podział wiadomości na~pakiety o~wielkości ograniczonej możliwościami
+podział wiadomości na~segmenty o~wielkości ograniczonej możliwościami
 serwera (klienta), a~następnie --- o~ile jest to pożądane ---
 szyfrowanie i~cyfrowy podpis pakietów.
 
@@ -787,12 +841,12 @@ przy~pomocy klucza przypisanego do~danego kanału.
 	\centering
 
 	\begin{tikzpicture}
-		\draw[thick] (0,0) -- ++(0,6) node[above] {klient};
-		\draw[thick] (2,0) -- ++(0,6) node[above] {bezp. kanał};
-		\draw[thick] (4,0) -- ++(0,6) node[above] {TCP};
-		\draw[thick] (10,0) -- ++(0,6) node[above] {TCP};
-		\draw[thick] (12,0) -- ++(0,6) node[above] {bezp. kanał};
-		\draw[thick] (14,0) -- ++(0,6) node[above] {serwer};
+		\draw[thick] (0,0) -- ++(0,6.5) node[above] {klient};
+		\draw[thick] (2,0) -- ++(0,6.5) node[above] {bezp. kanał};
+		\draw[thick] (4,0) -- ++(0,6.5) node[above] {TCP};
+		\draw[thick] (10,0) -- ++(0,6.5) node[above] {TCP};
+		\draw[thick] (12,0) -- ++(0,6.5) node[above] {bezp. kanał};
+		\draw[thick] (14,0) -- ++(0,6.5) node[above] {serwer};
 
 		\begin{scope}[shorten >=1mm, shorten <=1mm]
 			\draw[-stealth] (4,5.5) -- ++(6,0)
@@ -812,6 +866,7 @@ przy~pomocy klucza przypisanego do~danego kanału.
 	\end{tikzpicture}
 
 	\caption{Graficzne przedstawienie procedury nawiązania połączenia}
+	\label{nawi-pol}
 \end{figure}
 
 Procedurę nawiązania połączenia rozpoczyna zawsze klient, poprzez
@@ -850,6 +905,44 @@ po~aktywacji sesji w~poprzednim połączeniu.
 
 Sesja pozostaje ważna do~upływu czasu ważności sesji lub~jej
 zakończenia przez~klienta.
+
+Na~rys.~\ref{nawi-pol} przedstawiono schematycznie wymianę wiadomości
+konieczną do~nawiązania połączenia.
+
+\subsubsection{Sposób zakończenia połączenia}
+
+\begin{figure}[h]
+	\centering
+
+	\begin{tikzpicture}
+		\draw[thick] (0,0) -- ++(0,2.5) node[above] {klient};
+		\draw[thick] (2,0) -- ++(0,2.5) node[above] {bezp. kanał};
+		\draw[thick] (4,0) -- ++(0,2.5) node[above] {TCP};
+		\draw[thick] (10,0) -- ++(0,2.5) node[above] {TCP};
+		\draw[thick] (12,0) -- ++(0,2.5) node[above] {bezp. kanał};
+		\draw[thick] (14,0) -- ++(0,2.5) node[above] {serwer};
+
+		\begin{scope}[shorten >=1mm, shorten <=1mm]
+			\draw[-stealth] (2,1.5) -- ++(10,0)
+				node[midway, above] {żądanie \textit{Close Secure Channel}};
+			\draw[stealth-] (4,.5) -- ++(6,0)
+				node[midway, above] {zakończenie połączenia};
+
+		\end{scope}
+	\end{tikzpicture}
+
+	\caption{Graficzne przedstawienie procedury zakończenia połączenia}
+	\label{zako-pol}
+\end{figure}
+
+Zakończenie połączenia inicjowane jest zawsze przez~klienta. W~tym celu
+klient wysyła do~serwera żądanie \textit{Close Secure Channel}.
+Po~otrzymaniu tego żądania, serwer zwalnia wszystkie zasoby związane
+z~kanałem i~zamyka połączenie TCP. Odpowiedź na~przesłane żądanie
+nie~jest wysyłana.
+
+Na~rys.~\ref{zako-pol} przedstawiono schematycznie wymianę wiadomości
+w~przypadku zakończenia połączenia.
 
 
 \subsection{Krytyka OPC UA}
