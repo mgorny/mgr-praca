@@ -334,4 +334,89 @@ z~węzłami podrzędnymi (jak w~topologii drzewa).
 
 \subsection{Zastosowanie rozproszonych systemów pomiarowych w~energetyce}
 
+\subsubsection{Rozległe systemy pomiarowe WAMS/PMU}
 
+% PMU and Time synch
+
+Koncepcja WAMS (\textit{Wide Area Measurement System}) opiera~się
+na~synchronicznych pomiarach parametrów elementów rozległych sieci
+przesyłowych. Rozległość sieci, a~co za~tym idzie znaczna liczba
+odległych od~siebie punktów pomiarowych, czyni system WAMS rozproszonym
+systemem pomiarowym.
+
+Najważniejszym rodzajem pomiarów w~systemach WAMS są pomiary
+synchrofazorów. Definicja, sposób pomiaru i~przesyłu pomiarów
+synchrofazorów zdefiniowany został w~normie IEEE C37.118. Pomiaru
+dokonuje~się przy~wykorzystaniu urządzeń PMU (\textit{Phasor Measurement
+Unit}).
+
+W~celu dokonania pomiaru synchrofazora mierzy~się trójfazowe przebiegi
+napięcia i~prądu, a~otrzymane pomiary synchronizuje~się
+przy~wykorzystaniu czasu otrzymywanego z~sieci GPS. Na~podstawie
+wykonanych pomiarów określa~się:
+
+\begin{enumerate}
+	\item wartość skuteczną i~kąt fazowy (fazor) napięcia,
+
+	\item wartość skuteczną i~kąt fazowy (fazor) prądu,
+
+	\item częstotliwość oraz~jej pochodną.
+\end{enumerate}
+
+Oprócz tego, PMU mogą przesyłać dodatkowe sygnały analogowe i~cyfrowe,
+np.~sygnały sterowania.
+
+Wyróżnia~się dwie klasy urządzeń PMU:
+
+\begin{enumerate}
+	\item klasę P (\textit{Protection} --- zabezpieczeniowa) o~szybkim
+	czasie reakcji,
+
+	\item klasę M (\textit{Measurement} --- pomiarowa) o~większej
+	dokładności z~zastosowaniem filtrowania, ale o~wolniejszym czasie
+	reakcji.
+\end{enumerate}
+
+Do~zastosowań systemów WAMS należą:
+
+\begin{itemize}
+	\item analiza danych w~czasie rzeczywistym:
+
+	\begin{itemize}
+		\item wykrywania oscylacji małej częstotliwości,
+
+		\item wykrywanie zmian kąta fazowego,
+
+		\item wykrywanie niestabilności napięciowej,
+
+		\item wykrywanie pracy wyspowej,
+
+		\item poszukiwanie źródła oscylacji;
+	\end{itemize}
+
+	\item analizy po~wystąpieniu awarii,
+
+	\item wyprowadzanie systemu z~pracy wyspowej,
+
+	\item dynamiczna aktualizacja estymatorów stanu,
+
+	\item monitorowanie obciążenia linii,
+
+	\item automatyczny rozdział obciążenia,
+
+	\item dostarczanie użytecznych informacji dla~dynamicznych modeli
+	systemu.
+\end{itemize}
+
+
+\subsubsection{Pomiary inteligentne (smart metering)} 
+
+Jednym z~podstawowych elementów sieci inteligentnych (\textit{smart
+grid}) są inteligentne mierniki. Mierniki inteligentne umożliwiają
+dwukierunkową komunikację w~czasie rzeczywistym, zapewniając bardziej
+precyzyjne informacje o~obciążeniu sieci oraz~narzędzia jego kontroli.
+
+System mierników inteligentnych stanowi szczególny przypadek
+rozproszonego systemu pomiarowego. Obok typowych problemów związanych
+z~przesyłem danych pomiarowych na~odległość, bardzo istotne zagadnienie
+stanowi prywatność użytkowników.
