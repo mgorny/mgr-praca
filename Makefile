@@ -3,6 +3,6 @@ show: mgr.pdf
 
 %.pdf: %.ltx $(wildcard rozdzialy/*.ltx)
 	xelatex $<
-#	bibtexu mgr
+	bibtexu mgr
 
 .PHONY: show
