@@ -983,3 +983,17 @@ OPC UA rozwiązuje te problemy, jednakże odbywa~się to kosztem
 zastosowania niestandardowego protokołu i~utraty czytelności
 przesyłanych informacji. Utrudnia to chociażby diagnozowanie błędów
 w~implementacji\cite{rest-pca}.
+
+% tu wstawić to coś o wydajności
+
+Wątpliwości budzi także procedura zestawiania połączenia, która
+każdorazowo wymaga kosztownych operacji kryptograficznych. W~przypadku
+urządzeń o~niewielkiej wydajności procesora, które komunikują~się
+z~serwerem jedynie okresowo może to powodować zauważalne opóźnienia
+przesyłu danych.
+
+Podobny problem rozwiązano chociażby w~protokole TLS (\textit{Transport
+Layer Security}), umożliwiając szybkie wznowienie sesji przerwanego
+połączenia --- wówczas zamiast realizacji pełnej procedury zestawiania
+kanału szyfrowanego wznawia~się wykorzystanie klucza wynegocjowanego
+w~poprzedniej sesji.
