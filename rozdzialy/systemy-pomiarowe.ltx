@@ -409,7 +409,7 @@ Do~zastosowań systemów WAMS należą:
 \end{itemize}
 
 
-\subsubsection{Pomiary inteligentne (smart metering)} 
+\subsubsection{Pomiary inteligentne (smart metering)}
 
 Jednym z~podstawowych elementów sieci inteligentnych (\textit{smart
 grid}) są inteligentne mierniki. Mierniki inteligentne umożliwiają
@@ -419,4 +419,32 @@ precyzyjne informacje o~obciążeniu sieci oraz~narzędzia jego kontroli.
 System mierników inteligentnych stanowi szczególny przypadek
 rozproszonego systemu pomiarowego. Obok typowych problemów związanych
 z~przesyłem danych pomiarowych na~odległość, bardzo istotne zagadnienie
-stanowi prywatność użytkowników.
+stanowi prywatność użytkowników. Szczególne zagrożenie dla~niej stanowić
+może wprowadzanie usług realizowanych przez~zewnętrzne podmioty ---
+sprzedawców energii, spółki obrotu, jak~również chociażby
+przedsiębiorstwa oferujące usługi doradcze.\cite{privacy-by-design}
+
+W~celu zapewnienia właściwego poziomu bezpieczeństwa i~prywatności,
+stosuje~się następujące reguły:
+
+\begin{enumerate}
+	\item wszystkie przesyłane informacje są szyfrowane. Szyfrowanie
+		odbywa~się przy~wykorzystaniu kryptografii asymetrycznej bądź
+		unikalnego klucza przypisanego do~użytkownika --- inni
+		użytkownicy sieci nie~posiadają klucza niezbędnego,
+		by~zdeszyfrować przesyłane dane.
+
+	\item Poprzez sieć nie~przesyła~się wrażliwych informacji
+		o~kliencie. Dla~przykładu, do~identyfikacji licznika
+		wykorzystuje~się unikalny identyfikator, który nie~zawiera
+		zakodowanych danych adresowych użytkownika.
+
+	\item Poprzez sieć przesyła~się minimalną liczbę informacji
+		niezbędnych do~realizacji zadań. W~najczęstszym przypadku
+		licznik inteligentny wysyłał więc będzie informację zawierającą
+		jedynie identyfikator urządzenia oraz~wielkość zmierzonej
+		energii.
+
+	\item Uruchomienie każdej dodatkowej usługi wymaga od~użytkownika
+		jawnego wyrażenia zgody na~przesył niezbędnych danych.
+\end{enumerate}

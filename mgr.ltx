@@ -17,6 +17,7 @@
 \usepackage{siunitx}
 \usepackage{multirow}
 \usepackage{longtable}
+\usepackage[backend=bibtexu,sorting=none]{biblatex}
 
 \usetikzlibrary{decorations}
 \usetikzlibrary{patterns}
@@ -55,6 +56,8 @@
 	pdftitle={Akwizycja danych z~rozproszonych systemów pomiarowych w~systemie Linux},,
 	pdfauthor={Michał Górny}
 }
+
+\addbibresource{mgr.bib}
 
 \begin{document}
 
@@ -113,6 +116,8 @@
 \tableofcontents
 
 \clearpage
+\input{rozdzialy/wprowadzenie.ltx}
+\clearpage
 \input{rozdzialy/systemy-pomiarowe.ltx}
 \clearpage
 \input{rozdzialy/opis-opc.ltx}
@@ -124,7 +129,6 @@
 \input{rozdzialy/zakonczenie.ltx}
 
 \clearpage
-\bibliographystyle{plain}
-\bibliography{mgr}
+\printbibliography
 
 \end{document}
