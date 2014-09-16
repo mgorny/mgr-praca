@@ -36,7 +36,7 @@ jego elementów najprawdopodobniej nie~znajdzie technicznie uzasadnionego
 wykorzystania --- jak chociażby wykorzystanie protokołu SOAP. Pełna
 implementacja protokołu jest kosztowna, a~jej wymagania mogą ograniczać
 możliwość zastosowania na~niektórych urządzeniach typu
-\textit{embedded}. Liczba przesyłanych informacji wpływa również
+\textit{embedded} Liczba przesyłanych informacji wpływa również
 niekorzystnie na~wielkość pakietów.
 
 Złożoność zwiększa również zagrożenie błędami w~oprogramowaniu, a~więc
@@ -49,5 +49,13 @@ liczbę potencjalnych testerów.
 
 W~szczególności widoczne jest to w~porównaniu z~protokołem Modbus RTU,
 przy~pomocy którego komunikowano~się z~modułem telemetrycznym MT-101.
-Odczyt danych z~urządzenia wykorzystujące ten protokół w~najprostszym
-przypadku wymaga przesłaniu strumieniem TCP 7 bajtów.
+Dla~przykładu, żądanie odczytu danych w~tym protokole ma zaledwie 8
+bajtów, podczas gdy podobne żądanie w~protokole OPC będzie ponad
+dziesięciokrotnie większe, nie~licząc pakietów przesłanych w~celu
+nawiązania połączenia.
+
+Zdaniem autora, protokół OPC UA posiada wiele zalet i~jest bardzo
+elastyczny, co~jest istotną zaletą w~przypadku tak dynamicznie
+rozwijającej~się dziedziny techniki. Jednakże jego złożoność sprawia,
+że~najprawdopodobniej nie~jest on optymalnym rozwiązaniem dla~sieci
+o~bardzo rygorystycznych wymogach co do~pewności i~szybkości reakcji.
