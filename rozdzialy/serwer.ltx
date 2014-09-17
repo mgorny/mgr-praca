@@ -244,3 +244,18 @@ identyfikatorze. Odniesienia do~węzłów zaimplementowano za~pomocą
 dzielonych wskaźników \textit{std::shared\_ptr}, co~pozwala na~łatwe
 tworzenie nowych węzłów i~dodawanie ich do~przestrzeni adresowej
 bez~konieczności implementacji własnego zarządzania pamięcią.
+
+\subsubsection{Komunikacja z~MT-101}
+
+Komunikacja z~MT-101 odbywa~się za~pośrednictwem dedykowanych podklas
+klasy \textit{Variable}, opisującej zmienną w~przestrzeni adresowej.
+Wywołanie metody \textit{value()} powoduje skomunikowanie~się
+z~urządzeniem i~pobranie wartości danej zmiennej.
+
+W~celu zoptymalizowania pracy serwera, każdorazowo z~modułu pobierane są
+i~zapisywane w~pamięci serwera wartości wszystkich dostępnych
+dla~klienta zmiennych. Pozwala to przyspieszyć pracę w~przypadku
+sekwencyjnego odczytu wielu zmiennych. Zmienne opatrzone są również
+czasem ich odczytu, co umożliwia określenie, czy~konieczny jest ponowny
+ich odczyt w~zależności od~żądanego przez~klienta stopnia aktualności
+przesyłanych danych.

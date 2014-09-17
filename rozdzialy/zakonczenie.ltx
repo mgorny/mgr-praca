@@ -56,6 +56,20 @@ nawiązania połączenia.
 
 Zdaniem autora, protokół OPC UA posiada wiele zalet i~jest bardzo
 elastyczny, co~jest istotną zaletą w~przypadku tak dynamicznie
-rozwijającej~się dziedziny techniki. Jednakże jego złożoność sprawia,
-że~najprawdopodobniej nie~jest on optymalnym rozwiązaniem dla~sieci
-o~bardzo rygorystycznych wymogach co do~pewności i~szybkości reakcji.
+rozwijającej~się dziedziny techniki. Jednakże jego złożoność i~procedury
+komunikacyjne mogą sprawić, że~nie~spełni oczekiwań co do~niezbędnej
+pewności i~szybkości reakcji.
+
+Wartą rozważenia może być koncepcja wykorzystania protokołu OPC UA
+z~innym mapowaniem sieciowym niż standardowe. Chociażby zastosowanie
+bezstanowych połączeń wykorzystujących protokół UDP mogłoby umożliwić
+wydajniejszy przesył informacji z~kontrolą priorytetów i~możliwością
+pominięcia powtórnej próby przesyłu nieaktualnych danych w~przypadku
+problemów z~łącznością.
+
+Zwrócić uwagę należy również na~istnienie alternatywnych protokołów
+przeznaczonych dla~komunikacji z~rozproszonymi systemami pomiarowymi.
+Przykładem może~być chociażby otwarty protokół OSGP (\textit{Open Smart
+Grid Protocol}, opisany normami ISO/IEC 14908-1 do~ISO/IEC
+14908-4\cite{osgp}, który zaprojektowany został z~myślą o~obsłudze sieci
+inteligentnych.
