@@ -1,4 +1,4 @@
-\section{Realizacja serwera OPC dla~systemu Linux}
+\section{Realizacja serwera OPC}
 
 \subsection{Założenia wstępne}
 
@@ -37,14 +37,14 @@
 
 W~ramach projektu wykonane zostały następujące komponenty:
 
-\begin{enumerate}
+\begin{itemize}
 	\item serwer OPC UA, pracujący pod~kontrolą systemu GNU/Linux,
 
 	\item moduł serwera, umożliwiający komunikację z~modułem
 		telemetrycznym MT-101 przy~pomocy łącza RS232,
 
 	\item klient OPC UA, przeznaczony do~testowania serwera.
-\end{enumerate}
+\end{itemize}
 
 Serwer połączony jest z~modułem telemetrycznym za~pomocą łącza
 szeregowego RS232. Do~wymiany danych wykorzystywany jest protokół
@@ -67,7 +67,7 @@ o~zasoby danej platformy.
 
 Dla~implementacji serwera OPC UA podstawowe zadania to:
 
-\begin{enumerate}
+\begin{itemize}
 	\item serializacja wiadomości (żądań i~odpowiedzi) oraz
 	standardowych typów danych, do~przynajmniej jednego z~dwóch
 	opisanych w~specyfikacji formatów. Dodatkową korzyścią jest
@@ -92,13 +92,13 @@ Dla~implementacji serwera OPC UA podstawowe zadania to:
 	pomiarowej, pożądane może~być regularne pobieranie danych
 	pomiarowych i~przechowywanie wartości historycznych w~pamięci
 	serwera.
-\end{enumerate}
+\end{itemize}
 
 Dostępne platformy dodatkowo ograniczone są koniecznością pracy serwera
 pod~kontrolą systemu GNU/Linux. Dodatkowymi korzyściami dla~wybranej
 platformy są:
 
-\begin{enumerate}
+\begin{itemize}
 	\item stabilność interfejsu programistycznego (API ---
 	\textit{Application Programming Interface}). Zastosowanie platformy
 	o~stabilnym API zmniejsza liczbę koniecznych przyszłych zmian
@@ -120,19 +120,19 @@ platformy są:
 
 	\item Dodatkową zaletą jest przenośność na~systemy inne
 	niż~GNU/Linux.
-\end{enumerate}
+\end{itemize}
 
 Po~uwzględnieniu wszystkich powyższych kryteriów wybór padł na~język
-C++. Do~jego zalet należą:
+\Cpp. Do~jego zalet należą:
 
-\begin{enumerate}
-	\item powszechna dostępność kompilatora C++ z~pakietu GCC
+\begin{itemize}
+	\item powszechna dostępność kompilatora \Cpp z~pakietu GCC
 	(\textit{GNU Compiler Collection}). Kompilator ten jest elementem
 	standardowej instalacji, bądź standardowego pakietu aplikacji
 	dla~programistów, wielu dystrybucji systemu GNU/Linux,
 	systemów BSD, systemu MacOS X oraz~platform Cygwin i~MinGW,
 	umożliwiających portowanie aplikacji do~systemu Windows. Co więcej,
-	kompilator języka C++ wymieniony jako element standardowych narzędzi
+	kompilator języka \Cpp wymieniony został jako element standardowych narzędzi
 	programistycznych w~specyfikacji POSIX.
 
 	\item Zdolność wytworzenia silnie zoptymalizowanego kodu maszynowego
@@ -145,7 +145,7 @@ C++. Do~jego zalet należą:
 	jężyka.
 
 	\item Duża stabilność języka programowania, oraz~jego standaryzacja.  Język
-	C++ opisany jest w~normie ISO/IEC 14882\cite{c++}.
+	\Cpp opisany jest w~normie ISO/IEC 14882\cite{c++}.
 
 	\item Typowanie oraz~rozbudowane mechanizmy kontroli poprawności
 	kodu podczas kompilacji. Pozwala to na~wczesne odnajdywanie błędów
@@ -156,16 +156,16 @@ C++. Do~jego zalet należą:
 	introspekcji. Zastosowanie klas abstrakcyjnych pozwala na~zbudowanie
 	modularnego serwera, który może~być łatwo rozszerzany za~pomocą
 	zewnętrznych modułów. 
-\end{enumerate}
+\end{itemize}
 
-Za~minimalną wersję języka C++ przyjęto wersję C++11 (ISO/IEC
+Za~minimalną wersję języka \Cpp przyjęto wersję \Cpp11 (ISO/IEC
 14882:2011, publikacja: wrzesień 2011).  Wersja ta wprowadza wiele
 usprawnień do~języka, i~jest w~stopniu dostatecznym obsługiwana
-przez~aktualne wersje kompilatorów C++.  Przykładowo, standard C++11
+przez~aktualne wersje kompilatorów \Cpp.  Przykładowo, standard \Cpp11
 jest w~przeważającej części wspierany przez kompilator GCC od~wersji 4.8
 (marzec 2013) oraz~kompilator clang od~wersji 3.1 (maj 2012).
 
-Standard C++ nie~przewiduje znormalizowanych funkcji obsługi połączeń
+Standard \Cpp nie~przewiduje znormalizowanych funkcji obsługi połączeń
 sieciowych.  Dla~systemu GNU/Linux oraz~systemów BSD funkcje sieciowe
 zaimplementowane są w~oparciu o~interfejs \textit{Berkeley sockets},
 uwzględniony z~niewielkimi modyfikacjami w~normie POSIX\cite{posix}.
@@ -174,7 +174,7 @@ Windows oraz~niepełną standaryzację wydajnych nieblokujących funkcji
 sieciowych, operacje sieciowe zrealizowano w~oparciu o~bibliotekę
 libevent\cite{libevent}.
 
-Podobnie, standard C++ nie~uwzględnia metod komunikacji za~pomocą portu
+Podobnie, standard \Cpp nie~uwzględnia metod komunikacji za~pomocą portu
 szeregowego. W~systemach opartych o~normę POSIX dostęp do~portu
 szeregowego, podobnie jak do~przeważającej części urządzeń sprzętowych
 oraz~wirtualnych, realizowany jest w~oparciu o~plik-urządzenie.

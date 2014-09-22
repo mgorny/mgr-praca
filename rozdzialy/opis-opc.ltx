@@ -104,14 +104,14 @@ W~latach 2010--2011 kolejne części standardu OPC UA zostały przyjęte
 jako norma IEC 62541.
 
 
-\subsection{Warunki licencyjne OPC UA}
+\subsection{Warunki licencyjne}
 
 Specyfikacja OPC UA ma charakter własnościowy i~objęta jest
 restrykcyjnym prawem autorskim. OPC Foundation zachowuje wyłączne prawo
 rozpowszechniania specyfikacji. Członkowie OPC Foundation otrzymują
 dostęp~do:
 
-\begin{enumerate}
+\begin{itemize}
 	\item pełnej specyfikacji protokołu wraz z~przeznaczonymi do~odczytu
 		maszynowego plikami XML Schema oraz~WSDL,
 
@@ -121,7 +121,7 @@ dostęp~do:
 
 	\item dodatkowe materiały umożliwiające testowanie wykonanej
 		implementacji.
-\end{enumerate}
+\end{itemize}
 
 Ograniczony, odpłatny dostęp do~specyfikacji poddają w~wątpliwość
 podkreślaną przez~autorów otwartość specyfikacji. Chociażby zgodnie
@@ -137,7 +137,7 @@ i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
 % http://ec.europa.eu/idabc/en/document/2319/5644.html
 
 
-\subsection{Struktura specyfikacji OPC UA}
+\subsection{Struktura specyfikacji}
 
 \begin{table}[ht]
 	\caption{Lista specyfikacji OPC UA\cite{opc-ua-pt1}}
@@ -215,7 +215,7 @@ kodowania danych --- ich realizacja wykonana może być w~oparciu o~reguły
 dla~typów podstawowych określone w~6.~części specyfikacji.
 
 
-\subsection{Struktura sieci OPC UA}
+\subsection{Struktura sieci}
 
 Protokół OPC UA oparty jest na~architekturze klient-serwer. Serwery
 stanowią węzły sieci pomiarowej, współpracując z~fizycznymi urządzeniami
@@ -325,14 +325,14 @@ OPC UA utrzymuje połączenia w~roli klienta do~obu serwerów, i~udostępnia
 swoim klientom ich zasoby.
 
 
-\subsection{Bezpieczeństwo sieci OPC UA}
+\subsection{Bezpieczeństwo sieci}
 
 \subsubsection{Założenia}
 
 Specyfikacja OPC UA dużą wagę przykłada do~szeroko rozumianych zagadnień
 bezpieczeństwa. Rozpatrywane są takie aspekty jak:
 
-\begin{enumerate}
+\begin{itemize}
 	\item uwierzytelnianie klienta i~serwera,
 
 	\item zapewnienie poufności przesyłanych informacji,
@@ -342,7 +342,7 @@ bezpieczeństwa. Rozpatrywane są takie aspekty jak:
 	\item zdatność systemu do~audytu,
 
 	\item ciągłość dostępu do~usług.
-\end{enumerate}
+\end{itemize}
 
 W~drugiej części specyfikacji OPC UA rozważane są potencjalne zagrożenia
 i~prezentowane są sposoby przeciwdziałania im. Rozwiązania zastosowane
@@ -433,7 +433,7 @@ stosowanie zewnętrznych systemów bezpieczeństwa sieciowego — np.~poprzez
 stosowanie wirtualnych sieci prywatnych.
 
 
-\subsection{Przestrzeń adresowa OPC UA}
+\subsection{Przestrzeń adresowa}
 
 \subsubsection{Zawartość przestrzeni adresowej}
 
@@ -441,7 +441,7 @@ Przestrzeń adresowa stanowi logiczną organizację zasobów serwera
 OPC UA\cite{opc-ua-pt3}. Poszczególne zasoby modelowane są w~postaci
 węzłów. Węzły mogą reprezentować m.in.:
 
-\begin{enumerate}
+\begin{itemize}
 	\item zmienne, stanowiące wynik pomiaru bądź~zmienne sterowania,
 
 	\item obiekty, służące do~organizacji logicznej struktury
@@ -450,7 +450,7 @@ węzłów. Węzły mogą reprezentować m.in.:
 	\item metody, umożliwiające zdalne uruchamianie procesów i~funkcji,
 
 	\item typy danych i~elementy struktury protokołu OPC UA.
-\end{enumerate}
+\end{itemize}
 
 W~szczególności zauważyć można, że~protokół OPC UA jest silnie
 introspektywny --- przestrzeń adresowa zawiera nie~tylko zasoby serwera,
@@ -463,7 +463,7 @@ Protokół OPC nie~wprowadza ograniczeń co do~rodzaju zasobów ani~sposobu
 pozyskiwania wartości ich atrybutów. Co za~tym idzie, w~przestrzeni
 adresowej modelowane mogą być:
 
-\begin{enumerate}
+\begin{itemize}
 	\item lokalne zasoby sprzętowe i~programowe, jak np.~wielkości
 	mierzone przez~urządzenia pomiarowe połączone z~serwerem,
 
@@ -471,7 +471,7 @@ adresowej modelowane mogą być:
 
 	\item zdalne zasoby udostępnione przez~inne serwery OPC UA bądź
 	innych protokołów sieciowych.
-\end{enumerate}
+\end{itemize}
 
 \subsubsection{Identyfikatory węzłów}
 
@@ -563,7 +563,7 @@ Identyfikatory węzłów stosowane są również do~identyfikacji sesji.
 Węzły połączone są w~strukturę grafu za~pomocą referencji. Referencje
 wykorzystywane są do~powiązania węzłów reprezentujących:
 
-\begin{enumerate}
+\begin{itemize}
 	\item zmienne, metody i~właściwości obiektów,
 
 	\item obiekty podrzędne (nadrzędzne) w~strukturze
@@ -572,7 +572,7 @@ wykorzystywane są do~powiązania węzłów reprezentujących:
 	\item węzły definicji typów,
 
 	\item typy (klasy) nadrzędne i~podrzędne.
-\end{enumerate}
+\end{itemize}
 
 Węzły posiadają szereg atrybutów zdefiniowanych w~obrębie specyfikacji.
 Atrybuty są ściśle określone i~przypisane do~poszczególnych rodzajów
@@ -582,7 +582,7 @@ do~modelowania szczegółowych cech wykorzystuje~się zmienne
 i~właściwości, związane z~węzłem za~pomocą referencji.
 
 
-\subsection{Usługi w~OPC UA}
+\subsection{Usługi}
 
 Usługi stanowią podstawową formę interakcji w~protokole OPC UA. Serwer
 udostępnia klientowi szereg usług. Do~każdej usługi przypisane jest
@@ -598,7 +598,7 @@ zlecone w~niej operacje. Dla~każdej operacji generuje oddzielny status
 serwer formułuje i~przesyła odpowiedź zawierającą status operacji i~dane
 wyjściowe.
 
-Standard OPC UA wyróżnia następujące zestawy usług:
+Standard OPC UA wyróżnia dziwięć podstawowych zestawów usług:
 
 \begin{enumerate}
 	\item usługi odnajdywania --- umożliwiające pozyskanie listy adresów
@@ -708,7 +708,7 @@ przesyłanych wiadomości niezależnie od~przerw w~logicznych kanałach
 komunikacji.
 
 
-\subsubsection{Budowa wiadomości OPC UA TCP}
+\subsubsection{Budowa wiadomości}
 
 \begin{figure}[h]
 	\centering
@@ -945,7 +945,7 @@ Na~rys.~\ref{zako-pol} przedstawiono schematycznie wymianę wiadomości
 w~przypadku zakończenia połączenia.
 
 
-\subsection{Krytyka OPC UA}
+\subsection{Krytyka}
 
 % http://blog.matrikonopc.com/index.php/open-standards-and-paying-to-play/
 

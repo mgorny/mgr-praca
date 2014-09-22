@@ -1,4 +1,4 @@
-\section{Rozproszone systemy pomiarowe w~energetyce}
+\section{Rozproszone systemy pomiarowe}
 
 \subsection{Wprowadzenie do~systemów pomiarowych}
 
@@ -198,8 +198,8 @@ od~punktu pobrania informacji oraz~drogi jej przesyłu.
 			\draw (d) -- (d2);
 		\end{tikzpicture}
 		\label{top-drzewa}
-	} %
-~~ %
+	}
+
 	\subfloat[topologia kraty]{
 		\begin{tikzpicture}[scale=-0.75]
 			\begin{scope}[every node/.style={draw, circle, minimum size=5mm}]
@@ -220,8 +220,8 @@ od~punktu pobrania informacji oraz~drogi jej przesyłu.
 			\draw (d) -- (e);
 		\end{tikzpicture}
 		\label{top-kraty}
-	}
-
+	} %
+~~ %
 	\subfloat[topologia mieszana]{
 		\begin{tikzpicture}[scale=0.75]
 			\begin{scope}[every node/.style={draw, circle, minimum size=5mm}]
@@ -332,9 +332,9 @@ z~węzłami podrzędnymi (jak w~topologii drzewa).
 %Katedra Elektroniki, WEAIiE AGH
 
 
-\subsection{Zastosowanie rozproszonych systemów pomiarowych w~energetyce}
+\subsection{Zastosowanie rozproszonych systemów pomiarowych}
 
-\subsubsection{Rozległe systemy pomiarowe WAMS/PMU}
+\subsubsection{Rozległe systemy pomiarowe}
 
 % PMU and Time synch
 
@@ -355,13 +355,13 @@ napięcia i~prądu, a~otrzymane pomiary synchronizuje~się
 przy~wykorzystaniu czasu otrzymywanego z~sieci GPS. Na~podstawie
 wykonanych pomiarów określa~się:
 
-\begin{enumerate}
+\begin{itemize}
 	\item wartość skuteczną i~kąt fazowy (fazor) napięcia,
 
 	\item wartość skuteczną i~kąt fazowy (fazor) prądu,
 
 	\item częstotliwość oraz~jej pochodną.
-\end{enumerate}
+\end{itemize}
 
 Oprócz tego, PMU mogą przesyłać dodatkowe sygnały analogowe i~cyfrowe,
 np.~sygnały sterowania.
@@ -409,10 +409,10 @@ Do~zastosowań systemów WAMS należą:
 \end{itemize}
 
 
-\subsubsection{Pomiary inteligentne (smart metering)}
+\subsubsection{Pomiary inteligentne}
 
-Jednym z~podstawowych elementów sieci inteligentnych (\textit{smart
-grid}) są inteligentne mierniki. Mierniki inteligentne umożliwiają
+Jednym z~podstawowych elementów sieci inteligentnych ,,\textit{smart
+grid}'' są inteligentne mierniki. Mierniki inteligentne umożliwiają
 dwukierunkową komunikację w~czasie rzeczywistym, zapewniając bardziej
 precyzyjne informacje o~obciążeniu sieci oraz~narzędzia jego kontroli.
 
@@ -427,7 +427,7 @@ przedsiębiorstwa oferujące usługi doradcze.\cite{privacy-by-design}
 W~celu zapewnienia właściwego poziomu bezpieczeństwa i~prywatności,
 stosuje~się następujące reguły:
 
-\begin{enumerate}
+\begin{itemize}
 	\item wszystkie przesyłane informacje są szyfrowane. Szyfrowanie
 		odbywa~się przy~wykorzystaniu kryptografii asymetrycznej bądź
 		unikalnego klucza przypisanego do~użytkownika --- inni
@@ -447,4 +447,4 @@ stosuje~się następujące reguły:
 
 	\item Uruchomienie każdej dodatkowej usługi wymaga od~użytkownika
 		jawnego wyrażenia zgody na~przesył niezbędnych danych.
-\end{enumerate}
+\end{itemize}
