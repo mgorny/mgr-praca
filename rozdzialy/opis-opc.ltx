@@ -1,107 +1,44 @@
 \section{Opis protokołu OPC}
 
-\subsection{Rys historyczny}
+\subsection{Wprowadzenie}
 
-% http://www.opcconnect.com/history.php
+Protokół OPC UA (\eng{Open Platform Communications Unified
+Architecture}) definiuje zunifikowany model infrastruktury do~przesyłu
+informacji oraz~sterowania w~przemyśle. OPC UA określa następujące
+elementy:
 
-Początków zainteresowania wymianą danych pomiędzy urządzeniami
-automatyki przemysłowej i~systemami operacyjnymi ogólnego zastosowania
-dopatrywać~się można w~roku 1990. Wprowadzony został wówczas na~rynek
-system operacyjny Windows~3.0, posiadający podwaliny wielozadaniowości
---- możliwości pracy z~wieloma programami uruchomionymi jednocześnie,
-oraz mechanizm DDE (\textit{Dynamic Data Exchange}), standaryzujący
-wymianę danych pomiędzy uruchomionymi aplikacjami.\cite{opc-history}
+\begin{itemize}
+	\item model informacyjny dla~reprezentacji struktury, zachowań
+	i~semantyki,
 
-Już wówczas dostrzegano korzyści przekazywania danych procesowych
-do~aplikacji ogólnego zastosowania, jak np.~arkusz kalkulacyjny.
-Mechanizm DDE posiadał jednak znaczne ograniczenia. Nie~umożliwiał
-chociażby przesyłu informacji pomiędzy różnymi komputerami w~obrębie
-sieci komputerowej, a~jego przepustowość była silnie ograniczona.
+	\item model wiadomości dla~interakcji pomiędzy aplikacjami,
 
-Kilka firm podejmowało niezależne próby rozwiązania tych problemów,
-oferując własne rozwiązania takie jak NetDDE i~FastDDE firmy
-Wonderware czy~AdvanceDDE firmy Rockwell Software. Rozwiązania te miały
-charakter własnościowy, przez co nie~miały szansy stać~się standardem
-przemysłowym.
+	\item model komunikacji dla~przesyłu danych pomiędzy aplikacjami,
 
-W~roku 1992 wprowadzono standard OLE 2.0 (\textit{Object Layer
-Extensions 2.0}), który charakteryzował~się większą elastycznością
-i~wydajnością. W~tym czasie uformowała~się również grupa WinSEM
-(\textit{Windows in~Science, Engineering and~Manufacturing}),
-zrzeszająca przedstawicieli firm zajmujących~się automatyką przemysłową
-i~akwizycją danych pomiarowych zainteresowanych wykorzystaniem systemu
-Windows.
+	\item model zgodności dla~zapewnienia interoperacyjności.
+\end{itemize}
 
-Jednym z~obiektów zainteresowań grupy było wykorzystanie techniki OLE
-dla~przekazywania danych procesowych pomiędzy programami w~czasie
-rzeczywistym. Dostawcy oprogramowania SCADA dostrzegali w~tym możliwość
-ustandaryzowania sposobu komunikacji pomiędzy rdzeniem aplikacji SCADA,
-a~sterownikami obsługującymi urządzenia pomiarowe --- a~co za~tym idzie,
-możliwości wykorzystania jednolitych sterowników urządzeń pomiarowych
-dla~wszystkich programów w~systemie Windows.
+OPC UA zostało zaprojektowane z~myślą o~przenośności pomiędzy
+platformami. Komunikacja odbywa~się poprzez~przesył wiadomości pomiędzy
+klientem i~serwerem, przy~wykorzystaniu dowolnej sieci komputerowej.
+Protokół zapewnia bezpieczną komunikację, umożliwiając uwierzytelnianie
+klienta i~serwera oraz~zabezpieczając przed atakami. Informacje
+przesyłane mogą być zarówno przy~pomocy standardowych typów danych,
+jak~i~typów zdefiniowanych przez~użytkownika, z~możliwością dynamicznego
+rozpoznawania struktury obiektów. Istnieje możliwość zapewnienia dostępu
+do~danych bieżących i~historycznych, a~także nasłuchu alarmów i~zdarzeń.
 
-W~roku 1995 uformowała~się grupa OPC Task Force (\textit{OLE for Process
-Control Task Force}), której zadaniem było przygotowanie nowego
-standardu wymiany informacji w~krótkim czasie. Pierwszy szkic standardu
-OPC pojawił~się w~grudniu tego samego roku, natomiast 29 kwietnia
-1996~r. ostatecznie wydano standard OPC w~wersji 1.0. Dalszym rozwojem
-standardu zajmować miała~się niezależna organizacja typu non-profit,
-OPC Foundation.
+Protokół OPC UA stanowi następcę protokołu OPC (\eng{OLE for Process
+Control}), który wykorzystywał nieprzenośną technologię Microsoft DCOM
+(\eng{Distributed Common Object Model}). Nowy protokół zaprojektowano
+tak, by~umożliwić łatwe mapowanie danych z~serwerów OPC na~serwery OPC
+UA. Możliwe jest zarówno przeniesienie całej infrastruktury na~nowy
+protokół, jak i~stosowanie programów pośredniczących, umożliwiających
+dwustronną komunikację pomiędzy aplikacjami wykorzystującymi OPC i~OPC
+UA.
 
-W~kolejnych latach protokół OPC był rozwijany i~rozszerzany. Zasadnicza
-część standardu została przemianowana na~\textit{OPC Data Access},
-i~została poszerzona o~kolejne specyfikacje, uzupełniające
-funkcjonalność OPC. Najnowsze wersje poszczególnych specyfikacji
-wymienione zostały w~tabeli~\ref{t-opc-classic}.
-
-\begin{table}[ht]
-	\caption{Lista specyfikacji OLE for Process Control\cite{opc-classic-list}}
-	\label{t-opc-classic}
-
-	\begin{tabular}{l l l p{8cm}}
-		\toprule
-			Nazwa & Wersja & Wyd. & Obszar \\
-		\midrule
-			Data Access & 3.00 & 2003 & ogólne koncepcje, odczyt i~zapis
-				danych, subskrypcje powiadomień o zmianach \\
-			Historical Data Access & 1.20 & 2003 & dostęp do~danych
-				historycznych \\
-			Alarms and Events & 1.1 & 2002 & monitorowanie i~zgłaszania
-				sytuacji alarmowych \\
-			XML-Data Access & 1.01 & 2004 & dostęp do~danych w~oparciu
-				o~standard XML \\
-			Data eXchange & 1.00 & 2003 & wymiana informacji pomiędzy
-				serwerami OPC \\
-			Complex Data & 1.00 & 2003 & wykorzystanie złożonych
-				struktur danych \\
-			Security & 1.00 & 2000 & metody kontroli dostępu
-				do~aplikacji i~danych \\
-			Batch & 2.00 & 2001 & przesył algorytmów do~urządzeń \\
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-% http://documentation.unified-automation.com/uasdkcpp/1.0.0/L2OpcUaMotivation.html
-
-Standard OPC zdobył dużą popularność jako otwarty, ujednolicony sposób
-komunikacji pomiędzy urządzeniami automatyki i~systemami komputerowymi.
-Jednakże jego podstawę stanowił zamknięty, własnościowy standard DCOM
-(\textit{Distributed Common Object Model}) firmy Microsoft, co
-praktycznie ograniczało możliwość zastosowania OPC do~platform opartych
-o~system Windows.\cite{opc-motivation}
-
-Dlatego też OPC Foundation podjęło prace nad~nowym standardem OPC UA
-(\textit{Open Platform Communications Unified Architecture}), które
-zaowocowały wypuszczeniem pierwszej wersji jego specyfikacji w~2006~r.
-Nowy standard charakteryzuje~się strukturą warstwową, która oddziela
-cechy protokołu OPC od~wykorzystywanej platformy komunikacyjnej.
-W~wersji 1.00 uwzględniono możliwość kodowania informacji w~otwartym
-formacie XML lub~dedykowanym formacie binarnym, natomiast funkcje
-komunikacyjne zrealizowano w~oparciu o~protokół TCP lub~usługi SOAP
-wykorzystujące protokół HTTP.
-
-W~latach 2010--2011 kolejne części standardu OPC UA zostały przyjęte
-jako norma IEC 62541.
+W~latach 2010--2011 część standardu OPC UA została przyjęta jako norma
+IEC 62541.
 
 
 \subsection{Warunki licencyjne}
@@ -488,10 +425,10 @@ Identyfikator węzła może mieć postać:
 
 	\item tekstową,
 
-	\item identyfikator sieciowego URI (\textit{Uniform Resource
+	\item identyfikator sieciowego URI (\eng{Uniform Resource
 		Identifier}),
 
-	\item bądź identyfikatora GUID (\textit{Globally Unique Identifier}).
+	\item bądź identyfikatora GUID (\eng{Globally Unique Identifier}).
 \end{itemize}
 
 Każdy węzeł może mieć identyfikator wyłącznie jednego typu,
@@ -992,7 +929,7 @@ urządzeń o~niewielkiej wydajności procesora, które komunikują~się
 z~serwerem jedynie okresowo może to powodować zauważalne opóźnienia
 przesyłu danych.\cite{opc-overheads}
 
-Podobny problem rozwiązano chociażby w~protokole TLS (\textit{Transport
+Podobny problem rozwiązano chociażby w~protokole TLS (\eng{Transport
 Layer Security}), umożliwiając szybkie wznowienie sesji przerwanego
 połączenia --- wówczas zamiast realizacji pełnej procedury zestawiania
 kanału szyfrowanego wznawia~się wykorzystanie klucza wynegocjowanego
