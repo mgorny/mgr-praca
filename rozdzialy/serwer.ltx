@@ -38,12 +38,14 @@
 W~ramach projektu wykonane zostały następujące komponenty:
 
 \begin{itemize}
-	\item serwer OPC UA, pracujący pod~kontrolą systemu GNU/Linux,
+	\item stos (biblioteka) OPC UA, przy~pomocy którego zbudowane zostały
+	pozostałe aplikacje,
 
-	\item moduł serwera, umożliwiający komunikację z~modułem
-		telemetrycznym MT-101 przy~pomocy łącza RS232,
+	\item serwer OPC UA, współpracujący z~modułem telemetrycznym MT-101,
 
-	\item klient OPC UA, przeznaczony do~testowania serwera.
+	\item serwer OPC UA, emulujący wirtualny moduł MT-101,
+
+	\item klient OPC UA, przeznaczony do~testowania serwerów.
 \end{itemize}
 
 Serwer połączony jest z~modułem telemetrycznym za~pomocą łącza
@@ -126,13 +128,13 @@ Po~uwzględnieniu wszystkich powyższych kryteriów wybór padł na~język
 \Cpp. Do~jego zalet należą:
 
 \begin{itemize}
-	\item powszechna dostępność kompilatora \Cpp z~pakietu GCC
+	\item powszechna dostępność kompilatora \Cpp{ }z~pakietu GCC
 	(\eng{GNU Compiler Collection}). Kompilator ten jest elementem
 	standardowej instalacji, bądź standardowego pakietu aplikacji
 	dla~programistów, wielu dystrybucji systemu GNU/Linux,
 	systemów BSD, systemu MacOS X oraz~platform Cygwin i~MinGW,
 	umożliwiających portowanie aplikacji do~systemu Windows. Co więcej,
-	kompilator języka \Cpp wymieniony został jako element standardowych narzędzi
+	kompilator języka \Cpp{ }wymieniony został jako element standardowych narzędzi
 	programistycznych w~specyfikacji POSIX.
 
 	\item Zdolność wytworzenia silnie zoptymalizowanego kodu maszynowego
@@ -145,7 +147,7 @@ Po~uwzględnieniu wszystkich powyższych kryteriów wybór padł na~język
 	jężyka.
 
 	\item Duża stabilność języka programowania, oraz~jego standaryzacja.  Język
-	\Cpp opisany jest w~normie ISO/IEC 14882\cite{c++}.
+	\Cpp{ }opisany jest w~normie ISO/IEC 14882\cite{c++}.
 
 	\item Typowanie oraz~rozbudowane mechanizmy kontroli poprawności
 	kodu podczas kompilacji. Pozwala to na~wczesne odnajdywanie błędów
@@ -158,14 +160,15 @@ Po~uwzględnieniu wszystkich powyższych kryteriów wybór padł na~język
 	zewnętrznych modułów. 
 \end{itemize}
 
-Za~minimalną wersję języka \Cpp przyjęto wersję \Cpp11 (ISO/IEC
+Za~minimalną wersję języka \Cpp{ }przyjęto wersję \Cpp11 (ISO/IEC
 14882:2011, publikacja: wrzesień 2011).  Wersja ta wprowadza wiele
 usprawnień do~języka, i~jest w~stopniu dostatecznym obsługiwana
 przez~aktualne wersje kompilatorów \Cpp.  Przykładowo, standard \Cpp11
+
 jest w~przeważającej części wspierany przez kompilator GCC od~wersji 4.8
 (marzec 2013) oraz~kompilator clang od~wersji 3.1 (maj 2012).
 
-Standard \Cpp nie~przewiduje znormalizowanych funkcji obsługi połączeń
+Standard \Cpp{ }nie~przewiduje znormalizowanych funkcji obsługi połączeń
 sieciowych.  Dla~systemu GNU/Linux oraz~systemów BSD funkcje sieciowe
 zaimplementowane są w~oparciu o~interfejs \textit{Berkeley sockets},
 uwzględniony z~niewielkimi modyfikacjami w~normie POSIX\cite{posix}.
@@ -174,7 +177,7 @@ Windows oraz~niepełną standaryzację wydajnych nieblokujących funkcji
 sieciowych, operacje sieciowe zrealizowano w~oparciu o~bibliotekę
 libevent\cite{libevent}.
 
-Podobnie, standard \Cpp nie~uwzględnia metod komunikacji za~pomocą portu
+Podobnie, standard \Cpp{ }nie~uwzględnia metod komunikacji za~pomocą portu
 szeregowego. W~systemach opartych o~normę POSIX dostęp do~portu
 szeregowego, podobnie jak do~przeważającej części urządzeń sprzętowych
 oraz~wirtualnych, realizowany jest w~oparciu o~plik-urządzenie.
@@ -204,6 +207,13 @@ dla~określonej struktury metody pomocnicze tego interfejsu umożliwiają
 serializację poszczególnych pól struktury bez~konieczności ich
 wyliczania w~każdej klasie implementującej interfejs
 \textit{Serializer}.
+
+Serializacja oraz~deserializacja wykonywana jest przy~pomocy
+dynamicznych binarnych buforów, umożliwiających zachowanie pełnej
+odrębności pomiędzy konstrukcją typów wykorzystywanych przez~aplikację,
+a~ich kodowaniem. Pozwala to połączyć optymalną wydajność operacji
+na~danych z~przenośnością kodu do~systemów o~innej reprezentacji
+binarnej typów.
 
 
 \subsubsection{Implementacja przestrzeni adresowej}
@@ -245,6 +255,7 @@ dzielonych wskaźników \textit{std::shared\_ptr}, co~pozwala na~łatwe
 tworzenie nowych węzłów i~dodawanie ich do~przestrzeni adresowej
 bez~konieczności implementacji własnego zarządzania pamięcią.
 
+
 \subsubsection{Komunikacja z~MT-101}
 
 Komunikacja z~MT-101 odbywa~się za~pośrednictwem dedykowanych podklas
@@ -259,3 +270,47 @@ sekwencyjnego odczytu wielu zmiennych. Zmienne opatrzone są również
 czasem ich odczytu, co umożliwia określenie, czy~konieczny jest ponowny
 ich odczyt w~zależności od~żądanego przez~klienta stopnia aktualności
 przesyłanych danych.
+
+Podobnie, przesłane przez~klienta żądania zapisu są kolejkowane
+w~pamięci serwera. Po~zakończeniu przetwarzania wiadomości, poszczególne
+zmiany łączone są w~możliwie kompaktowe żądania zapisu i~przesyłane
+do~urządzenia.
+
+\subsection{Wykonane programy}
+
+\subsubsection{Serwer MT-101}
+
+Najważniejszym elementem wykonanym przez~autora w~obrębie pracy jest
+serwer OPC UA, który współpracuje z~modułem MT-101. W~przestrzeni
+adresowej serwera udostępnione są następujące zasoby modułu:
+
+\begin{itemize}
+	\item stany wejść binarnych I1 -- I8 (tylko odczyt),
+
+	\item stany wymuszeń wyjść binarnych Q1 -- Q8 (odczyt i~zapis),
+
+	\item wielkości inżynierskie na~wejściach analogowych AN1 i~AN2
+	(odczyt).
+\end{itemize}
+
+Serwer jest programem nieinteraktywnym. Po~uruchomieniu rozpoczyna
+komunikację z~modułem przy~wykorzystaniu portu szeregowego, a~następnie
+otwiera port sieciowy i~przyjmuje połączenia od~klientów.
+
+Komunikacja z~klientami odbywa~się w~trybie jednowątkowym
+z~wykorzystaniem operacji nieblokujących. Serwer przyjmuje dane
+przychodzące w~pętli bezczynności. Przetwarzanie rozpoczyna~się dopiero
+po~otrzymaniu całej wiadomości, i~powoduje zablokowanie pracy serwera.
+Po~przetworzeniu wiadomości i~skonstruowaniu odpowiedzi, serwer może
+przetwarzać kolejne wiadomości.
+
+Serwer może obsługiwać wielu klientów, przy~czym żądania poszczególnych
+klientów realizowane są sekwencyjnie, w~kolejności otrzymania
+wiadomości. Model ten nie~sprawdzi~się w~przypadku dużej liczby klientów
+--- wówczas konieczne jest zastosowanie modelu wielowątkowego,
+umożliwiającego jednoczesne przetwarzanie żądań wielu klientów.
+
+Komunikacja z~modułem MT-101 odbywa~się w~trybie blokującym.
+Każdorazowego wywołanie polecenia modułu powoduje zatrzymanie
+przetwarzania wiadomości do~momentu otrzymania odpowiedzi
+(potwierdzenia).
