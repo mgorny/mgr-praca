@@ -276,6 +276,7 @@ w~pamięci serwera. Po~zakończeniu przetwarzania wiadomości, poszczególne
 zmiany łączone są w~możliwie kompaktowe żądania zapisu i~przesyłane
 do~urządzenia.
 
+
 \subsection{Wykonane programy}
 
 \subsubsection{Serwer MT-101}
@@ -314,3 +315,14 @@ Komunikacja z~modułem MT-101 odbywa~się w~trybie blokującym.
 Każdorazowego wywołanie polecenia modułu powoduje zatrzymanie
 przetwarzania wiadomości do~momentu otrzymania odpowiedzi
 (potwierdzenia).
+
+Zakłada się, że~połączenie z~MT-101 jest pewne
+i~charakteryzuje~się niewielkim czasem odpowiedzi. W~celu poprawy
+wydajności przy~sekwencyjnych żądaniach odczytu danych, wszystkie
+użyteczne zmienne są odczytywane jednocześnie i~przechowywane w~pamięci
+,,\textit{cache}'' do~powtórnego wykorzystania. W~celu poprawy
+wydajności przy~sekwencyjnym zapisie, żądania zapisu są kolejkowane
+i~łączone ze~sobą.
+
+
+\subsubsection{}
