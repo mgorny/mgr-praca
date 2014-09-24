@@ -316,13 +316,196 @@ Każdorazowego wywołanie polecenia modułu powoduje zatrzymanie
 przetwarzania wiadomości do~momentu otrzymania odpowiedzi
 (potwierdzenia).
 
+\begin{figure}[ht]
+	\centering
+
+	\begin{tikzpicture}
+		\begin{scope}[every node/.style={rectangle,draw}]
+			\node[below left, minimum width=2cm,minimum height=14cm]
+				at (0,0) {klient};
+			\node[below right, minimum width=2cm,minimum height=14cm]
+				at (3,0) {serwer};
+			\node[below right, minimum width=2cm,minimum height=14cm]
+				at (7,0) {cache};
+			\node[below right, minimum width=2cm,minimum height=14cm]
+				at (12,0) {MT-101};
+		\end{scope}
+
+		\begin{scope}[shorten >=2mm, shorten <=2mm]
+			\draw[-stealth] (0,-.5) -- ++(3,0)
+				node[above, midway] {odczyt I1, I2};
+
+			\draw[-stealth] (5,-.5) -- ++(2,0)
+				node[above, midway] {odczyt I1};
+			\draw[-stealth] (9,-.5) -- ++(3,0)
+				node[above, midway] {odczyt pamięci};
+
+			\draw[stealth-] (9,-1.5) -- ++(3,0)
+				node[above, midway] {zaw. pamięci};
+			\draw[stealth-] (5,-1.5) -- ++(2,0)
+				node[above, midway] {wartość I1};
+
+			\draw[-stealth] (5,-2.5) -- ++(2,0)
+				node[above, midway] {odczyt I2};
+			\draw[stealth-] (5,-3.5) -- ++(2,0)
+				node[above, midway] {wartość I2};
+
+			\draw[stealth-] (0,-3.5) -- ++(3,0)
+				node[above, midway] {wartość I1, I2};
+
+			\draw[-stealth] (0,-4.5) -- ++(3,0)
+				node[above, midway] {odczyt I3};
+			\draw[-stealth] (5,-4.5) -- ++(2,0)
+				node[above, midway] {odczyt I1};
+			\draw[-stealth, dashed] (9,-4.5) -- ++(3,0)
+				node[above, midway] {odczyt pamięci};
+
+			\draw[stealth-, dashed] (9,-5.5) -- ++(3,0)
+				node[above, midway] {zaw. pamięci};
+			\draw[stealth-] (5,-5.5) -- ++(2,0)
+				node[above, midway] {wartość I3};
+			\draw[stealth-] (0,-5.5) -- ++(3,0)
+				node[above, midway] {wartość I3};
+
+			\draw[-stealth] (0,-7.5) -- ++(3,0)
+				node[above, midway] {zapis Q1, Q2};
+			\draw[-stealth] (5,-7.5) -- ++(2,0)
+				node[above, midway] {zapis Q1};
+			\draw[-stealth] (5,-8.5) -- ++(2,0)
+				node[above, midway] {zapis Q2};
+
+			\draw[stealth-] (0,-9.5) -- ++(3,0)
+				node[above, midway] {potwierdzenie};
+
+			\draw[-stealth] (0,-10.5) -- ++(3,0)
+				node[above, midway] {zapis Q3};
+			\draw[-stealth] (5,-10.5) -- ++(2,0)
+				node[above, midway] {zapis Q3};
+			\draw[stealth-] (0,-11.5) -- ++(3,0)
+				node[above, midway] {potwierdzenie};
+
+			\draw[-stealth] (9,-12.5) -- ++(3,0)
+				node[above, midway] {zapis Q1 -- Q3};
+			\draw[stealth-] (9,-13.5) -- ++(3,0)
+				node[above, midway] {potwierdzenie};
+
+		\end{scope}
+	\end{tikzpicture}
+
+	\caption{Graficzna ilustracja działania mechanizmu pamięci
+	podręcznej \textit{,,cache''}}
+	\label{rys-serwer-cache}
+\end{figure}
+
 Zakłada się, że~połączenie z~MT-101 jest pewne
 i~charakteryzuje~się niewielkim czasem odpowiedzi. W~celu poprawy
-wydajności przy~sekwencyjnych żądaniach odczytu danych, wszystkie
-użyteczne zmienne są odczytywane jednocześnie i~przechowywane w~pamięci
-,,\textit{cache}'' do~powtórnego wykorzystania. W~celu poprawy
-wydajności przy~sekwencyjnym zapisie, żądania zapisu są kolejkowane
-i~łączone ze~sobą.
+wydajności obsługi sekwencyjnych żądań odczytu oraz~zapisu, zastosowano
+mechanizm wykorzystania pamięci podręcznej \textit{,,cache''}, którego
+działanie zostało zilustrowane na~rys.~\ref{rys-serwer-cache}.
+
+Przesyłane przez~klienta żądania odczytu wykonywane są sekwencyjnie,
+za~pośrednictwem pamięci cache. Jeżeli w~pamięci cache znajduje~się
+dostatecznie aktualna kopia wartości żądanej zmiennej, jest ona
+przesyłana w~odpowiedzi bez~konieczności komunikacji z~modułem.
+W~przeciwnym razie, zawartość pamięci cache jest aktualizowane
+poprzez~wysłanie żądania odczytu bloku pamięci do~modułu.
+
+Podobnie, przesłane żądania zapisu kolejkowane są w~pamięci cache.
+Pozwala to na~połączenie ich w~jedną komendę, która przesłana zostaje
+do~modułu po~przetworzeniu zakolejkowanych zdarzeń.
 
 
-\subsubsection{}
+\subsubsection{Serwer wirtualny}
+
+Serwer wirtualny stanowi zmodyfikowaną wersją serwera MT-101, która
+umożliwia demonstrację funkcjonalności serwera bez~konieczności
+nawiązania łączności z~modułem.
+
+Serwer wirtualny udostępnia identyczną przestrzeń adresową jak~serwer
+MT-101. Stan wejść oraz~wyjść przedstawiony jest graficznie na~ekranie
+komputera, i~może być kontrolowany za~pomocą klawiatury.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.4]{zdj/virtual-server.png}
+
+	\caption{Zrzut ekranu serwera wirtualnego}
+	\label{vserv-zrzut}
+\end{figure}
+
+Stany wejść oraz~wyjść cyfrowych przedstawione są za~pomocą symboli
+,,-'' (fałsz) oraz~,,+'' (prawda). Dla~wejść analogowych przedstawiona
+jest wartość numeryczna skonfigurowanej wielkości. W~przypadku zmiany
+wartości, wskazania pozostaje podświetlone przez okres 2~sekund.
+
+Manipulacja stanem wejść i~wyjść cyfrowych możliwa jest przy~pomocy
+dwóch górnych wierszy klawiatury alfanumerycznej. Odpowiednio:
+
+\begin{itemize}
+	\item klawisze od~,,1'' do~,,8'' zmieniają stan odpowiedniego
+		wejścia cyfrowego I1 -- I8 na~przeciwny,
+
+	\item klawisze od~,,Q'' do~,,I'' zmieniają stan odpowiedniego
+		wyjścia cyfrowego Q1 -- Q8 na~przeciwny.
+\end{itemize}
+
+Oprócz tego, stan wyjść cyfrowych zmieniony może być przez~klienta.
+
+Manipulacja wartością wejść analogowych odbywa~się przy~pomocy
+następujących klawiszy:
+
+\begin{itemize}
+	\item klawisze ,,A'' i~,,Z'' odpowiednio zwiększają bądź~zmniejszają
+		wartość na~wejściu AN1,
+
+	\item klawisze ,,S'' i~,,X'' odpowiednio zwiększają bądź~zmniejszają
+		wartość na~wejściu AN2.
+\end{itemize}
+
+Przytrzymanie klawisza ,,shift'' przyspiesza tempo zmian wartości.
+
+
+\subsubsection{Klient}
+
+Kolejną aplikacją jest klient OPC UA, którego zadaniem jest
+zademonstrowanie możliwego sposobu współpracy z~serwerem. Klient jest
+nieinteraktywną aplikacją, pracującą w~trybie tekstowym.
+Po~uruchomieniu, klient nawiązuje połączenie z~serwerem i~z~odstępem
+2~sekund pobiera cyklicznie z~serwera informacje o~stanie wejść i~wyjść.
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[scale=0.4]{zdj/client.png}
+
+	\caption{Zrzut ekranu klienta}
+	\label{cli-zrzut}
+\end{figure}
+
+Otrzymane informacje wypisywane są w~kolejnych wierszach wraz
+ze~wskazaniem czasu ich otrzymania, a~zmiany w~stosunku do~poprzedniego
+zapytania są wyróżnione graficznie.
+
+Oprócz tego, klient demonstruje możliwość realizacji zautomatyzowanych
+procesów sterowania. Dla~każdego otrzymanego stanu wejść, określany jest
+nowy stan wyjść przy~wykorzystaniu algorytmu~\ref{algo-wyj}. Jeżeli
+otrzymany stan wyjść różni~się od~obecnego, wysyłane jest żądanie zapisu
+nowego stanu.
+
+\begin{algorithm}[ht]
+	\caption{Algorytm określania stanu wyjść binarnych}
+	\label{algo-wyj}
+
+	\begin{algorithmic}[1]
+		\State \textit{xorpattern} := \verb+0b00101110+
+		\State \textit{wyj1} := \textit{wejbin}
+			\textbf{xor} \textit{xorpattern}
+		\State \textit{an1b} := (\textit{an1}
+			\textbf{and} \verb+0xff0+) \textbf{shr} 4
+		\State \textit{wyj2} := \textit{wyj1}
+			\textbf{xor} \textit{an1b}
+		\State \textit{an2b} := (\textit{an2}
+			\textbf{and} \verb+0xff00+) \textbf{shr} 8
+		\State \textit{wyjbin} := \textit{wyj2}
+			\textbf{xor} \textit{an2b}
+	\end{algorithmic}
+\end{algorithm}

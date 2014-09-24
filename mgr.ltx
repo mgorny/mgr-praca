@@ -12,7 +12,9 @@
 \usepackage{pgfplots}
 \usepackage{amsmath}
 \usepackage[xetex,breaklinks,bookmarks]{hyperref}
-\usepackage[hypcap]{caption}
+\usepackage{algpascal}
+\usepackage{algorithm}
+\usepackage[hypcap,labelsep=period]{caption}
 \usepackage{titlesec}
 \usepackage[dotinlabels]{titletoc}
 \usepackage{siunitx}
@@ -20,6 +22,10 @@
 \usepackage{longtable}
 \usepackage[backend=bibtexu,sorting=none]{biblatex}
 \usepackage{enumitem}
+
+\makeatletter
+\renewcommand{\ALG@name}{Algorytm}
+\makeatother
 
 \usetikzlibrary{decorations}
 \usetikzlibrary{patterns}
@@ -49,6 +55,7 @@
 \numberwithin{figure}{section}
 \numberwithin{table}{section}
 \numberwithin{equation}{section}
+\numberwithin{algorithm}{section}
 
 \newcommand\Cpp{C{\scriptsize ++}}
 \newcommand\eng[1]{ang. \textit{#1}}
