@@ -60,13 +60,13 @@ dostęp~do:
 		implementacji.
 \end{itemize}
 
-Ograniczony, odpłatny dostęp do~specyfikacji poddają w~wątpliwość
+Ograniczony, odpłatny dostęp do~specyfikacji poddaje w~wątpliwość
 podkreślaną przez~autorów otwartość specyfikacji. Chociażby zgodnie
 z~definicją zastosowaną przez~Komisję Europejską w~opisie
 \textit{European Interoperability Framework for pan-European
 eGovernment Services version 1.0}\cite{eurogov}, otwarty standard musi być
 udostępniony wszystkim zainteresowanym nieodpłatnie bądź~po~kosztach
-druku, wraz z~prawem do~nieograniczego kopiowania, rozpowszechniania
+druku, wraz z~prawem do~nieograniczonego kopiowania, rozpowszechniania
 i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
 
 % http://pl.wikipedia.org/wiki/Otwarty_standard#cite_note-1
@@ -124,8 +124,8 @@ Części 1.--5. opisują podstawową część protokołu OPC UA w~sposób
 abstrakcyjny. Definiują strukturę sieci, organizację danych i~dostępne
 usługi, nie~narzucając konkretnej reprezentacji binarnej czy~sposobu
 realizacji komunikacji. Części te mogą posłużyć zaprojektowaniu
-i~wykonaniu implementacji stosu OPC UA wraz z~jego wewnętrznym API,
-nie~zapewnią jednak współpracy pomiędzy stosami różnych producentów.
+i~wykonaniu implementacji stosu OPC UA wraz z~jego wewnętrznym API.
+Nie~zapewniają jednak współpracy pomiędzy stosami różnych producentów.
 
 Część 6. specyfikacji definiuje standardowe sposoby kodowania danych
 oraz~protokoły sieciowe dla~OPC. Na~jej podstawie do~zdefiniowanych
@@ -149,7 +149,7 @@ danych i~usługi, zbudowane w~oparciu o~bazowe typy zdefiniowane
 w~częściach 1.--5. Abstrakcja typów pozwala na~implementację tych części
 specyfikacji bez~konieczności definiowania dedykowanego sposobu
 kodowania danych --- ich realizacja wykonana może być w~oparciu o~reguły
-dla~typów podstawowych określone w~6.~części specyfikacji.
+dla~typów podstawowych, określone w~6.~części specyfikacji.
 
 
 \subsection{Struktura sieci}
@@ -330,7 +330,7 @@ wystawienia przez~uznawane centrum autoryzacji.
 \subsubsection{Zabezpieczenie przesyłanych wiadomości}
 
 Wiadomości przesyłane za~pośrednictwem protokołu OPC UA zabezpieczone
-mogą~być przy~pomocy metod kryptografii symetrycznej. Niezbędne klucze
+mogą~być metodami kryptografii symetrycznej. Niezbędne klucze
 generowane są przy~pomocy funkcji opisanej w~części szóstej
 specyfikacji (\textit{6.4.5 Deriving Keys}).
 
@@ -343,7 +343,7 @@ cyfrowego pozwala na~weryfikację integralności i~autentyczności
 przesyłanych informacji, a~co za~tym idzie zabezpiecza przed~możliwością
 ingerencji w~treść pakietów.
 
-Protokół zabezpiecza również przed atakami typu \textit{replay}, opartymi
+Protokół zabezpiecza także przed atakami typu \textit{replay}, opartymi
 o~powtórne przesyłanie przechwyconych wcześniej wiadomości. Każda
 wiadomość opatrzona jest identyfikatorem sesji, znacznikami czasu
 i~unikalnym numerem sekwencyjnym, które sprawiają, że~przechwycone
@@ -357,8 +357,8 @@ nieupoważnione. W~celu zminimalizowania tego zagrożenia, protokół OPC UA
 znacznie ogranicza zakres wiadomości dostępnych nieuwierzytelnionemu
 klientowi.
 
-Wiadomości dostępne przed~uwierzytelnienem w~większości mogą
-przetworzone być przy~niewielkim wykorzystaniu zasobów. Wyjątek stanowi
+Wiadomości dostępne przed~uwierzytelnieniem w~większości mogą
+być przetworzone przy~niewielkim wykorzystaniu zasobów. Wyjątek stanowi
 żądanie uwierzytelnienia, które wymaga kosztownych operacji
 kryptograficznych. Dlatego też specyfikacja zaleca wprowadzenia
 opóźnienia przetwarzania owych żądań po~nieudanej próbie oraz
@@ -407,16 +407,17 @@ adresowej modelowane mogą być:
 	\item lokalne zasoby wirtualne, jak np.~wielkości obliczeniowe,
 
 	\item zdalne zasoby udostępnione przez~inne serwery OPC UA bądź
-	innych protokołów sieciowych.
+	przy~pomocy innych protokołów sieciowych.
 \end{itemize}
 
 \subsubsection{Identyfikatory węzłów}
 
-Węzły w~przestrzeni adresowej adresowane są przy~pomocy identyfikatorów.
-Identyfikator każdego węzła musi być unikalny w~obrębie serwera.
-W~przypadku sieci współpracujących serwerów, korzystne jest stosowanie
-identyfikatorów unikalnych w~obrębie całej sieci i~wspólnych
-dla~wszystkich współpracujących serwerów.
+Adresowanie węzłów w~przestrzeni adresowej odbywa~się przy~pomocy
+identyfikatorów.  Identyfikator każdego węzła musi być unikalny
+w~obrębie serwera.  W~przypadku sieci, składającej~się z~wielu
+współpracujących serwerów, korzystne jest wprowadzenie identyfikatorów
+unikalnych w~obrębie całej sieci i~stosowanych powtarzalnie
+na~poszczególnych serwerach.
 
 Identyfikator węzła może mieć postać:
 
@@ -433,7 +434,9 @@ Identyfikator węzła może mieć postać:
 
 Każdy węzeł może mieć identyfikator wyłącznie jednego typu,
 a~poszczególne typy są względem siebie rozłączne. Identyfikatory
-numeryczne i~tekstowe dodatkowo grupowane są w~przestrzenie nazw.
+numeryczne i~tekstowe dodatkowo przypisane są do~przestrzeni nazw ---
+identyfikatory stosowane w~różnych przestrzeniach nazw mogą pokrywać~się
+ze~sobą.
 
 Standardowe elementy zdefiniowane w~specyfikacji OPC UA opisane są
 identyfikatorami numerycznymi w~przestrzeni nazw
@@ -443,6 +446,10 @@ Identyfikatory węzłów stosowane są również do~identyfikacji sesji.
 
 
 \subsubsection{Struktura przestrzeni adresowej}
+brębie serwera.  W~przypadku sieci, składającej~się z~wielu
+współpracujących serwerów,
+korzystne jest stosowanie identyfikatorów unikalnych w~obrębie całej
+s
 
 \begin{figure}[h]
 	\centering
@@ -522,7 +529,7 @@ i~właściwości, związane z~węzłem za~pomocą referencji.
 \subsection{Usługi}
 
 Usługi stanowią podstawową formę interakcji w~protokole OPC UA. Serwer
-udostępnia klientowi szereg usług. Do~każdej usługi przypisane jest
+udostępnia klientowi szereg usług. Do~każdej usługi przypisany jest
 określony format żądania i~odpowiedzi. Żądanie określa operacje, jakie
 mają zostać wykonane. Odpowiedź z~kolei zawiera stan wykonania operacji
 oraz~ewentualne dane wyjściowe.
@@ -535,7 +542,7 @@ zlecone w~niej operacje. Dla~każdej operacji generuje oddzielny status
 serwer formułuje i~przesyła odpowiedź zawierającą status operacji i~dane
 wyjściowe.
 
-Standard OPC UA wyróżnia dziwięć podstawowych zestawów usług:
+Standard OPC UA wyróżnia dziewięć podstawowych zestawów usług:
 
 \begin{enumerate}
 	\item usługi odnajdywania --- umożliwiające pozyskanie listy adresów
@@ -705,8 +712,8 @@ Wyróznia~się następujące typy wiadomości:
 	\item \verb+CLO+ --- żądania zamknięcia bezpiecznego kanału.
 \end{itemize}
 
-Flaga rodzaju segmentu określa rodzaj segmentu wiadomości przesyłanego
-w~pakiecie:
+Flaga rodzaju segmentu klasyfikuje pakiet jako jeden z~następujących
+typów:
 
 \begin{itemize}
 	\item pakiet finalny --- ostatni (lub jedyny) segment wiadomości.
@@ -765,7 +772,7 @@ pozostałe części wiadomości, przed~szyfrowaniem.
 Jeżeli szyfrowanie jest wykorzystywane, wiadomości typu \verb+OPN+,
 \verb+MSG+ i~\verb+CLO+ są szyfrowane od~początku nagłówka sekwencyjnego
 do~końca pakietu. Nagłówek warstwy transportowej i~nagłówek bezpieczeństwa
-pozostaję niezaszyfrowane, aby umożliwić poprawne wyodrębnienie,
+pozostają niezaszyfrowane, aby umożliwić poprawne wyodrębnienie,
 zidentyfikowanie i~odszyfrowanie wiadomości. Wiadomość typu \verb+OPN+
 szyfrowana jest algorytmem asymetrycznym, przy~wykorzystaniu klucza
 publicznego odbiorcy. Pozostałe wiadomości szyfrowane są symetrycznie
@@ -809,7 +816,7 @@ przy~pomocy klucza przypisanego do~danego kanału.
 Procedurę nawiązania połączenia rozpoczyna zawsze klient, poprzez
 nawiązanie połączenia TCP z~serwerem. Po~nawiązaniu połączenia, klient
 wysyła wiadomość \textit{Hello}, zawierającą wersję protokołu klienta,
-charakterystyczne ograniczenia wielkości pakietów i~wskazania żądanego
+charakterystyczne ograniczenia wielkości pakietów oraz~wskazania żądanego
 punktu końcowego połączenia. Na~tę wiadomość serwer odpowiada
 wiadomością \textit{Acknowledge} zawierającą te same informacje
 o~charakterystyce serwera. Po~wymianie tych dwóch wiadomości kanał
@@ -896,9 +903,9 @@ wcześniejszego standardu OPC. Ze~względu na~pełną otwartość, na~rynku
 pojawiły~się implementacje wykonane przez~podmioty niebędące członkami
 OPC Foundation, które często zawierały wiele błędów i~sprawiały problemy
 ze~współpracą pomiędzy poszczególnymi produktami. Zastosowany model
-licencyjny ma na~celu ograniczyć dostęp do~specyfikacji, udostępniając
+licencyjny ma na~celu ograniczenie dostępu do~specyfikacji, udostępniając
 ją jedynie tym podmiotom, które zainteresowane są członkostwem OPC
-Foundation i~zainwestować w~rozwój standardu.\cite{opc-pay-to-play}
+Foundation i~zainwestowaniem w~rozwój standardu.\cite{opc-pay-to-play}
 
 Można jednak zauważyć, że~podobny problem chociażby w~przypadku
 protokołu Bluetooth rozwiązano bez~konieczności ograniczania dostępu
@@ -932,5 +939,5 @@ przesyłu danych.\cite{opc-overheads}
 Podobny problem rozwiązano chociażby w~protokole TLS (\eng{Transport
 Layer Security}), umożliwiając szybkie wznowienie sesji przerwanego
 połączenia --- wówczas zamiast realizacji pełnej procedury zestawiania
-kanału szyfrowanego wznawia~się wykorzystanie klucza wynegocjowanego
+kanału szyfrowanego, wznawia~się wykorzystanie klucza wynegocjowanego
 w~poprzedniej sesji.

@@ -57,7 +57,7 @@ W~obrębie pracy rozpatrywane będą wyłącznie systemy cyfrowe.
 Sterowanie procesami czy~badanie stanu systemów rozległych obszarowo
 wymaga pozyskiwania danych pomiarowych z~wielu oddalonych od~siebie
 punktów pomiarowych, często w~czasie rzeczywistym. W~takich przypadkach
-celowe lub~nawet konieczne jest zastosowanie rozproszonych systemów
+wskazane lub~nawet konieczne jest zastosowanie rozproszonych systemów
 pomiarowych.
 
 Brak jest ścisłego kryterium, wyróżniającego systemy rozproszone spośród
@@ -87,7 +87,7 @@ bez~konieczności wprowadzania znacznych zmian w~pozostałej części
 systemu, w~skrajnym przypadku --- wymiany elementów systemu.
 
 Otwartość najczęściej realizuje~się stosując otwartą topologię systemu,
-a~także otwarte standardy komunikacji. Zastosowanie otwartej topologii
+jak również otwarte standardy komunikacji. Zastosowanie otwartej topologii
 umożliwia dołączanie kolejnych urządzeń i~usuwanie istniejących
 przy~minimalnej zmianie struktury pozostałej części systemu.
 Zastosowanie otwartych standardów komunikacji umożliwia dołączanie
@@ -111,10 +111,10 @@ niezawodności pracy systemu. System rozproszony musi zachować zdolność
 do~pracy, chociażby w~części powierzonych zadań, przy~uszkodzeniu
 dowolnego jego fragmentu.
 
-Poprawę niezawodności realizować można wieloma drogami. Wyróżnić można
+Do~poprawy niezawodności dążyć można na~wiele sposobów. Wyróżnić można
 chociażby stosowanie elementów nadmiarowych (pracujących równolegle
-bądź~rezerwowych) czy~algorytmów dostosowanych do~pracy z~ograniczoną
-ilością dostępnych danych.
+z~podstawowymi, bądź~rezerwowych) czy~algorytmów dostosowanych do~pracy
+z~ograniczoną ilością dostępnych danych.
 
 Przez~przezroczystość rozumie~się zdolność systemu do~prezentowania
 spójnej struktury logicznej niezależnie od~rzeczywistego sposobu
@@ -264,7 +264,7 @@ od~punktu pobrania informacji oraz~drogi jej przesyłu.
 	\caption{Typowe topologie rozproszonych systemów pomiarowych}
 \end{figure}
 
-Wyróżnia~się trzy typowe topologie stosowane w~rozproszonych systemach
+Wyróżnia~się trzy podstawowe topologie stosowane w~rozproszonych systemach
 pomiarowych: topologię gwiazdy, topologię drzewa i~topologię kraty.
 \cite{worek-krzak}
 
@@ -285,7 +285,7 @@ podrzędnym i~nadrzędnym. Topologia drzewa sprawdza~się w~przypadku sieci
 bardziej rozległych, w~których komunikacja pomiędzy jednym węzłem
 centralnym, a~wszystkimi pozostałymi węzłami sieci byłaby nieefektywna.
 
-W~sieci o~topologii drzewa komunikacja pomiędzy węzłami podrzędnymi
+W~sieci o~topologii drzewa, komunikacja pomiędzy węzłami podrzędnymi
 odbywa~się za~pośrednictwem ścieżki obejmującej odpowiednie węzły
 nadrzędne. Co za~tym idzie, komunikacja pomiędzy węzłami lokalnymi może
 odbywać~się za~pośrednictwem jednego węzła nadrzędnego, z~kolei pomiędzy
@@ -293,10 +293,10 @@ węzłami odległymi może odbywać~się za~pośrednictwem kilku węzłów
 nadrzędnych, włączając w~to również węzeł centralny.
 
 Pozwala to zredukować wpływ ograniczeń topologii gwiazdy przy~rozległych
-sieciach, jednocześnie zachowując jej zalety. Topologia taka
+sieciach, jednocześnie zachowując jej zalety. Topologia ta
 sprawdza~się w~sieciach, gdzie najczęściej komunikacja odbywa~się
 na~drodze pionowej (przesył informacji w~kierunku węzłów nadrzędnych)
-i~w~obrębie węzłów lokalnych. W~sieci tego typu przesył danych pomiędzy
+oraz w~obrębie węzłów lokalnych. W~sieci tego typu przesył danych pomiędzy
 dwoma odległymi węzłami podrzędnymi jest nieefektywny. Sieć jest
 wrażliwa na~awarie węzłów nadrzędnych, które powodują wyłączenie całego
 segmentu z~pracy systemu.
@@ -346,7 +346,7 @@ systemem pomiarowym.
 
 Najważniejszym rodzajem pomiarów w~systemach WAMS są pomiary
 synchrofazorów. Definicja, sposób pomiaru i~przesyłu pomiarów
-synchrofazorów zdefiniowany został w~normie IEEE C37.118. Pomiaru
+synchrofazorów zdefiniowane zostały w~normie IEEE C37.118. Pomiaru
 dokonuje~się przy~wykorzystaniu urządzeń PMU (\eng{Phasor Measurement
 Unit}).
 
@@ -369,11 +369,11 @@ np.~sygnały sterowania.
 Wyróżnia~się dwie klasy urządzeń PMU:
 
 \begin{enumerate}
-	\item klasę P (\eng{Protection} --- zabezpieczeniowa) o~szybkim
+	\item klasę P (\eng{Protection} --- zabezpieczeniowa), o~szybkim
 	czasie reakcji,
 
-	\item klasę M (\eng{Measurement} --- pomiarowa) o~większej
-	dokładności z~zastosowaniem filtrowania, ale o~wolniejszym czasie
+	\item klasę M (\eng{Measurement} --- pomiarowa), o~większej
+	dokładności i~z~zastosowaniem filtrowania, lecz o~wolniejszym czasie
 	reakcji.
 \end{enumerate}
 
@@ -418,21 +418,21 @@ precyzyjne informacje o~obciążeniu sieci oraz~narzędzia jego kontroli.
 
 System mierników inteligentnych stanowi szczególny przypadek
 rozproszonego systemu pomiarowego. Obok typowych problemów związanych
-z~przesyłem danych pomiarowych na~odległość, bardzo istotne zagadnienie
-stanowi prywatność użytkowników. Szczególne zagrożenie dla~niej stanowić
-może wprowadzanie usług realizowanych przez~zewnętrzne podmioty ---
-sprzedawców energii, spółki obrotu, jak~również chociażby
-przedsiębiorstwa oferujące usługi doradcze.\cite{privacy-by-design}
+z~przesyłem danych pomiarowych na~odległość, bardzo istotnym zagadnieniem
+jest prywatność użytkowników. Szczególne zagrożenie dla~niej stanowić
+może prowadzanie usług realizowanych przez~zewnętrzne podmioty ---
+sprzedawców energii, spółki obrotu, przedsiębiorstwa oferujące usługi
+doradcze.\cite{privacy-by-design}
 
 W~celu zapewnienia właściwego poziomu bezpieczeństwa i~prywatności,
 stosuje~się następujące reguły:
 
 \begin{itemize}
 	\item wszystkie przesyłane informacje są szyfrowane. Szyfrowanie
-		odbywa~się przy~wykorzystaniu kryptografii asymetrycznej bądź
+		odbywa~się przy~wykorzystaniu kryptografii asymetrycznej, bądź
 		unikalnego klucza przypisanego do~użytkownika --- inni
-		użytkownicy sieci nie~posiadają klucza niezbędnego,
-		by~zdeszyfrować przesyłane dane.
+		użytkownicy sieci nie~posiadają klucza niezbędnego
+		do~odszyfrowania przesyłanych danych.
 
 	\item Poprzez sieć nie~przesyła~się wrażliwych informacji
 		o~kliencie. Dla~przykładu, do~identyfikacji licznika
