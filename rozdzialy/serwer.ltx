@@ -54,10 +54,10 @@ Modbus. Zasoby sprzętowe modułu udostępniane są w~przestrzeni adresowej
 serwera.
 
 Z~serwerem łączyć~się może dowolna liczba klientów. Połączenie
-odbywa~się przy~pomocy protokołu OPC UA TCP. Klient może uruchomiony być
-na~tym samym urządzeniu, wykorzystywać łącze typu lokalnego LAN
-(\textit{Local Area Network}) lub~typu globalnego WAN (\textit{Wide Area
-Network}).
+odbywa~się przy~pomocy protokołu OPC UA TCP. Klient może być uruchomiony
+na~tym samym urządzeniu, bądź na~zdalnym, przy~wykorzystaniu łącza sieciowego
+typu lokalnego LAN (\textit{Local Area Network}) lub~typu globalnego WAN
+(\textit{Wide Area Network}).
 
 
 \subsection{Wybór platformy}
@@ -67,6 +67,7 @@ określenia typowych zadań, jakie realizować będzie wykonany program.
 Następnie dla~zadań tych należy określić możliwą realizację w~oparciu
 o~zasoby danej platformy.
 
+\clearpage
 Dla~implementacji serwera OPC UA podstawowe zadania to:
 
 \begin{itemize}
@@ -85,7 +86,7 @@ Dla~implementacji serwera OPC UA podstawowe zadania to:
 	dodatkowe protokoły sieciowe.
 
 	\item Przechowywanie i~obsługa przestrzeni adresowej. Program
-	powinien zdolny być do~pracy z~bardzo dużą liczbą węzłów
+	powinien być w~stanie pracować z~bardzo dużą liczbą węzłów
 	bez~nadmiernego wykorzystania pamięci bądź utraty wydajności.
 
 	\item Pobieranie danych pomiarowych w~sposób nie~obciążający
@@ -164,7 +165,6 @@ Za~minimalną wersję języka \Cpp{ }przyjęto wersję \Cpp11 (ISO/IEC
 14882:2011, publikacja: wrzesień 2011).  Wersja ta wprowadza wiele
 usprawnień do~języka, i~jest w~stopniu dostatecznym obsługiwana
 przez~aktualne wersje kompilatorów \Cpp.  Przykładowo, standard \Cpp11
-
 jest w~przeważającej części wspierany przez kompilator GCC od~wersji 4.8
 (marzec 2013) oraz~kompilator clang od~wersji 3.1 (maj 2012).
 
@@ -186,7 +186,9 @@ portów szeregowych noszą nazwy \verb /dev/ttyS0 , \verb /dev/ttyS1 ,
 itd. Dla~uzyskania przenośności aplikacji na~systemy z~rodziny Windows
 oraz~uniknięcia konieczności powtórnej implementacji protokołu Modbus
 RTU, komunikację z~modułem MT-101 zrealizowano w~oparciu o~bibliotekę
-libmodbus\cite{libmodbus}.
+libmodbus\cite{libmodbus}. Dodatkową korzyścią z~zastosowania tej
+biblioteki jest możliwość łatwego zastąpienia łącza szeregowego
+łącznością TCP/IP, w~oparciu o~wbudowany modem GSM modułu MT-101.
 
 
 \subsection{Sposób realizacji zadań}
@@ -212,48 +214,73 @@ Serializacja oraz~deserializacja wykonywana jest przy~pomocy
 dynamicznych binarnych buforów, umożliwiających zachowanie pełnej
 odrębności pomiędzy konstrukcją typów wykorzystywanych przez~aplikację,
 a~ich kodowaniem. Pozwala to połączyć optymalną wydajność operacji
-na~danych z~przenośnością kodu do~systemów o~innej reprezentacji
-binarnej typów.
+wykonywanych na~danych i~przenośność programu do~systemów o~innej
+reprezentacji binarnej typów.
 
 
 \subsubsection{Implementacja przestrzeni adresowej}
 
-W~celu uzyskania maksymalnej możliwej optymalizacji i~elastyczności
+W~celu uzyskania maksymalnej możliwej optymalizacji i~elastyczności,
 poszczególne typy węzłów zostały zaimplementowane przy~pomocy klas
 abstrakcyjnych. Dostęp do~poszczególnych atrybutów i~referencji możliwy
 jest zarówno za~pomocą dedykowanych metod, charakterystycznych dla~danej
 klasy, jak i~metod uogólnionych, wykorzystujących identyfikatory
 atrybutów i~referencji.
 
-Przykładowo, klasa abstrakcyjna \textit{BaseNode} definiuje pustą metodę
-wirtualną \textit{node\_id()}. Klasy implementujące poszczególne węzły
-dziedziczą po~\textit{BaseNode} i~implementują tę metodę. Metody
-pracujące bezpośrednio z~węzłami mogą --- dla~uzyskania lepszej
-wydajności --- bezpośrednio wywoływać metodę wirtualną.
+Przykładowo, reprezentująca węzeł klasa abstrakcyjna \textit{BaseNode}
+definiuje pustą metodę wirtualną \textit{node\_id()}. Klasy
+implementujące poszczególne węzły dziedziczą po~\textit{BaseNode}
+i~implementują tę metodę. Metody pracujące bezpośrednio z~węzłami mogą
+--- dla~uzyskania lepszej wydajności --- bezpośrednio wywoływać metodę
+wirtualną.
 
 Oprócz tego, klasa \textit{BaseNode} deklaruje metodę wirtualną
 \textit{get\_attribute()}, która umożliwia odczyt atrybutu w~oparciu
 o~jego numeryczny identyfikator. Wartość atrybutu pozyskiwana jest
 poprzez wywołanie odpowiadającej mu metody wirtualnej, tak~więc klasy
-dziedziczące po~\textit{BaseNode} nie~muszą przedeklarowywać metody
+dziedziczące po~\textit{BaseNode} nie~muszą powtórnie deklarować metody
 \textit{get\_attribute()}.
 
 Poszczególne typy węzłów mogą obsługiwać dodatkowe atrybuty. W~tym
-celu deklarują dodatkowe metody abstrakcyjne oraz~przedefiniowują metodę
-\textit{get\_attribute()}, uzupełniając ją o~mapowanie identyfikatorów
-atrybutów charakterystycznych dla~danego podtypu. Umożliwia to
-pobieranie atrybutów węzła bez~konieczności konwersji typu
+celu deklarują dodatkowe metody abstrakcyjne oraz~powtórnie definiują
+metodę \textit{get\_attribute()}, uzupełniając ją o~mapowanie
+identyfikatorów atrybutów charakterystycznych dla~danego podtypu.
+Umożliwia to pobieranie atrybutów węzła bez~konieczności konwersji typu
 z~podstawowego na~typ implementujący dany atrybut. Ułatwia to chociażby
 implementację usługi \textit{Read}, wykorzystywanej do~odczytu
 atrybutów.
 
-Wskaźniki do~poszczególnych węzłów przechowywane są w~kontenerze typu
-\textit{std::unordered\_map}. Poszczególne węzły skojarzone są z~ich
-identyfikatorami, co pozwala na~szybkie poszukiwanie węzła o~żądanym
-identyfikatorze. Odniesienia do~węzłów zaimplementowano za~pomocą
-dzielonych wskaźników \textit{std::shared\_ptr}, co~pozwala na~łatwe
-tworzenie nowych węzłów i~dodawanie ich do~przestrzeni adresowej
-bez~konieczności implementacji własnego zarządzania pamięcią.
+Wskaźniki do~poszczególnych węzłów przechowywane są w~wydajnym
+kontenerze typu \textit{std::unordered\_map}. Poszczególne węzły
+skojarzone są z~ich identyfikatorami, co pozwala na~szybkie poszukiwanie
+węzła o~żądanym identyfikatorze. Odniesienia do~węzłów zaimplementowano
+za~pomocą dzielonych wskaźników \textit{std::shared\_ptr}, co~pozwala
+na~łatwe tworzenie nowych węzłów i~dodawanie ich do~przestrzeni
+adresowej bez~konieczności implementacji własnego zarządzania pamięcią.
+
+
+\subsubsection{Model żądań i~odpowiedzi klienta}
+
+Dla~ułatwienia implementacji klienta, wykonany stos wykorzystuje
+zdarzeniowy model żądań i~odpowiedzi. Wraz z~każdym skonstruowanym
+żądaniem, klient przekazuje do~biblioteki funkcję zwrotną
+(\eng{callback}), której zadaniem jest obsługa odpowiedzi.
+
+Biblioteka automatycznie przypisuje każdemu wysyłanemu żądaniu unikalny
+identyfikator. W~przypadku otrzymania odpowiedzi o~tym samym
+identyfikatorze, biblioteka deserializuje ją i~wywołuje funkcję zwrotną,
+przekazując odkodowaną odpowiedź jako wskaźnik typu
+\textit{std::unique\_ptr<Response>}.
+
+Zastosowanie wskaźnika inteligentnego ułatwia zarządzanie pamięcią
+aplikacji przy~zachowaniu dużej elastyczności. Klient może przejąć
+własność odpowiedzi, zachowując ją w~pamięci. Jeżeli tego nie~zrobi,
+pamięć zostanie zwolniona automatycznie po~opuszczeniu funkcji zwrotnej.
+
+Zastosowanie modelu zdarzeniowego pozwala przypisać do~każdego
+wysyłanego żądania unikalną funkcję obsługi odpowiedzi. Pozwala to
+uniknąć konieczności implementacji złożonych funkcji obsługi odpowiedzi
+serwera w~kliencie.
 
 
 \subsubsection{Komunikacja z~MT-101}
@@ -312,14 +339,14 @@ wiadomości. Model ten nie~sprawdzi~się w~przypadku dużej liczby klientów
 umożliwiającego jednoczesne przetwarzanie żądań wielu klientów.
 
 Komunikacja z~modułem MT-101 odbywa~się w~trybie blokującym.
-Każdorazowego wywołanie polecenia modułu powoduje zatrzymanie
+Każdorazowe wywołanie polecenia modułu powoduje zatrzymanie
 przetwarzania wiadomości do~momentu otrzymania odpowiedzi
 (potwierdzenia).
 
 \begin{figure}[ht]
 	\centering
 
-	\begin{tikzpicture}
+	\begin{tikzpicture}[x=0.98cm]
 		\begin{scope}[every node/.style={rectangle,draw}]
 			\node[below left, minimum width=2cm,minimum height=14cm]
 				at (0,0) {klient};
@@ -407,8 +434,8 @@ Przesyłane przez~klienta żądania odczytu wykonywane są sekwencyjnie,
 za~pośrednictwem pamięci cache. Jeżeli w~pamięci cache znajduje~się
 dostatecznie aktualna kopia wartości żądanej zmiennej, jest ona
 przesyłana w~odpowiedzi bez~konieczności komunikacji z~modułem.
-W~przeciwnym razie, zawartość pamięci cache jest aktualizowane
-poprzez~wysłanie żądania odczytu bloku pamięci do~modułu.
+W~przeciwnym razie, do~modułu wysyłane jest żądanie odczytu bloku
+pamięci, a~odczytane dane służą do~aktualizacji zawartości cache.
 
 Podobnie, przesłane żądania zapisu kolejkowane są w~pamięci cache.
 Pozwala to na~połączenie ich w~jedną komendę, która przesłana zostaje
@@ -436,7 +463,7 @@ komputera, i~może być kontrolowany za~pomocą klawiatury.
 Stany wejść oraz~wyjść cyfrowych przedstawione są za~pomocą symboli
 ,,-'' (fałsz) oraz~,,+'' (prawda). Dla~wejść analogowych przedstawiona
 jest wartość numeryczna skonfigurowanej wielkości. W~przypadku zmiany
-wartości, wskazania pozostaje podświetlone przez okres 2~sekund.
+wartości, wskazanie jest wyróżnione graficznie przez okres 2~sekund.
 
 Manipulacja stanem wejść i~wyjść cyfrowych możliwa jest przy~pomocy
 dwóch górnych wierszy klawiatury alfanumerycznej. Odpowiednio:

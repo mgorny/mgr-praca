@@ -22,6 +22,7 @@
 \usepackage{longtable}
 \usepackage[backend=bibtexu,sorting=none]{biblatex}
 \usepackage{enumitem}
+\usepackage{pdfpages}
 
 \makeatletter
 \renewcommand{\ALG@name}{Algorytm}
@@ -117,15 +118,17 @@
 \end{titlepage}
 
 \cleardoublepage
-\vspace*{\fill}
-\begin{center}
-\textsl{(karta tematu pracy)}
-\end{center}
-\vspace*{\fill}
+%\vspace*{\fill}
+%\begin{center}
+%\textsl{(karta tematu pracy)}
+%\end{center}
+%\vspace*{\fill}
+\includepdf{zdj/karta-tematu.pdf}
 
 \cleardoublepage
-%\include{abstrakt}
+\input{rozdzialy/streszcz.ltx}
 
+\clearpage
 \tableofcontents
 
 \clearpage

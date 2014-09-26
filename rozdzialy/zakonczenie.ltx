@@ -2,33 +2,33 @@
 
 Zmiany w~sposobie pozyskiwania i~wykorzystywania energii wymagają
 od~współczesnej energetyki stosowania urządzeń automatyki szybszych
-i~dokładniejszych niż~klasyczne. Konieczne staje~się wykorzystywanie
-w~procedurach sterowania danych pomiarowych z~rozległych obszarów
+i~dokładniejszych niż~klasyczne. W~procedurach sterowania
+konieczne staje~się wykorzystywanie danych pomiarowych z~rozległych obszarów
 systemu, a~co za~tym idzie ich efektywne pozyskiwanie i~przesyłanie.
 Tym samym spodziewać~się należy znacznych inwestycji w~kierunku rozwoju
 rozproszonych systemów pomiarowych, będących kluczowym elementem
-systemów WAMS czy~smart grid.
+systemów WAMS i~smart grid.
 
 Obsługa systemów rozproszonych wiąże~się z~wieloma trudnościami.
 Konieczne jest zapewnienie możliwości szybkiego przesyłu danych
 na~duże odległości, z~zachowaniem bezpieczeństwa przesyłanych
 informacji i~prywatności użytkowników, utrzymaniem niezbędnej
-dla~poprawnej pracy systemu pewności i~skalowalności, umożliwiającej
+dla~poprawnej pracy systemu pewności i~otwartości, umożliwiającej
 przyszłą rozbudowę systemu.
 
 Jednym z~protokołów proponowanych do~zastosowania w~energetyce jest
 protokół OPC UA, nad~którego rozwojem i~implementacją czuwa organizacja
 OPC Foundation. W~ramach pracy autor zapoznał~się z~budową protokołu
-OPC UA oraz~wykonał próbną implementację ograniczonego funkcjonalnie
-serwera i~klienta tego protokołu.
+OPC UA oraz~wykonał próbną implementację funkcjonalnego serwera
+i~klienta tego protokołu.
 
 Niewątpliwie stwierdzić można, że~protokół OPC UA jest rozwiązaniem
 kompleksowym. Przy~jego projektowaniu uwzględniono wiele potencjalnych
 problemów, ze~szczególnym naciskiem na~bezpieczeństwo przesyłu danych
 i~kontrolę dostępu, dyspozycyjność, czy~możliwość wznowienia komunikacji
 po~zerwaniu połączenia. Wykorzystanie silnie abstrakcyjnej konstrukcji
-oraz~wsparcia introspekcji przestrzeni adresowej umożliwia sprawne
-rozszerzanie protokołu o~nowe elementy przy~zachowaniu zgodności
+oraz~wsparcia introspekcji przestrzeni adresowej uczyniło możliwym
+sprawne rozszerzanie protokołu o~nowe elementy przy~zachowaniu zgodności
 z~istniejącym oprogramowaniem.
 
 Wątpliwości budzić może natomiast złożoność protokołu. Wiele spośród
@@ -36,23 +36,16 @@ jego elementów najprawdopodobniej nie~znajdzie technicznie uzasadnionego
 wykorzystania --- jak chociażby wykorzystanie protokołu SOAP. Pełna
 implementacja protokołu jest kosztowna, a~jej wymagania mogą ograniczać
 możliwość zastosowania na~niektórych urządzeniach typu
-\textit{embedded} Liczba przesyłanych informacji wpływa również
+\textit{embedded}. Liczba przesyłanych informacji wpływa również
 niekorzystnie na~wielkość pakietów.
 
 Złożoność zwiększa również zagrożenie błędami w~oprogramowaniu, a~więc
 ryzyko utraty dyspozycyjności. OPC Foundation usiłuje przeciwdziałać
 powstawaniu niepełnych i~błędnych implementacji protokołu
 poprzez~ograniczanie dostępu do~specyfikacji i~prowadzenie programu
-certyfikacji produktów. Niestety, ogranicza tym samym również dostępność
-protokołu, w~szczególności dla~niewielkich podmiotów, oraz
-liczbę potencjalnych testerów.
-
-W~szczególności widoczne jest to w~porównaniu z~protokołem Modbus RTU,
-przy~pomocy którego komunikowano~się z~modułem telemetrycznym MT-101.
-Dla~przykładu, żądanie odczytu danych w~tym protokole ma zaledwie 8
-bajtów, podczas gdy podobne żądanie w~protokole OPC będzie ponad
-dziesięciokrotnie większe, nie~licząc pakietów przesłanych w~celu
-nawiązania połączenia.
+certyfikacji produktów. Niestety, ogranicza tym samym również liczbę
+osób testujących protokół oraz jego dostępność, w~szczególności
+dla~niewielkich podmiotów.
 
 Zdaniem autora, protokół OPC UA posiada wiele zalet i~jest bardzo
 elastyczny, co~jest istotną zaletą w~przypadku tak dynamicznie
@@ -61,11 +54,11 @@ komunikacyjne mogą sprawić, że~nie~spełni oczekiwań co do~niezbędnej
 pewności i~szybkości reakcji.
 
 Wartą rozważenia może być koncepcja wykorzystania protokołu OPC UA
-z~innym mapowaniem sieciowym niż standardowe. Chociażby zastosowanie
-bezstanowych połączeń wykorzystujących protokół UDP mogłoby umożliwić
-wydajniejszy przesył informacji z~kontrolą priorytetów i~możliwością
-pominięcia powtórnej próby przesyłu nieaktualnych danych w~przypadku
-problemów z~łącznością.
+z~innym mapowaniem sieciowym niż standardowe. Zastosowanie bezstanowych
+połączeń wykorzystujących protokół UDP mogłoby umożliwić wydajniejszy
+przesył informacji z~kontrolą priorytetów i~możliwością pominięcia
+powtórnej próby przesyłu nieaktualnych danych w~przypadku problemów
+z~łącznością.
 
 Zwrócić uwagę należy również na~istnienie alternatywnych protokołów
 przeznaczonych dla~komunikacji z~rozproszonymi systemami pomiarowymi.

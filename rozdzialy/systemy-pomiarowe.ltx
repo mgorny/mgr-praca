@@ -55,10 +55,9 @@ W~obrębie pracy rozpatrywane będą wyłącznie systemy cyfrowe.
 \subsection{Rozproszone systemy pomiarowe}
 
 Sterowanie procesami czy~badanie stanu systemów rozległych obszarowo
-wymaga pozyskiwania danych pomiarowych z~wielu oddalonych od~siebie
-punktów pomiarowych, często w~czasie rzeczywistym. W~takich przypadkach
-wskazane lub~nawet konieczne jest zastosowanie rozproszonych systemów
-pomiarowych.
+wymaga pozyskiwania danych z~wielu oddalonych od~siebie punktów pomiarowych,
+często w~czasie rzeczywistym. Przy~zaistnieniu takiej potrzeby, wskazane
+lub~nawet konieczne jest zastosowanie rozproszonych systemów pomiarowych.
 
 Brak jest ścisłego kryterium, wyróżniającego systemy rozproszone spośród
 ogółu systemów pomiarowych. Często za~kryterium podziału przyjmuje~się
@@ -80,24 +79,27 @@ tych systemów. Pożądane są między innymi następujące cechy:
 	\item przezroczystość.
 \end{itemize}
 
-Zagadnienie otwartości dotyczy możliwości zmiany struktury systemu,
-zarówno pod~względem fizycznym, jak~i~programowym. System otwarty
-umożliwia dołączanie kolejnych elementów bądź~zmianę istniejących
-bez~konieczności wprowadzania znacznych zmian w~pozostałej części
-systemu, w~skrajnym przypadku --- wymiany elementów systemu.
+Zagadnienie otwartości związane jest z~problemem możliwości zmiany
+struktury systemu, zarówno pod~względem fizycznym, jak i~programowym.
+System otwarty umożliwia dołączanie kolejnych węzłów bądź~wymianę
+oprogramowania istniejących bez~konieczności wprowadzania znacznych
+zmian w~pozostałej części systemu, a~w~skrajnym przypadku --- wymiany
+elementów systemu.
 
-Otwartość najczęściej realizuje~się stosując otwartą topologię systemu,
-jak również otwarte standardy komunikacji. Zastosowanie otwartej topologii
-umożliwia dołączanie kolejnych urządzeń i~usuwanie istniejących
-przy~minimalnej zmianie struktury pozostałej części systemu.
-Zastosowanie otwartych standardów komunikacji umożliwia dołączanie
-elementów z~innej rodziny produktów czy~nawet innego producenta.
+Otwartość rozpatrywać można na~wielu płaszczyznach. Najczęściej
+rozpatruje~się stosowanie otwartej topologii systemu i~otwartych
+standardów komunikacji. Zastosowanie otwartej topologii
+umożliwia dołączanie kolejnych urządzeń oraz usuwanie istniejących
+przy~ograniczeniu koniecznej zmiany struktury pozostałej części systemu
+do~minimum.  Zastosowanie otwartych standardów komunikacji umożliwia
+dołączanie elementów z~innej rodziny produktów czy~nawet innego
+producenta.
 
 Otwartość pożądana jest w~każdym systemie, jednak w~przypadku systemów
 rozproszonych staje~się szczególnie istotna. Znaczna liczba elementów
-systemu oraz~ich rozległość terytorialna sprawiałaby, że~niepotrzebne
-wymiany elementów byłyby kosztowne, czasochłonne i~powodowały długie
-okresy przerw w~pracy systemu.
+systemu oraz~ich rozległość terytorialna sprawiają, że~wymuszone
+niezgodnością wymiany elementów byłyby kosztowne, czasochłonne
+i~powodowały długie okresy przerw w~pracy systemu.
 
 Skalowalność traktować można jako rozszerzenie otwartości. Jest to cecha
 pozwalająca na~zachowanie podobnej wydajności systemu przy~zwiększaniu
@@ -112,16 +114,16 @@ do~pracy, chociażby w~części powierzonych zadań, przy~uszkodzeniu
 dowolnego jego fragmentu.
 
 Do~poprawy niezawodności dążyć można na~wiele sposobów. Wyróżnić można
-chociażby stosowanie elementów nadmiarowych (pracujących równolegle
-z~podstawowymi, bądź~rezerwowych) czy~algorytmów dostosowanych do~pracy
-z~ograniczoną ilością dostępnych danych.
+przede wszystkim stosowanie elementów nadmiarowych (pracujących
+równolegle z~podstawowymi, bądź~rezerwowych) i~wykorzystanie algorytmów
+przystosowanych do~pracy z~ograniczoną ilością dostępnych danych.
 
 Przez~przezroczystość rozumie~się zdolność systemu do~prezentowania
 spójnej struktury logicznej niezależnie od~rzeczywistego sposobu
-połączenia urządzeń pomiarowych. Z~punktu widzenia użytkownika,
-w~dowolnym punkcie rozproszonego systemu pomiarowego winny być dostępne
-dane pomiarowe z~dowolnego innego punktu systemu, opisane w~sposób
-jednolity i~jednoznaczny.
+połączenia urządzeń. Z~punktu widzenia użytkownika, w~dowolnym punkcie
+rozproszonego systemu pomiarowego winny być dostępne dane pomiarowe
+z~dowolnego innego punktu systemu, opisane w~sposób jednolity
+i~jednoznaczny.
 
 Istotne jest, by~zmiana struktury fizycznej części systemu pomiarowego,
 np.~wskutek rozbudowy systemu czy~awarii, nie~wymuszała modyfikacji
@@ -279,13 +281,13 @@ na~awarię węzła centralnego.
 
 Rozszerzeniem topologii gwiazdy jest topologia drzewa
 (rys.~\ref{top-drzewa}), nazywana również topologią rozproszonej
-gwiazdy. W~topologii tej wyróznia~się hierarchię wielowarstwową,
+gwiazdy. W~topologii tej wyróżnia~się hierarchię wielowarstwową,
 przy~czym bezpośrednia komunikacja odbywa~się wyłącznie pomiędzy węzłem
 podrzędnym i~nadrzędnym. Topologia drzewa sprawdza~się w~przypadku sieci
 bardziej rozległych, w~których komunikacja pomiędzy jednym węzłem
 centralnym, a~wszystkimi pozostałymi węzłami sieci byłaby nieefektywna.
 
-W~sieci o~topologii drzewa, komunikacja pomiędzy węzłami podrzędnymi
+W~sieci o~topologii drzewa, komunikacja pomiędzy dwoma węzłami podrzędnymi
 odbywa~się za~pośrednictwem ścieżki obejmującej odpowiednie węzły
 nadrzędne. Co za~tym idzie, komunikacja pomiędzy węzłami lokalnymi może
 odbywać~się za~pośrednictwem jednego węzła nadrzędnego, z~kolei pomiędzy
@@ -301,13 +303,14 @@ dwoma odległymi węzłami podrzędnymi jest nieefektywny. Sieć jest
 wrażliwa na~awarie węzłów nadrzędnych, które powodują wyłączenie całego
 segmentu z~pracy systemu.
 
-Alternatywą dla~przedstawionych topologii hierarchicznych jest topologia
-kraty (rys.~\ref{top-kraty}). W~tej topologii nie~wyróżnia~się węzłów
-nadrzędnych, a~poszczególne węzły sieci łączy~się bezpośrednio z~kilkoma
-(przynajmniej dwoma) innymi. W~zależności od~układu połączeń, wymiana
-informacji pomiędzy dwoma węzłami może odbywać~się bezpośrednio
-lub~za~pośrednictwem innych węzłów, przy~czym w~każdym przypadku możliwe
-jest zastosowanie więcej niż~jednej ścieżki.
+Topologia kraty (rys.~\ref{top-kraty}) stanowi alternatywę
+dla~przedstawionych topologii hierarchicznych. W~tej topologii
+nie~wyróżnia~się węzłów nadrzędnych, a~poszczególne węzły sieci
+łączy~się bezpośrednio z~kilkoma (przynajmniej dwoma) innymi.
+W~zależności od~układu połączeń, wymiana informacji pomiędzy dwoma
+węzłami może odbywać~się bezpośrednio lub~za~pośrednictwem innych
+węzłów, przy~czym w~każdym przypadku możliwe jest zastosowanie więcej
+niż~jednej ścieżki.
 
 Podstawową zaletą struktury kratowej jest duża elastyczność.
 Zwielokrotnienie ścieżek komunikacji pozwala na~uzyskanie dużej
@@ -352,8 +355,9 @@ Unit}).
 
 W~celu dokonania pomiaru synchrofazora mierzy~się trójfazowe przebiegi
 napięcia i~prądu, a~otrzymane pomiary synchronizuje~się
-przy~wykorzystaniu czasu otrzymywanego z~sieci GPS. Na~podstawie
-wykonanych pomiarów określa~się:
+przy~wykorzystaniu czasu otrzymywanego z~sieci GPS.
+
+Na~podstawie wykonanych pomiarów określa~się:
 
 \begin{itemize}
 	\item wartość skuteczną i~kąt fazowy (fazor) napięcia,
@@ -439,12 +443,11 @@ stosuje~się następujące reguły:
 		wykorzystuje~się unikalny identyfikator, który nie~zawiera
 		zakodowanych danych adresowych użytkownika.
 
-	\item Poprzez sieć przesyła~się minimalną liczbę informacji
+	\item Poprzez sieć przesyła~się minimalną ilość informacji
 		niezbędnych do~realizacji zadań. W~najczęstszym przypadku
 		licznik inteligentny wysyłał więc będzie informację zawierającą
-		jedynie identyfikator urządzenia oraz~wielkość zmierzonej
-		energii.
+		jedynie identyfikator urządzenia oraz~ilość zmierzonej energii.
 
 	\item Uruchomienie każdej dodatkowej usługi wymaga od~użytkownika
-		jawnego wyrażenia zgody na~przesył niezbędnych danych.
+		wyrażenia świadomej zgody na~przesyłanie niezbędnych danych.
 \end{itemize}

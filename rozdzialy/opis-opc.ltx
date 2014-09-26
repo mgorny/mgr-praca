@@ -26,16 +26,15 @@ klienta i~serwera oraz~zabezpieczając przed atakami. Informacje
 przesyłane mogą być zarówno przy~pomocy standardowych typów danych,
 jak~i~typów zdefiniowanych przez~użytkownika, z~możliwością dynamicznego
 rozpoznawania struktury obiektów. Istnieje możliwość zapewnienia dostępu
-do~danych bieżących i~historycznych, a~także nasłuchu alarmów i~zdarzeń.
+do~danych bieżących i~historycznych, a~także monitorowania alarmów i~zdarzeń.
 
 Protokół OPC UA stanowi następcę protokołu OPC (\eng{OLE for Process
 Control}), który wykorzystywał nieprzenośną technologię Microsoft DCOM
 (\eng{Distributed Common Object Model}). Nowy protokół zaprojektowano
 tak, by~umożliwić łatwe mapowanie danych z~serwerów OPC na~serwery OPC
-UA. Możliwe jest zarówno przeniesienie całej infrastruktury na~nowy
-protokół, jak i~stosowanie programów pośredniczących, umożliwiających
-dwustronną komunikację pomiędzy aplikacjami wykorzystującymi OPC i~OPC
-UA.
+UA. Możliwe jest zarówno przeniesienie infrastruktury na~nowy protokół,
+jak i~stosowanie programów, umożliwiających dwukierunkową komunikację
+pomiędzy aplikacjami wykorzystującymi OPC i~OPC UA.
 
 W~latach 2010--2011 część standardu OPC UA została przyjęta jako norma
 IEC 62541.
@@ -53,7 +52,7 @@ dostęp~do:
 		maszynowego plikami XML Schema oraz~WSDL,
 
 	\item referencyjną implementację stosu OPC w~postaci binarnej
-		z~interfejsem programistycznym dla~języków C, C++, Java
+		z~interfejsem programistycznym dla~języków C, \Cpp, Java
 		oraz~platformy .NET,
 
 	\item dodatkowe materiały umożliwiające testowanie wykonanej
@@ -61,13 +60,13 @@ dostęp~do:
 \end{itemize}
 
 Ograniczony, odpłatny dostęp do~specyfikacji poddaje w~wątpliwość
-podkreślaną przez~autorów otwartość specyfikacji. Chociażby zgodnie
-z~definicją zastosowaną przez~Komisję Europejską w~opisie
-\textit{European Interoperability Framework for pan-European
-eGovernment Services version 1.0}\cite{eurogov}, otwarty standard musi być
-udostępniony wszystkim zainteresowanym nieodpłatnie bądź~po~kosztach
-druku, wraz z~prawem do~nieograniczonego kopiowania, rozpowszechniania
-i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
+otwartość specyfikacji. Chociażby zgodnie z~definicją zastosowaną
+przez~Komisję Europejską w~opisie \textit{European Interoperability
+	Framework for pan-European eGovernment Services version
+1.0}\cite{eurogov}, otwarty standard musi być udostępniony wszystkim
+zainteresowanym nieodpłatnie bądź~po~kosztach druku, wraz z~prawem
+do~nieograniczonego kopiowania, rozpowszechniania i~użytku. W~myśl tej
+definicji, OPC UA nie~jest standardem otwartym.
 
 % http://pl.wikipedia.org/wiki/Otwarty_standard#cite_note-1
 % http://ec.europa.eu/idabc/servlets/Docd552.pdf?id=19529
@@ -117,8 +116,8 @@ i~użytku. W~myśl tej definicji, OPC UA nie~jest standardem otwartym.
 \end{table}
 
 Specyfikacja OPC UA składa~się aktualnie z~13 części, które wymienione
-zostały w~tabeli~\ref{t-opc-ua}. Części 1--6 oraz~8 zostały przyjęte
-w~latach 2010--2011 jako norma IEC 62541.
+zostały w~tabeli~\ref{t-opc-ua}. Części 1.--6. oraz~8. stanowią normę
+IEC 62541.
 
 Części 1.--5. opisują podstawową część protokołu OPC UA w~sposób
 abstrakcyjny. Definiują strukturę sieci, organizację danych i~dostępne
@@ -130,9 +129,8 @@ Nie~zapewniają jednak współpracy pomiędzy stosami różnych producentów.
 Część 6. specyfikacji definiuje standardowe sposoby kodowania danych
 oraz~protokoły sieciowe dla~OPC. Na~jej podstawie do~zdefiniowanych
 w~poprzednich częściach, abstrakcyjnych typów danych przypisywane
-zostają algorytmy serializacji, a~następnie definiowane są protokoły
-sieciowe, które umożliwiają przesyłanie do~serwera OPC żądań
-i~otrzymywanie odpowiedzi.
+zostają algorytmy serializacji, a~następnie definiowane są protokoły,
+które umożliwiają zdalną komunikację pomiędzy klientem i~serwerem.
 
 Zdefiniowane zostały dwa standardowe sposoby kodowania danych ---
 kodowanie binarne oraz~za~pomocą języka XML, oraz~dwa standardowe
@@ -141,8 +139,8 @@ wykorzystania transportu HTTP/SOAP. Serwer OPC UA może udostępniać swoje
 zasoby przy wykorzystaniu wielu dostępnych protokołów.
 
 Część 7. specyfikacji grupuje serwery OPC w~tzw.~profile. Poszczególne
-profile określają wymagania w~stosunku do~zaimplementowanej części
-specyfikacji.
+profile określają wymagania w~stosunku do~implementacji,
+a~w~szczególności niezbędne funkcje serwera.
 
 Część 8. i~kolejne części specyfikacji określają dodatkowe struktury
 danych i~usługi, zbudowane w~oparciu o~bazowe typy zdefiniowane
@@ -155,9 +153,9 @@ dla~typów podstawowych, określone w~6.~części specyfikacji.
 \subsection{Struktura sieci}
 
 Protokół OPC UA oparty jest na~architekturze klient-serwer. Serwery
-stanowią węzły sieci pomiarowej, współpracując z~fizycznymi urządzeniami
+stanowią węzły sieci pomiarowej, współpracują z~fizycznymi urządzeniami
 pomiarowymi oraz~sterującymi. Każdy serwer definiuje przestrzeń
-adresową, w~obrębie której zamodelowane są poszczególne obiekty.
+adresową, w~obrębie której modelowane są poszczególne obiekty.
 
 Z~każdym serwerem połączonych może być wielu klientów. Klienci ---
 w~zależności od~przypisanych uprawnień --- mogą wykonywać określone
@@ -267,7 +265,8 @@ swoim klientom ich zasoby.
 \subsubsection{Założenia}
 
 Specyfikacja OPC UA dużą wagę przykłada do~szeroko rozumianych zagadnień
-bezpieczeństwa. Rozpatrywane są takie aspekty jak:
+bezpieczeństwa. W~obrębie 2.~części specyfikacji rozpatrywane są
+następujące aspekty bezpieczeństwa:
 
 \begin{itemize}
 	\item uwierzytelnianie klienta i~serwera,
@@ -281,10 +280,10 @@ bezpieczeństwa. Rozpatrywane są takie aspekty jak:
 	\item ciągłość dostępu do~usług.
 \end{itemize}
 
-W~drugiej części specyfikacji OPC UA rozważane są potencjalne zagrożenia
-i~prezentowane są sposoby przeciwdziałania im. Rozwiązania zastosowane
-w~OPC UA wzorowane są na~powszechnie stosowanym protokole TLS, jednakże
-nie~wykorzystują go bezpośrednio.\cite{opc-ua-pt2}
+Rozważane są potencjalne zagrożenia i~prezentowane są sposoby
+przeciwdziałania im. Rozwiązania zastosowane w~OPC UA wzorowane są
+na~powszechnie stosowanym protokole TLS, jednakże nie~wykorzystują go
+bezpośrednio.\cite{opc-ua-pt2}
 
 
 \subsubsection{Uwierzytelnienie klienta i~serwera}
@@ -315,9 +314,9 @@ W~celu potwierdzenia faktu posiadania klucza, host składa przy~jego
 pomocy podpis na~przesłanym przez~drugą stronę bloku danych
 pseudolosowych. Zastosowanie danych pseudolosowych pozwala
 na~zapobieganie atakom typu \textit{rollback}, wykorzystującym
-przechwycony wcześniejszy podpis, złożony przez~właściciela certyfikatu.
-Złożony podpis weryfikowany jest przy~pomocy klucza publicznego
-zawartego w~certyfikacie.
+przechwycony wcześniej autentyczny podpis.  Otrzymana sygnatura
+weryfikowana jest przy~pomocy klucza publicznego zawartego
+w~certyfikacie.
 
 Wyznacznikiem autentyczności certyfikatu jest sygnatura złożona
 przez~wystawcę. Weryfikacja sygnatury następuje przy~wykorzystaniu
@@ -332,7 +331,7 @@ wystawienia przez~uznawane centrum autoryzacji.
 Wiadomości przesyłane za~pośrednictwem protokołu OPC UA zabezpieczone
 mogą~być metodami kryptografii symetrycznej. Niezbędne klucze
 generowane są przy~pomocy funkcji opisanej w~części szóstej
-specyfikacji (\textit{6.4.5 Deriving Keys}).
+specyfikacji (\textit{6.4.5. Deriving Keys}).
 
 Protokół obsługuje szyfrowanie wiadomości. Zastosowanie szyfrowania
 pozwala na~zapewnienie poufności przesyłanych informacji, w~tym danych
@@ -352,7 +351,7 @@ wcześniej wiadomości nie~zostaną powtórnie zaakceptowane przez~serwer.
 \subsubsection{Zapewnienie ciągłości dostępu do~usług}
 
 Podstawowym ryzykiem dla~ciągłości pracy serwera OPC jest jego
-przeciążenia poprzez~wysyłanie dużych ilości wiadomości przez~osoby
+przeciążenie na~skutek przesłania dużej liczby wiadomości przez~osoby
 nieupoważnione. W~celu zminimalizowania tego zagrożenia, protokół OPC UA
 znacznie ogranicza zakres wiadomości dostępnych nieuwierzytelnionemu
 klientowi.
@@ -361,8 +360,8 @@ Wiadomości dostępne przed~uwierzytelnieniem w~większości mogą
 być przetworzone przy~niewielkim wykorzystaniu zasobów. Wyjątek stanowi
 żądanie uwierzytelnienia, które wymaga kosztownych operacji
 kryptograficznych. Dlatego też specyfikacja zaleca wprowadzenia
-opóźnienia przetwarzania owych żądań po~nieudanej próbie oraz
-ograniczenia liczby obsługiwanych jednocześnie kanałów komunikacji.
+opóźnienia przetwarzania żądań tego typu po~nieudanej próbie oraz
+ograniczenia liczby otwartych jednocześnie kanałów komunikacji.
 
 Przeciwdziałanie atakom na~system wspiera również mechanizm audytu,
 wspierający analizowanie zagrożeń dla~systemu. Zalecane jest również
@@ -435,8 +434,7 @@ Identyfikator węzła może mieć postać:
 Każdy węzeł może mieć identyfikator wyłącznie jednego typu,
 a~poszczególne typy są względem siebie rozłączne. Identyfikatory
 numeryczne i~tekstowe dodatkowo przypisane są do~przestrzeni nazw ---
-identyfikatory stosowane w~różnych przestrzeniach nazw mogą pokrywać~się
-ze~sobą.
+identyfikatory stosowane w~różnych przestrzeniach są rozłączne.
 
 Standardowe elementy zdefiniowane w~specyfikacji OPC UA opisane są
 identyfikatorami numerycznymi w~przestrzeni nazw
@@ -446,10 +444,6 @@ Identyfikatory węzłów stosowane są również do~identyfikacji sesji.
 
 
 \subsubsection{Struktura przestrzeni adresowej}
-brębie serwera.  W~przypadku sieci, składającej~się z~wielu
-współpracujących serwerów,
-korzystne jest stosowanie identyfikatorów unikalnych w~obrębie całej
-s
 
 \begin{figure}[h]
 	\centering
@@ -523,7 +517,7 @@ Atrybuty są ściśle określone i~przypisane do~poszczególnych rodzajów
 węzłów. Atrybuty wykorzystywane są jedynie do~określania ogólnych
 właściwości węzłów (jak identyfikator, nazwa czy~wartość);
 do~modelowania szczegółowych cech wykorzystuje~się zmienne
-i~właściwości, związane z~węzłem za~pomocą referencji.
+i~właściwości, przypisane do~węzła za~pomocą referencji.
 
 
 \subsection{Usługi}
@@ -531,10 +525,10 @@ i~właściwości, związane z~węzłem za~pomocą referencji.
 Usługi stanowią podstawową formę interakcji w~protokole OPC UA. Serwer
 udostępnia klientowi szereg usług. Do~każdej usługi przypisany jest
 określony format żądania i~odpowiedzi. Żądanie określa operacje, jakie
-mają zostać wykonane. Odpowiedź z~kolei zawiera stan wykonania operacji
-oraz~ewentualne dane wyjściowe.
+mają zostać wykonane. Odpowiedź z~kolei zawiera rezultat wykonania
+operacji oraz~ewentualne dane wyjściowe.\cite{opc-ua-pt4}
 
-Po~nawiązaniu połączenia klient może zacząć wykorzystywać usługi
+Po~nawiązaniu połączenia klient może zacząć korzystać z~usług
 serwera. W~tym celu formułuje wiadomość z~żądaniem i~wysyła ją
 do~serwera. Serwer przetwarza otrzymaną wiadomość i~próbuje wykonać
 zlecone w~niej operacje. Dla~każdej operacji generuje oddzielny status
@@ -548,17 +542,17 @@ Standard OPC UA wyróżnia dziewięć podstawowych zestawów usług:
 	\item usługi odnajdywania --- umożliwiające pozyskanie listy adresów
 		serwera i~odczytanie ich ustawień bezpieczeństwa,
 
-	\item usługi bezpiecznego kanału --- umożliwiające uzyskanie
+	\item usługi bezpiecznego kanału --- umożliwiające zestawienie
 		bezpiecznego kanału na~potrzeby komunikacji,
 
 	\item usługi sesji --- przeznaczone do~zarządzania sesją
-		i~uwierzytelniania użytkownika,
+		i~uwierzytelnienia użytkownika,
 
-	\item usługi zarządzania węzłami --- umożlwiające dodawanie,
+	\item usługi zarządzania węzłami --- umożliwiające dodawanie,
 		modyfikację i~usuwanie węzłów z~przestrzeni adresowej,
 
 	\item usługi widoków --- umożliwiające przeglądanie przestrzeni
-		adresowej bądź jej podobszarów zwanych widokami,
+		adresowej bądź jej podobszarów określanych mianem widoków,
 
 	\item usługi atrybutów --- umożliwiające odczyt i~zapis atrybutów,
 		wraz z~ich historycznymi wartościami,
@@ -567,7 +561,7 @@ Standard OPC UA wyróżnia dziewięć podstawowych zestawów usług:
 
 	\item usługi monitorowania --- umożliwiające tworzenie, modyfikację
 		i~usuwanie obiektów monitorujących atrybuty i~zdarzenia,
-		i~generujących powiadomienia odpowiednio o~ich zmianach
+		i~generujących powiadomienia odpowiednio o~ich zmianie
 		bądź~wystąpieniu,
 
 	\item usługi subskrypcji --- umożliwiające tworzenie, modyfikację
@@ -581,7 +575,7 @@ Standard OPC UA wyróżnia dziewięć podstawowych zestawów usług:
 \subsection{Zapewnienie zgodności pomiędzy kolejnymi wersjami protokołu}
 
 Mechanizm zapewnienia zgodności przy~wprowadzaniu zmian w~strukturze
-protokołu OPC UA oparty jest o~mechanizm wersji. Podczas inicjacji
+protokołu OPC UA oparty jest o~numery wersji. Podczas inicjacji
 połączenia klient i~serwer określają wykorzystywaną przez~siebie wersję
 protokołu. W~przypadku wystąpienia niezgodności, strona obsługującą
 nowszą (wyższą) wersję protokołu zobowiązana jest zapewnić zgodność
@@ -590,7 +584,7 @@ z~wersją starszą.
 Rozwiązanie to gwarantuje możliwość przyłączenia nowszych urządzeń
 (zastosowania nowszego oprogramowania) do~istniejących sieci OPC UA
 bez~konieczności wymiany bądź przeprogramowania istniejących elementów.
-Nakłada jednak na~tworców oprogramowania konieczność implementacji
+Nakłada jednak na~twórców oprogramowania konieczność implementacji
 wszystkich poprzednich wersji protokołu.
 
 Numery wersji przypisywane są w~toku certyfikacji oprogramowania OPC UA.
@@ -598,9 +592,6 @@ Oprogramowanie niecertyfikowane zobowiązane jest korzystać z~wersji
 ,,0''. Oznacza to, że~oprogramowanie nieobjęte procesem certyfikacji
 nie~jest w~stanie zagwarantować prawidłowej współpracy z~oprogramowaniem
 wykonanym w~oparciu o~inną wersję specyfikacji.
-
-
-
 
 \subsection{Protokół OPC UA TCP}
 
@@ -646,7 +637,7 @@ W~odróżnieniu od~dwóch poprzednio opisanych warstw, warstwa sesji
 nie~stanowi części protokołu OPC UA TCP, lecz należy do~podstawowej
 specyfikacji OPC UA. Wiąże ona wiadomości przesyłane w~oparciu o~dowolny
 protokół (bądź interfejs) OPC UA z~określoną sesją, w~obrębie której
-obsługiwane jest uwierzytelnianie klienta oraz~obsługiwane są jego
+rejestrowane jest uwierzytelnienie klienta oraz~obsługiwane są jego
 żądania. Wyodrębnienie warstwy sesji umożliwia utrzymanie ciągłości
 przesyłanych wiadomości niezależnie od~przerw w~logicznych kanałach
 komunikacji.
@@ -688,16 +679,16 @@ komunikacji.
 Poszczególne wiadomości protokołu OPC UA TCP posiadają budowę
 przedstawioną na~rys.~\ref{tcp-budowa} bądź stanowiącą jej podzbiór.
 
-Pierwszy segment pakietu stanowi nagłówek warstwy transportowej, wspólny
-dla~wszystkich typów wiadomości. Nagłówek ten zawiera identyfikator typu
-wiadomości, flagę rodzaju segmentu oraz~wielkość pakietu. W~przypadku
-pakietów typu \verb+OPN+, \verb+MSG+ i~\verb+CLO+ zawiera również numer
-bezpiecznego kanału.
+Pierwszy segment pakietu stanowi nagłówek warstwy transportowej, który
+jest wspólny dla~wszystkich typów wiadomości. Nagłówek ten zawiera
+identyfikator typu wiadomości, flagę rodzaju segmentu
+oraz~wielkość pakietu. W~przypadku pakietów typu \verb+OPN+, \verb+MSG+
+i~\verb+CLO+ zawiera również numer bezpiecznego kanału.
 
-Wyróznia~się następujące typy wiadomości:
+Wyróżnia~się następujące typy wiadomości:
 
 \begin{itemize}
-	\item \verb+HEL+ --- wiadomośc wysyłana przez~klienta w~celu
+	\item \verb+HEL+ --- wiadomość wysyłana przez~klienta w~celu
 		zainicjowania połączenia TCP,
 
 	\item \verb+ACK+ --- odpowiedź serwera na~wiadomość \verb+HEL+,
@@ -718,11 +709,10 @@ typów:
 \begin{itemize}
 	\item pakiet finalny --- ostatni (lub jedyny) segment wiadomości.
 		Po~odebraniu tego pakietu poprzednio zbuforowane segmenty
-		wiadomości łączone są z~otrzymanym i~wiadomość jest
-		przetwarzana.
+		wiadomości dołączone są do~niego i~wiadomość jest przetwarzana.
 
 	\item Pakiet fragmentu --- segment wiadomości niebędący ostatnim.
-		Treść wiadomości zostaje dodana do~bufora, jednakże wiadomośc
+		Treść wiadomości zostaje dodana do~bufora, jednakże wiadomość
 		nie~zostaje przetworzona do~otrzymania ostatniego segmentu.
 
 	\item Pakiet anulowania --- żądanie anulowania poprzednio odebranych
@@ -751,11 +741,11 @@ wykorzystujących po~raz~kolejny ten sam pakiet --- kolejne pakiety
 o~pokrywającym~się numerze sekwencyjnym muszą zostać odrzucone. Numer
 żądania pozwala na~powiązania kolejnych segmentów tego samego pakietu.
 
-Treść wiadomości zawiera określony segment wiadomości. Dla~pakietów typu
-\verb+HEL+, \verb+ACK+ i~\verb+ERR+ jest to bezpośrednio serializowana
-struktura określona w~protokole. Dla~pakietów typu \verb+OPN+,
-\verb+MSG+ i \verb+CLO+ jest to serializowana struktura wiadomości
-poprzedzona identyfikatorem węzła typu wiadomości.
+Pole treści wiadomości zawiera określony segment wiadomości.
+Dla~pakietów typu \verb+HEL+, \verb+ACK+ i~\verb+ERR+ jest to
+bezpośrednio serializowana struktura określona w~protokole. Dla~pakietów
+typu \verb+OPN+, \verb+MSG+ i \verb+CLO+ jest to serializowana struktura
+wiadomości poprzedzona identyfikatorem węzła typu wiadomości.
 
 Wypełnienie jest elementem opcjonalnym, występującym w~wiadomościach
 typu \verb+OPN+, \verb+MSG+ i~\verb+CLO+. Nie~zawiera żadnych
@@ -763,11 +753,11 @@ użytecznych informacji, służy jedynie dopełnieniu wielkości całego
 pakietu tak, by~pokrył~się z~wielkością słowa algorytmu szyfrowania ---
 o~ile szyfrowanie jest stosowane.
 
-Sygnatura jest również opcjonalna, może występować w~wiadomościach tpyu
+Sygnatura jest również opcjonalna, może występować w~wiadomościach typu
 \verb+OPN+, \verb+MSG+ i~\verb+CLO+. Zawiera kryptograficzny podpis
 wiadomości, pozwalający na~zweryfikowanie jej integralności
 i~autentyczności. Przy~tworzeniu podpisu uwzględnia~się wszystkie
-pozostałe części wiadomości, przed~szyfrowaniem.
+pozostałe części wiadomości, w~postaci niezaszyfrowanej.
 
 Jeżeli szyfrowanie jest wykorzystywane, wiadomości typu \verb+OPN+,
 \verb+MSG+ i~\verb+CLO+ są szyfrowane od~początku nagłówka sekwencyjnego
@@ -855,7 +845,7 @@ konieczną do~nawiązania połączenia.
 
 \subsubsection{Sposób zakończenia połączenia}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 
 	\begin{tikzpicture}
@@ -908,10 +898,10 @@ ją jedynie tym podmiotom, które zainteresowane są członkostwem OPC
 Foundation i~zainwestowaniem w~rozwój standardu.\cite{opc-pay-to-play}
 
 Można jednak zauważyć, że~podobny problem chociażby w~przypadku
-protokołu Bluetooth rozwiązano bez~konieczności ograniczania dostępu
-do~informacji. W~tym przypadku, specyfikacja jest otwarta i~dostępna
+technologii Bluetooth rozwiązano bez~konieczności ograniczania dostępu
+do~informacji. Specyfikacja protokołu jest otwarta i~dostępna
 nieodpłatnie, jednakże ograniczone jest prawo tworzenia komercyjnych
-produktów oraz~stosowania znaku marki.
+produktów oraz~stosowania znaku towarowego.
 
 % http://www.xpca.org/rest-pca/
 
@@ -933,7 +923,7 @@ w~implementacji\cite{rest-pca}.
 Wątpliwości budzi także procedura zestawiania połączenia, która
 każdorazowo wymaga kosztownych operacji kryptograficznych. W~przypadku
 urządzeń o~niewielkiej wydajności procesora, które komunikują~się
-z~serwerem jedynie okresowo może to powodować zauważalne opóźnienia
+z~serwerem jedynie okresowo, może to powodować zauważalne opóźnienia
 przesyłu danych.\cite{opc-overheads}
 
 Podobny problem rozwiązano chociażby w~protokole TLS (\eng{Transport
