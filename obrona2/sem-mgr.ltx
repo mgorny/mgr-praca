@@ -1,0 +1,428 @@
+\documentclass[xetex,handout]{beamer}
+\usepackage{polyglossia}
+\usepackage{amsmath}
+%\usepackage[xetex,breaklinks,bookmarks]{hyperref}
+\usepackage[hypcap,compatibility=false]{caption}
+\usepackage{tikz}
+\usepackage[backend=biber]{biblatex}
+\usepackage{subcaption}
+\usepackage{siunitx}
+
+\usetheme{Ilmenau}
+
+\addbibresource{sem-mgr.bib}
+
+\setdefaultlanguage{polish}
+\frenchspacing
+
+\sisetup{forbid-literal-units,
+	binary-units=true,
+	output-decimal-marker={,},
+	group-digits=false,
+	per-mode=fraction,
+	free-standing-units=true,
+	unit-optional-argument=true,
+	inter-unit-product={},
+	range-phrase={ -- }}
+
+\author{inż. Michał Górny}
+\title{Akwizycja danych z~rozproszonych systemów pomiarowych w~systemie Linux}
+\subtitle{Prezentacja tematu pracy dyplomowej magisterskiej}
+\date{10 październik 2014~r.}
+
+\begin{document}
+
+\defbeamertemplate*{title page}{customized}[1][]
+{
+	\begin{block}{}
+		\centering
+		\usebeamerfont{title}
+		\inserttitle
+	\end{block}
+
+	\begin{center}
+		{
+			\usebeamerfont{subtitle}
+			\usebeamercolor[bg]{subtitle}
+			\insertsubtitle
+		}
+	\end{center}
+	\begin{center}
+		{
+			\usebeamerfont{date}
+			\insertdate
+		}
+	\end{center}
+
+		\vspace{2cm}
+
+		{
+			\hfill
+			\usebeamerfont{author}
+			\begin{tabular}{ll}
+				Autor: & inż. Michał Górny \\
+				Promotor: & dr inż. Andrzej Kwapisz \\
+			\end{tabular}
+		}
+}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\begin{frame}
+	\frametitle{Plan prezentacji}
+
+	\tableofcontents
+\end{frame}
+
+\section{Cel pracy}
+
+\begin{frame}{Cel pracy}
+	Wykonanie serwera OPC UA, pracującego pod~kontrolą systemu
+	GNU/Linux, współpracującego z~modułem telemetrycznym MT-101.
+\end{frame}
+
+\section{Rozproszone systemy pomiarowe w~energetyce}
+
+\begin{frame}[label=plan]
+	\frametitle{Plan prezentacji}
+
+	\tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{,,Klasyczny'' system pomiarowy}
+	\begin{figure}
+		\begin{tikzpicture}
+
+			\draw[ultra thick] (0,0) -- ++(0,-1);
+			\draw[thick] (0,-.5) -- ++(6,0);
+
+			\draw (0,-1) -- (0,-1.5);
+			\draw (0,-1.8) circle (0.3);
+			\draw (0,-2.2) circle (0.3);
+
+			\draw (2,-.5) circle (0.3);
+			\draw (2,-.9) circle (0.3);
+
+			\node[draw, minimum size=1.5cm] (uaz) at (2,-3) {UAZ};
+			\draw (0,-2.5) -- ++(0,-.47) to (uaz);
+			\draw (2,-1.2) to (uaz);
+			
+		\end{tikzpicture}
+
+		\caption{Przykład ,,klasycznego'' systemu pomiarowego}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Rozproszony system pomiarowy}
+	\begin{figure}
+		\begin{tikzpicture}
+
+			\draw[ultra thick] (0,0) -- ++(0,-1);
+			\draw[thick] (0,-.5) -- ++(3,0);
+			\draw[thick, dotted] (3,-.5) -- ++(1,0);
+			\draw[thick] (4,-.5) -- ++(3,0);
+			\draw[ultra thick] (7,0) -- ++(0,-1);
+
+			\draw (0,-1) -- (0,-1.5);
+			\draw (0,-1.8) circle (0.3);
+			\draw (0,-2.2) circle (0.3);
+
+			\draw (2,-.5) circle (0.3);
+			\draw (2,-.9) circle (0.3);
+
+			\draw (7,-1) -- ++(0,-.5);
+			\draw (7,-1.8) circle (0.3);
+			\draw (7,-2.2) circle (0.3);
+
+			\draw (5,-.5) circle (0.3);
+			\draw (5,-.9) circle (0.3);
+
+			\node[draw, minimum size=1.5cm] (tm1) at (2,-3) {tm};
+			\draw (0,-2.5) -- ++(0,-.47) to (tm1);
+			\draw (2,-1.2) to (tm1);
+
+			\node[draw, minimum size=1.5cm] (tm2) at (5,-3) {tm};
+			\draw (7,-2.5) -- ++(0,-.47) to (tm2);
+			\draw (5,-1.2) to (tm2);
+	
+		\end{tikzpicture}
+
+		\caption{Przykład rozproszonego systemu pomiarowego}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Cechy systemu rozproszonego}
+	\begin{enumerate}[<+->]
+		\item \textbf{otwartość}
+
+		\item skalowalność
+
+		\item tolerowanie awarii (niezawodność)
+
+		\item przezroczystość
+	\end{enumerate}
+\end{frame}
+
+\begin{frame}{Zastosowanie w~energetyce}
+	\begin{enumerate}[<+->]
+		\item rozległe pomiary synchroniczne WAMS/PMU
+
+		\item monitorowanie jakości energii
+
+		\item przewidywanie i~optymalizacja zużycia energii elektrycznej
+
+		\item smart metering
+	\end{enumerate}
+\end{frame}
+
+\section{Protokół OPC}
+
+\againframe{plan}
+
+\begin{frame}{Struktura sieci OPC UA}
+	\begin{figure}
+		\centering
+
+		\begin{tikzpicture}[scale=0.75, font=\scriptsize]
+			% stacja 1
+			\begin{scope}[dashed]
+				\draw (0,0) rectangle ++(5,4);
+				\node[above] at (2.5,0) {stacja 1.};
+			\end{scope}
+
+			\begin{scope}[every node/.style={rectangle, draw}]
+				\node (UP1) at (1,1) {UP};
+				\node (UP2) at (2,1) {UP};
+				\node (UP3) at (3,1) {US};
+
+				\node[minimum width=3cm, minimum height=.9cm] (OPC1) at
+				(2.5,3) {serwer OPC UA};
+			\end{scope}
+			\node at (4,1) {...};
+
+			\begin{scope}[stealth-stealth, shorten >=.5mm, shorten <=.5mm]
+				\draw (UP1.north) -- (UP1.north |- OPC1.south);
+				\draw (UP2.north) -- (UP2.north |- OPC1.south);
+				\draw (UP3.north) -- (UP3.north |- OPC1.south);
+			\end{scope}
+
+			% stacja 2
+			\begin{scope}[dashed]
+				\draw (6,0) rectangle ++(5,4);
+				\node[above] at (8.5,0) {stacja 2.};
+			\end{scope}
+
+			\begin{scope}[every node/.style={rectangle, draw}]
+				\node (UP1b) at (7,1) {UP};
+				\node (UP2b) at (8,1) {US};
+				\node (UP3b) at (9,1) {US};
+
+				\node[minimum width=3cm, minimum height=.9cm] (OPC2) at
+				(8.5,3) {serwer OPC UA};
+			\end{scope}
+			\node at (10,1) {...};
+
+			\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+				\draw (UP1b.north) -- (UP1b.north |- OPC2.south);
+				\draw (UP2b.north) -- (UP2b.north |- OPC2.south);
+				\draw (UP3b.north) -- (UP3b.north |- OPC2.south);
+			\end{scope}
+
+			\begin{scope}[every node/.style={draw, rectangle}]
+				% serwer nadrzędny
+				\node[minimum width=3.75cm, minimum height=.9cm] (OPC3)
+					at (5.5,5.25) {serwer nadrzędny};
+
+				% klienci
+				\node[minimum width=2.25cm, minimum height=0.6cm] (OPC4)
+					at (2,7) {klient};
+				\node[minimum width=2.25cm, minimum height=0.6cm] (OPC5)
+					at (5.5,7) {klient};
+				\node[minimum width=2.25cm, minimum height=0.6cm] (OPC6)
+					at (9,7) {klient};
+			\end{scope}
+
+			\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+				\draw (OPC1.north) ++(1.25,0) -- ++(0,1);
+				\draw (OPC2.north) ++(-1.25,0) -- ++(0,1);
+
+				\draw (OPC4.south) |- ++(2,-.35) -- ++(0,-.35);
+				\draw (OPC5.south) |- ++(0,-.35) -- ++(0,-.35);
+				\draw (OPC6.south) |- ++(-2,-.35) -- ++(0,-.35);
+			\end{scope}
+		\end{tikzpicture}
+
+		\caption{Przykład hierarchicznej struktura sieci OPC UA}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Przestrzeń adresowa}
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=0.5,x=1.5cm],font=\scriptsize
+			\begin{scope}[every node/.style={
+					minimum width=2.5cm,
+					minimum height=.75cm,
+					draw, rectangle,
+				}]
+
+				\node (o1) at (0,0) {Obszar 1};
+
+				\node (p1) at (-3,-3) {Przyłącze 1};
+				\node (p2) at (3,-3) {Przyłącze 2};
+
+				\node (l1) at (-3,-5.5) {Licznik};
+				\node (l2) at (3,-5.5) {Licznik};
+
+				\node (v1) at (-5.5,-8) {En. czynna};
+				\node (v2) at (-2,-8) {En. bierna};
+				\node (v3) at (2,-8) {En. czynna};
+				\node (v4) at (5.5,-8) {En. bierna};
+			\end{scope}
+
+%			\begin{scope}[every node/.style={above, font=\footnotesize}]
+%				\node at (o1.south) {obiekt};
+%				\node at (p1.south) {obiekt};
+%				\node at (p2.south) {obiekt};
+%				\node at (l1.south) {obiekt};
+%				\node at (l2.south) {obiekt};
+%				\node at (v1.south) {zmienna};
+%				\node at (v2.south) {zmienna};
+%				\node at (v3.south) {zmienna};
+%				\node at (v4.south) {zmienna};
+%			\end{scope}
+
+			\begin{scope}[-stealth, shorten >=.25mm, shorten <=.25mm]
+				\draw (o1) to (p1);
+				\draw (o1) to (p2);
+
+				\draw (p1) to (l1);
+				\draw (p2) to (l2);
+
+				\draw (l1) to (v1);
+				\draw (l1) to (v2);
+				\draw (l2) to (v3);
+				\draw (l2) to (v4);
+			\end{scope}
+		\end{tikzpicture}
+
+		\caption{Przykład struktury reprezentującej dane pomiarowe
+			z~liczników inteligentnych}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Bezpieczeństwo w~OPC UA}
+	\begin{itemize}
+		\item uwierzytelnianie klienta i~serwera
+
+		\item zapewnienie poufności przesyłanych informacji
+
+		\item zapewnienie integralności przesyłanych informacji
+
+		\item możliwość audytu
+
+		\item ciągłość dostępu do~usług
+	\end{itemize}
+\end{frame}
+
+\section{Moduł telemetryczny MT-101}
+
+\againframe{plan}
+
+\begin{frame}{Moduł MT-101}
+	\begin{figure}
+		\includegraphics[width=5.0955cm]{../zdj/mt101.jpeg}
+
+		\caption{Fotografia modułu (źródło: strona internetowa producenta)} %\cite{mt101})}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Ważniejsze cechy modułu}
+	\begin{itemize}
+		\item 8 optoizolowanych wejść binarnych/licznikowych
+			\SI{24}{\volt} DC, logika dodatnia i~ujemna
+
+		\item 8 wyjść/wejść binarnych/licznikowych \SI{24}{\volt} DC
+
+		\item 2 optoizolowane wejścia analogowe \SIrange{4}{20}{\milli\ampere}
+			z~programowaną histerezą i~stałą filtracji
+
+		\item transmisja pakietowa GSM/GPRS
+
+		\item rejestrator o rozdzielczości \SI{0,1}{\second}
+
+		\item programowany sterownik PLC
+	\end{itemize}
+
+	Źródło: karta katalogowa %\cite{mt101kat}
+\end{frame}
+
+\section{Realizacja serwera OPC}
+
+\againframe{plan}
+
+\begin{frame}{Struktura projektu}
+
+	\begin{figure}
+		\centering
+
+		\begin{tikzpicture}[scale=0.75, font=\scriptsize]
+			\begin{scope}[every node/.style={
+					minimum width=3cm,
+					minimum height=1.1cm,
+					draw, rectangle, font=\scriptsize
+				}]
+
+				\node (s) at (0,0) {serwer OPC UA};
+				\node (k) at (-2.5,-4) {klient OPC UA};
+				\node[dashed] (k2) at (2.5,-4) {klient OPC UA};
+				\node[dashed] (k3) at (7.5,-4) {klient OPC UA};
+				\node (m) at (8,0) {MT-101};
+			\end{scope}
+
+			\begin{scope}[stealth-stealth, shorten >=1mm, shorten <=1mm]
+				\draw (s.east) -- (m.west)
+					node[above, midway] {łacze RS232};
+
+				\draw (s) to (k);
+				\draw[dashed] (s) to (k2);
+				\draw[dashed] (s) to (k3);
+			\end{scope}
+
+			\node[right] at (5,-2) {sieć LAN bądź WAN};
+		\end{tikzpicture}
+
+		\caption{Struktura logiczna komponentów wykonanego projektu}
+	\end{figure}
+
+\end{frame}
+
+\begin{frame}{Serwer wirtualny}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.3]{../zdj/virtual-server.png}
+
+		\caption{Zrzut ekranu serwera wirtualnego}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Klient OPC UA}
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.25]{../zdj/client.png}
+
+		\caption{Zrzut ekranu klienta}
+	\end{figure}
+\end{frame}
+
+\appendix
+
+\begin{frame}
+	\begin{center}
+		Dziękuję za~uwagę.
+	\end{center}
+\end{frame}
+
+\end{document}
